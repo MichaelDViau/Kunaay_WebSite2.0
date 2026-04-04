@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa FotoPlus — Ku Náay Real Estate</title>
+<style>
+/* ═══════════════════════════════════════════
+   KU NÁAY REAL ESTATE — DESIGN SYSTEM
+   ═══════════════════════════════════════════ */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#C9A84C;
+  --gold-light:#E0C97F;
+  --gold-dark:#A0822A;
+  --bg:#0C0C0C;
+  --bg-card:#161616;
+  --bg-elevated:#1C1C1C;
+  --text:#F5F0E8;
+  --text-muted:#9A9589;
+  --text-dim:#6B655A;
+  --serif:'Cormorant Garamond',Georgia,serif;
+  --sans:'Manrope',system-ui,sans-serif;
+  --radius:12px;
+  --radius-lg:20px;
+  --transition:0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* ─── NAVBAR ─── */
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);backdrop-filter:blur(0px);background:transparent}
+.navbar.scrolled{background:rgba(12,12,12,0.92);backdrop-filter:blur(20px);padding:0.8rem 3rem;box-shadow:0 1px 0 rgba(201,168,76,0.1)}
+.nav-logo img{height:44px;transition:var(--transition)}
+.navbar.scrolled .nav-logo img{height:36px}
+.nav-links{display:flex;gap:2.5rem;align-items:center;list-style:none}
+.nav-links a{color:var(--text-muted);text-decoration:none;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;transition:var(--transition);position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:var(--transition)}
+.nav-links a:hover, .nav-links a.active{color:var(--gold)}
+.nav-links a:hover::after, .nav-links a.active::after{width:100%}
+.nav-cta{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:0.5rem 1.4rem;border-radius:100px;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:var(--sans);transition:var(--transition);text-decoration:none;display:inline-block}
+.nav-cta:hover{background:var(--gold);color:var(--bg)}
+
+/* Hamburger */
+.mobile-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px;z-index:1001}
+.mobile-toggle span{display:block;width:24px;height:2px;background:var(--text);margin:6px 0;transition:var(--transition);transform-origin:center}
+.mobile-toggle.open span:nth-child(1){transform:rotate(45deg) translate(5px,6px)}
+.mobile-toggle.open span:nth-child(2){opacity:0}
+.mobile-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-6px)}
+
+/* Mobile menu overlay */
+.mobile-menu{position:fixed;inset:0;background:rgba(12,12,12,0.97);backdrop-filter:blur(30px);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;opacity:0;pointer-events:none;transition:var(--transition)}
+.mobile-menu.open{opacity:1;pointer-events:all}
+.mobile-menu a{color:var(--text);font-family:var(--serif);font-size:2rem;font-weight:300;letter-spacing:0.05em;transition:var(--transition);text-decoration:none}
+.mobile-menu a:hover{color:var(--gold)}
+.mobile-menu .mob-cta{font-family:var(--sans);font-size:0.8rem;border:1px solid var(--gold);color:var(--gold);padding:0.6rem 2rem;border-radius:100px;letter-spacing:0.12em;text-transform:uppercase;margin-top:1rem}
+
+/* ─── PAGE HERO (subpages) ─── */
+.page-hero{position:relative;height:50vh;min-height:350px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;padding-bottom:4rem}
+.page-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center}
+.page-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,12,12,0.2) 0%,rgba(12,12,12,0.7) 70%,rgba(12,12,12,1) 100%)}
+.page-hero-content{position:relative;z-index:2;text-align:center}
+.page-hero-content .section-label{margin-bottom:0.75rem}
+.page-hero-content h1{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;line-height:1.15}
+
+/* ─── SECTION COMMON ─── */
+section{padding:5rem 3rem}
+.section-label{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:1rem;display:block}
+.section-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.2;margin-bottom:1rem}
+.section-desc{color:var(--text-muted);max-width:600px;font-weight:300;line-height:1.8;font-size:0.95rem}
+.container{max-width:1200px;margin:0 auto}
+
+/* ─── HOME HERO ─── */
+.hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:url('https://i.ibb.co/sBNn7VP/Secreto-maya-81-1.jpg') center/cover no-repeat}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,12,12,0.3) 0%,rgba(12,12,12,0.15) 40%,rgba(12,12,12,0.6) 80%,rgba(12,12,12,1) 100%)}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:800px;padding:0 2rem;animation:fadeUp 1.2s ease-out}
+.hero-badge{display:inline-block;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1.5rem;border-radius:100px;margin-bottom:2rem;font-weight:500}
+.hero h1{font-family:var(--serif);font-size:clamp(3rem,7vw,5.5rem);font-weight:300;line-height:1.1;margin-bottom:1.5rem}
+.hero h1 em{font-style:italic;color:var(--gold)}
+.hero-sub{font-size:1.05rem;color:var(--text-muted);max-width:520px;margin:0 auto 2.5rem;font-weight:300;line-height:1.8}
+.btn-primary{display:inline-flex;align-items:center;gap:0.75rem;background:var(--gold);color:var(--bg);padding:1rem 2.5rem;border-radius:100px;text-decoration:none;font-size:0.75rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;transition:var(--transition);border:none;cursor:pointer;font-family:var(--sans)}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 12px 40px rgba(201,168,76,0.25)}
+.btn-outline{display:inline-flex;align-items:center;gap:0.75rem;background:transparent;color:var(--gold);padding:1rem 2.5rem;border-radius:100px;text-decoration:none;font-size:0.75rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;transition:var(--transition);border:1px solid var(--gold);cursor:pointer;font-family:var(--sans)}
+.btn-outline:hover{background:var(--gold);color:var(--bg)}
+.hero-scroll{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:var(--text-dim);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;animation:pulse 2s infinite}
+.hero-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:0.5}50%{opacity:1}}
+
+/* ─── INTRO ─── */
+.intro{text-align:center;display:flex;flex-direction:column;align-items:center;padding-bottom:2rem}
+.intro-divider{width:60px;height:1px;background:var(--gold);margin:2rem auto 0;opacity:0.4}
+
+/* ─── PROPERTIES GRID ─── */
+.properties-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1rem}
+.property-filters{display:flex;gap:0.5rem}
+.filter-btn{background:transparent;border:1px solid rgba(201,168,76,0.2);color:var(--text-muted);padding:0.5rem 1.25rem;border-radius:100px;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;font-family:var(--sans);cursor:pointer;transition:var(--transition);font-weight:500}
+.filter-btn.active,.filter-btn:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.properties-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:2rem}
+
+/* ─── PROPERTY CARD ─── */
+.property-card{background:var(--bg-card);border-radius:var(--radius-lg);overflow:hidden;transition:var(--transition);cursor:pointer;border:1px solid rgba(255,255,255,0.04);text-decoration:none;display:block}
+.property-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.4);border-color:rgba(201,168,76,0.15)}
+.card-gallery{position:relative;height:280px;overflow:hidden}
+.card-gallery img{width:100%;height:100%;object-fit:cover;transition:0.6s ease}
+.property-card:hover .card-gallery img{transform:scale(1.05)}
+.card-badge{position:absolute;top:1rem;left:1rem;background:rgba(12,12,12,0.7);backdrop-filter:blur(10px);color:var(--gold);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.4rem 1rem;border-radius:100px;font-weight:600;border:1px solid rgba(201,168,76,0.2)}
+.card-badge.sale{background:rgba(201,168,76,0.85);color:var(--bg);border-color:transparent}
+.card-dots{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+.card-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:var(--transition)}
+.card-dot.active{background:var(--gold);width:18px;border-radius:3px}
+.card-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(12,12,12,0.5);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);color:white;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:var(--transition);font-size:14px}
+.property-card:hover .card-nav{opacity:1}
+.card-nav.prev{left:0.75rem}
+.card-nav.next{right:0.75rem}
+.card-nav:hover{background:rgba(201,168,76,0.8);border-color:var(--gold)}
+.card-info{padding:1.5rem 1.75rem}
+.card-title{font-family:var(--serif);font-size:1.4rem;font-weight:400;margin-bottom:0.5rem;color:var(--text)}
+.card-location{display:flex;align-items:center;gap:0.4rem;color:var(--text-dim);font-size:0.8rem;font-weight:400;margin-bottom:1.25rem}
+.card-location svg{color:var(--gold);flex-shrink:0}
+.card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,0.06)}
+.card-link{display:inline-flex;align-items:center;gap:0.5rem;color:var(--gold);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;font-weight:600;transition:var(--transition)}
+.card-link:hover{gap:0.75rem}
+
+/* ─── REVIEWS ─── */
+.reviews{background:var(--bg-card);border-top:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04)}
+.reviews-header{text-align:center;margin-bottom:4rem}
+.reviews-track{display:flex;gap:2rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:1rem;scrollbar-width:none}
+.reviews-track::-webkit-scrollbar{display:none}
+.review-card{min-width:420px;max-width:420px;scroll-snap-align:start;background:var(--bg-elevated);border-radius:var(--radius-lg);padding:2.5rem;border:1px solid rgba(255,255,255,0.04);flex-shrink:0;transition:var(--transition)}
+.review-card:hover{border-color:rgba(201,168,76,0.15)}
+.review-stars{color:var(--gold);font-size:0.85rem;letter-spacing:4px;margin-bottom:1.5rem}
+.review-text{color:var(--text-muted);font-size:0.9rem;line-height:1.8;margin-bottom:2rem;font-weight:300;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.review-text.full{-webkit-line-clamp:unset}
+.review-author{display:flex;align-items:center;gap:1rem}
+.review-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,168,76,0.3)}
+.review-name{font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--text)}
+.review-date{font-size:0.75rem;color:var(--text-dim);margin-top:2px}
+
+/* ─── PROPERTY DETAIL PAGE ─── */
+.detail-gallery{padding:0 3rem;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:220px;gap:0.5rem;margin-top:-2rem;position:relative;z-index:2}
+.detail-gallery img{width:100%;height:100%;object-fit:cover;border-radius:var(--radius);cursor:pointer;transition:var(--transition)}
+.detail-gallery img:hover{opacity:0.85}
+.detail-gallery img:first-child{grid-column:span 2;grid-row:span 2}
+
+.detail-content{padding:4rem 3rem}
+.detail-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:4rem;max-width:1200px;margin:0 auto}
+.detail-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:300;margin-bottom:0.5rem}
+.detail-subtitle{color:var(--text-dim);font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2rem}
+.detail-desc{color:var(--text-muted);line-height:1.9;font-weight:300;font-size:0.95rem;margin-bottom:2.5rem}
+
+.detail-highlights{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.5rem}
+.highlight-item{background:var(--bg-card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius);padding:1.25rem;text-align:center}
+.highlight-icon{color:var(--gold);font-size:1.5rem;margin-bottom:0.5rem}
+.highlight-label{font-size:0.75rem;color:var(--text-muted);font-weight:400}
+
+.detail-features h3{font-family:var(--serif);font-size:1.5rem;font-weight:400;margin-bottom:1.5rem;color:var(--text)}
+.features-list{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem 1.5rem}
+.feature-item{display:flex;align-items:center;gap:0.6rem;color:var(--text-muted);font-size:0.85rem;font-weight:300}
+.feature-item::before{content:'✦';color:var(--gold);font-size:0.6rem}
+
+.detail-sidebar{position:sticky;top:100px}
+.sidebar-card{background:var(--bg-card);border:1px solid rgba(201,168,76,0.15);border-radius:var(--radius-lg);padding:2.5rem;text-align:center}
+.sidebar-card h3{font-family:var(--serif);font-size:1.6rem;font-weight:400;margin-bottom:0.75rem}
+.sidebar-card p{color:var(--text-muted);font-size:0.85rem;margin-bottom:2rem;line-height:1.7}
+.sidebar-card .btn-primary{width:100%;justify-content:center;margin-bottom:1rem}
+.sidebar-card .btn-outline{width:100%;justify-content:center}
+
+/* Related properties */
+.related{padding:4rem 3rem;border-top:1px solid rgba(255,255,255,0.04)}
+.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem}
+.related-item{border-radius:var(--radius-lg);overflow:hidden;position:relative;height:280px;display:block}
+.related-item img{width:100%;height:100%;object-fit:cover;transition:var(--transition)}
+.related-item:hover img{transform:scale(1.05)}
+.related-item-info{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.8))}
+.related-item-info h4{font-family:var(--serif);font-size:1.2rem;font-weight:400}
+.related-item-info span{font-size:0.75rem;color:var(--text-dim)}
+
+/* ─── ABOUT PAGE ─── */
+.about-section{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding:5rem 3rem}
+.about-section.reverse{direction:rtl}
+.about-section.reverse>*{direction:ltr}
+.about-text h2{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:300;margin-bottom:0.75rem}
+.about-text .section-label{margin-bottom:0.5rem}
+.about-text p{color:var(--text-muted);line-height:1.9;font-weight:300;font-size:0.95rem;margin-bottom:1rem}
+.about-img{border-radius:var(--radius-lg);overflow:hidden;height:420px}
+.about-img img{width:100%;height:100%;object-fit:cover}
+
+.about-values{text-align:center;padding:5rem 3rem;background:var(--bg-card);border-top:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04)}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;max-width:1000px;margin:3rem auto 0}
+.value-card{padding:2.5rem 2rem;border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius-lg);transition:var(--transition)}
+.value-card:hover{border-color:rgba(201,168,76,0.2)}
+.value-icon{font-size:2rem;margin-bottom:1rem}
+.value-card h3{font-family:var(--serif);font-size:1.3rem;margin-bottom:0.75rem;font-weight:400}
+.value-card p{color:var(--text-muted);font-size:0.85rem;line-height:1.7;font-weight:300}
+
+/* ─── CONTACT PAGE ─── */
+.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;max-width:1100px;margin:0 auto}
+.contact-cards{display:flex;flex-direction:column;gap:1.5rem}
+.contact-card{background:var(--bg-card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius-lg);padding:2rem;transition:var(--transition)}
+.contact-card:hover{border-color:rgba(201,168,76,0.15)}
+.contact-card h4{font-family:var(--serif);font-size:1.3rem;font-weight:400;margin-bottom:0.5rem}
+.contact-card a{color:var(--text-muted);font-size:0.9rem;display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;transition:var(--transition);text-decoration:none}
+.contact-card a:hover{color:var(--gold)}
+.contact-card .whatsapp-link{color:var(--gold);font-weight:500}
+
+.contact-form{background:var(--bg-card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius-lg);padding:2.5rem}
+.contact-form h3{font-family:var(--serif);font-size:1.6rem;font-weight:400;margin-bottom:2rem}
+.form-group{margin-bottom:1.25rem}
+.form-group label{display:block;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.5rem;font-weight:500}
+.form-group input,.form-group textarea{width:100%;background:var(--bg);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:0.9rem 1.2rem;color:var(--text);font-family:var(--sans);font-size:0.9rem;transition:var(--transition);outline:none}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--gold)}
+.form-group textarea{height:140px;resize:vertical}
+.form-submit{margin-top:0.5rem}
+
+/* ─── FOOTER ─── */
+.footer{padding:4rem 3rem 2rem;border-top:1px solid rgba(255,255,255,0.04)}
+.footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:3rem;margin-bottom:3rem}
+.footer-brand img{height:40px;margin-bottom:1rem}
+.footer-tagline{color:var(--text-dim);font-size:0.85rem;max-width:300px;line-height:1.7;font-weight:300}
+.footer-nav{display:flex;gap:4rem}
+.footer-col h4{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;font-weight:600}
+.footer-col a{display:block;color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-bottom:0.6rem;transition:var(--transition);font-weight:300}
+.footer-col a:hover{color:var(--gold)}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.04);font-size:0.75rem;color:var(--text-dim)}
+
+/* ─── LIGHTBOX ─── */
+.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:var(--transition)}
+.lightbox.open{opacity:1;pointer-events:all}
+.lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:var(--radius)}
+.lightbox-close{position:absolute;top:2rem;right:2rem;background:none;border:none;color:white;font-size:2rem;cursor:pointer}
+.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(201,168,76,0.2);border:1px solid rgba(201,168,76,0.3);color:white;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:var(--transition)}
+.lightbox-nav:hover{background:rgba(201,168,76,0.5)}
+.lightbox-prev{left:2rem}
+.lightbox-next{right:2rem}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1024px){
+  .properties-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+  .detail-grid{grid-template-columns:1fr}
+  .detail-gallery{grid-template-columns:repeat(3,1fr);grid-auto-rows:180px}
+  .related-grid{grid-template-columns:repeat(2,1fr)}
+  .values-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  section{padding:4rem 1.5rem}
+  .navbar{padding:1rem 1.5rem}
+  .navbar.scrolled{padding:0.75rem 1.5rem}
+  .nav-links{display:none}
+  .mobile-toggle{display:block}
+  .properties-grid{grid-template-columns:1fr}
+  .card-gallery{height:240px}
+  .review-card{min-width:300px;max-width:300px;padding:1.75rem}
+  .footer-nav{gap:2rem}
+  .footer-top{flex-direction:column}
+  .footer-bottom{flex-direction:column;gap:0.75rem;text-align:center}
+  .hero h1{font-size:clamp(2.4rem,6vw,4rem)}
+  .properties-header{flex-direction:column;align-items:flex-start}
+  .detail-gallery{grid-template-columns:1fr 1fr;grid-auto-rows:160px;padding:0 1.5rem}
+  .detail-gallery img:first-child{grid-column:span 2}
+  .detail-content{padding:3rem 1.5rem}
+  .detail-highlights{grid-template-columns:repeat(2,1fr)}
+  .about-section{grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem}
+  .about-section.reverse{direction:ltr}
+  .about-img{height:280px}
+  .contact-grid{grid-template-columns:1fr}
+  .values-grid{grid-template-columns:1fr}
+  .related-grid{grid-template-columns:1fr}
+  .related{padding:3rem 1.5rem}
+  .footer{padding:3rem 1.5rem 1.5rem}
+}
+
+</style>
+</head>
+<body>
+<nav class="navbar scrolled" id="navbar">
+  <a href="index.html" class="nav-logo"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/logo-light.png" alt="Ku Náay"></a>
+  <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="rentals.html" class="active">Rentals</a></li><li><a href="sales.html">Sales</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul>
+  <a href="#" class="nav-cta">🇲🇽 Español</a>
+  <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta">🇲🇽 Español</a></div>
+
+<div class="page-hero" style="height:55vh">
+  <div class="page-hero-bg" style="background-image:url('https://img1.wsimg.com/isteam/ip/3c60e503-1c29-4ec9-b0a0-20b112f1ba44/a-32812fe.jpeg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:2560,h:1920')"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content"><span class="section-label">Rental · Playacar Phase 1</span><h1>Casa FotoPlus</h1></div>
+</div>
+
+<div class="detail-gallery" id="galleryGrid"><img class="lb-img" src="https://img1.wsimg.com/isteam/ip/3c60e503-1c29-4ec9-b0a0-20b112f1ba44/a-32812fe.jpeg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:2560,h:1920" alt="Casa FotoPlus"><img class="lb-img" src="https://img1.wsimg.com/isteam/ip/3c60e503-1c29-4ec9-b0a0-20b112f1ba44/c-03d66e7.jpeg/:/rs=w:2560,h:1920" alt="Casa FotoPlus"><img class="lb-img" src="https://img1.wsimg.com/isteam/ip/3c60e503-1c29-4ec9-b0a0-20b112f1ba44/i-5f723af.jpeg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:2560,h:1920" alt="Casa FotoPlus"><img class="lb-img" src="https://img1.wsimg.com/isteam/ip/3c60e503-1c29-4ec9-b0a0-20b112f1ba44/j-6b2638e.jpeg/:/rs=w:2560,h:1920" alt="Casa FotoPlus"><img class="lb-img" src="https://img1.wsimg.com/isteam/ip/3c60e503-1c29-4ec9-b0a0-20b112f1ba44/IMG_0828.jpeg/:/rs=w:2560,h:1920" alt="Casa FotoPlus"><img class="lb-img" src="https://img1.wsimg.com/isteam/ip/3c60e503-1c29-4ec9-b0a0-20b112f1ba44/u2.jpeg/:/rs=w:2560,h:1920" alt="Casa FotoPlus"></div>
+
+<div class="detail-content">
+  <div class="detail-grid">
+    <div>
+      <h2 class="detail-title">Elegant Retreat in Playacar Phase 1</h2>
+      <div class="detail-subtitle">Playa Del Carmen, Riviera Maya</div>
+      <p class="detail-desc">Casa FotoPlus is an elegant retreat located within the exclusive Playacar Phase 1 gated community. This beautifully designed villa offers modern amenities, stunning outdoor spaces, and easy access to the pristine Caribbean beach.</p>
+    </div>
+    <div class="detail-sidebar">
+      <div class="sidebar-card">
+        <h3>Casa FotoPlus</h3>
+        <p>Contact us directly for more information and personalized service.</p>
+        <a href="https://wa.me/529841681121" target="_blank" class="btn-primary">Book via WhatsApp</a>
+        <a href="contact.html" class="btn-outline">Request Info</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="related">
+  <span class="section-label">You May Also Like</span>
+  <h2 class="section-title">Similar Properties</h2>
+  <div class="related-grid">
+    <a href="casasecretomaya.html" class="related-item"><img src="https://i.ibb.co/sBNn7VP/Secreto-maya-81-1.jpg" alt="Casa Secreto Maya"><div class="related-item-info"><h4>Casa Secreto Maya</h4><span>Playa Del Carmen</span></div></a>
+    <a href="casavioleta.html" class="related-item"><img src="https://i.ibb.co/vxVMbJNC/Casa-Violetta-101.jpg" alt="Casa Violetta"><div class="related-item-info"><h4>Casa Violetta</h4><span>Playa Del Carmen</span></div></a>
+    <a href="casaricardo.html" class="related-item"><img src="https://i.ibb.co/Lhnw7mhr/Casa-Ricardo-036.jpg" alt="Casa Ricardo"><div class="related-item-info"><h4>Casa Ricardo</h4><span>Playa Del Carmen</span></div></a>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="closeLightbox()">✕</button><button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)">‹</button><img id="lightboxImg" src="" alt="Gallery"><button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)">›</button></div>
+
+<footer class="footer"><div class="footer-top"><div class="footer-brand"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where the Sea Meets Serenity — luxury vacation rentals and real estate in the Riviera Maya.</p></div><div class="footer-nav"><div class="footer-col"><h4>Navigation</h4><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div><div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a></div></div></div><div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div></footer>
+
+<script>
+/* ═══════════════════════════════════════════
+   KU NÁAY — SHARED JAVASCRIPT
+   ═══════════════════════════════════════════ */
+
+// ─── Navbar scroll effect ───
+const navbar = document.getElementById('navbar');
+if (navbar) {
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+  // Init on load
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+}
+
+// ─── Mobile hamburger menu ───
+const mobileToggle = document.getElementById('mobileToggle');
+const mobileMenu = document.getElementById('mobileMenu');
+if (mobileToggle && mobileMenu) {
+  mobileToggle.addEventListener('click', () => {
+    mobileToggle.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  // Close menu when clicking a link
+  mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileToggle.classList.remove('open');
+      mobileMenu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+}
+
+// ─── Card gallery slider ───
+const galleryData = {};
+const galleryIndexes = {};
+
+function initGallery(id, images) {
+  galleryData[id] = images;
+  galleryIndexes[id] = 0;
+}
+
+function slideGallery(id, dir, event) {
+  if (event) event.stopPropagation();
+  const imgs = galleryData[id];
+  if (!imgs) return;
+  galleryIndexes[id] = (galleryIndexes[id] + dir + imgs.length) % imgs.length;
+  const el = document.getElementById(id);
+  if (!el) return;
+  const img = el.querySelector('img');
+  img.style.opacity = '0';
+  setTimeout(() => {
+    img.src = imgs[galleryIndexes[id]];
+    img.style.opacity = '1';
+  }, 200);
+  const dots = el.querySelectorAll('.card-dot');
+  dots.forEach((d, i) => d.classList.toggle('active', i === galleryIndexes[id]));
+}
+
+// ─── Filter properties ───
+function filterProps(type, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.property-card').forEach(card => {
+    if (type === 'all') {
+      card.style.display = '';
+    } else {
+      card.style.display = card.dataset.type === type ? '' : 'none';
+    }
+  });
+}
+
+// ─── Scroll fade-in animation ───
+function initScrollAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.animate-in').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+}
+
+// ─── Lightbox ───
+let lightboxImages = [];
+let lightboxIndex = 0;
+
+function initLightbox(selector) {
+  const imgs = document.querySelectorAll(selector);
+  lightboxImages = Array.from(imgs).map(img => img.src || img.href);
+  
+  imgs.forEach((img, i) => {
+    img.style.cursor = 'pointer';
+    img.addEventListener('click', (e) => {
+      e.preventDefault();
+      lightboxIndex = i;
+      openLightbox();
+    });
+  });
+}
+
+function openLightbox() {
+  const lb = document.getElementById('lightbox');
+  if (!lb) return;
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  updateLightboxImage();
+}
+
+function closeLightbox() {
+  const lb = document.getElementById('lightbox');
+  if (!lb) return;
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function lightboxNav(dir) {
+  lightboxIndex = (lightboxIndex + dir + lightboxImages.length) % lightboxImages.length;
+  updateLightboxImage();
+}
+
+function updateLightboxImage() {
+  const img = document.getElementById('lightboxImg');
+  if (img) img.src = lightboxImages[lightboxIndex];
+}
+
+// ─── Init on DOM ready ───
+document.addEventListener('DOMContentLoaded', () => {
+  initScrollAnimations();
+  
+  // Close lightbox on background click
+  const lb = document.getElementById('lightbox');
+  if (lb) {
+    lb.addEventListener('click', (e) => {
+      if (e.target === lb) closeLightbox();
+    });
+  }
+  
+  // Keyboard nav for lightbox
+  document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('lightbox')?.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lightboxNav(-1);
+    if (e.key === 'ArrowRight') lightboxNav(1);
+  });
+});
+
+</script>
+<script>document.addEventListener('DOMContentLoaded',()=>{initLightbox('.lb-img')});</script>
+</body>
+</html>
