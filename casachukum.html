@@ -33,7 +33,7 @@ a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 
 /* ─── NAVBAR ─── */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);backdrop-filter:blur(0px);background:transparent}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);backdrop-filter:blur(0px);background:rgba(0,0,0,0.094)}
 .navbar.scrolled{background:rgba(12,12,12,0.92);backdrop-filter:blur(20px);padding:0.8rem 3rem;box-shadow:0 1px 0 rgba(201,168,76,0.1)}
 .nav-logo img{height:44px;transition:var(--transition)}
 .navbar.scrolled .nav-logo img{height:36px}
@@ -167,8 +167,8 @@ section{padding:5rem 3rem}
 
 .detail-highlights{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.5rem}
 .highlight-item{background:var(--bg-card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius);padding:1.25rem;text-align:center}
-.highlight-icon{color:var(--gold);font-size:1.5rem;margin-bottom:0.5rem}
-.highlight-label{font-size:0.75rem;color:var(--text-muted);font-weight:400}
+.highlight-icon{width:48px;height:48px;border-radius:50%;background:rgba(201,168,76,0.1);display:flex;align-items:center;justify-content:center;margin:0 auto 0.75rem;color:var(--gold)}
+.highlight-label{font-size:0.8rem;font-weight:500;color:var(--text-muted);letter-spacing:0.05em}
 
 .detail-features h3{font-family:var(--serif);font-size:1.5rem;font-weight:400;margin-bottom:1.5rem;color:var(--text)}
 .features-list{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem 1.5rem}
@@ -249,6 +249,33 @@ section{padding:5rem 3rem}
 .lightbox-nav:hover{background:rgba(201,168,76,0.5)}
 .lightbox-prev{left:2rem}
 .lightbox-next{right:2rem}
+
+.availability-card .cal-widget{background:var(--bg);border-radius:var(--radius);padding:1rem;border:1px solid rgba(201,168,76,0.1)}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.cal-month-label{font-family:var(--serif);font-size:1.05rem;font-weight:500;color:var(--gold);letter-spacing:0.05em}
+.cal-nav{background:none;border:1px solid rgba(201,168,76,0.25);color:var(--gold);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.3s}
+.cal-nav:hover{background:var(--gold);color:var(--bg)}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.cal-weekdays span{text-align:center;font-size:0.65rem;color:var(--text-dim);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:4px 0}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day{text-align:center;padding:6px 2px;font-size:0.78rem;border-radius:6px;cursor:default;transition:0.2s}
+.cal-day.empty{background:transparent}
+.cal-day.available{color:var(--text);background:rgba(201,168,76,0.08)}
+.cal-day.available:hover{background:rgba(201,168,76,0.2)}
+.cal-day.booked{color:var(--text-dim);background:rgba(255,255,255,0.03);text-decoration:line-through}
+.cal-day.past{color:var(--text-dim);opacity:0.4}
+.cal-day.today{border:1px solid var(--gold);color:var(--gold);font-weight:600}
+.cal-legend{display:flex;gap:1rem;justify-content:center;margin-top:0.75rem;flex-wrap:wrap}
+.cal-legend-item{display:flex;align-items:center;gap:0.35rem;font-size:0.7rem;color:var(--text-muted)}
+.cal-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.cal-dot-available{background:rgba(201,168,76,0.5)}
+.cal-dot-booked{background:rgba(255,255,255,0.15)}
+.reviews-wrapper{position:relative;display:flex;align-items:center;gap:0}
+.reviews-slider-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:var(--bg-card);border:1px solid rgba(201,168,76,0.3);color:var(--gold);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.3s ease;flex-shrink:0}
+.reviews-slider-btn:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.reviews-slider-prev{left:-24px}
+.reviews-slider-next{right:-24px}
+@media(max-width:768px){.reviews-slider-prev{left:-12px}.reviews-slider-next{right:-12px}.reviews-slider-btn{width:36px;height:36px}}
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:1024px){
