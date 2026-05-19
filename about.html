@@ -33,7 +33,7 @@ a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 
 /* ─── NAVBAR ─── */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);backdrop-filter:blur(0px);background:transparent}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);backdrop-filter:blur(0px);background:rgba(0,0,0,0.094)}
 .navbar.scrolled{background:rgba(12,12,12,0.92);backdrop-filter:blur(20px);padding:0.8rem 3rem;box-shadow:0 1px 0 rgba(201,168,76,0.1)}
 .nav-logo img{height:44px;transition:var(--transition)}
 .navbar.scrolled .nav-logo img{height:36px}
@@ -288,11 +288,11 @@ section{padding:5rem 3rem}
     <li><a href="about.html" class="active">About Us</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
-  <a href="#" class="nav-cta">🇲🇽 Español</a>
+  <a href="#" class="nav-cta"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a>
   <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta">🇲🇽 Español</a>
+  <a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a>
 </div>
 
 <div class="page-hero">
@@ -308,9 +308,9 @@ section{padding:5rem 3rem}
 <div class="about-section animate-in">
   <div class="about-text">
     <span class="section-label">Since 2010</span>
-    <h2>Your Local Experts</h2>
-    <p>With more than 15 years of experience in Riviera Maya real estate and vacation rentals, we are your trusted local experts for finding the perfect oceanfront escape. Our team lives and works here, giving us an insider's perspective on everything from the most beautiful beaches to hidden gems and exclusive properties you won't see anywhere else.</p>
-    <p>Every home in our collection is handpicked for comfort, style, and breathtaking views. Whether you're planning a relaxing getaway, a family retreat, or exploring investment opportunities, we're here to guide you with knowledge and care.</p>
+    <h2 style="font-family:var(--serif);font-size:2.5rem;font-weight:400;margin-bottom:1rem">Our Market Expertise</h2>
+    <p style="color:var(--text-muted);max-width:680px;margin:0 auto 1.5rem;line-height:1.8">With over a decade of specialised experience in Riviera Maya real estate, Ku Náay brings a depth of local knowledge that no generalist agency can match. We maintain an intimate understanding of micro-market dynamics — from the emerging communities of Puerto Morelos to the established prestige addresses of Playacar — enabling our clients to acquire, sell, and invest with confidence and precision.</p>
+    <p style="color:var(--text-muted);max-width:680px;margin:0 auto;line-height:1.8">Our team holds active relationships with developers, architects, and legal specialists across the region, ensuring that every transaction — whether a beachfront estate, a boutique rental portfolio, or a first investment property — is navigated with transparency, rigour, and an unwavering commitment to our clients' long-term interests.</p>
   </div>
   <div class="about-img">
     <img src="https://i.ibb.co/Qvm8YSBb/b39ec8c4cc9ce33f7ecf43315ad814eb.webp" alt="Team working together">
@@ -321,8 +321,9 @@ section{padding:5rem 3rem}
 <div class="about-section reverse animate-in">
   <div class="about-text">
     <span class="section-label">Philosophy</span>
-    <h2>Spaces That Inspire</h2>
-    <p>At Ku Náay, our philosophy is to create spaces that inspire peace, comfort, and connection. We believe in blending modern elegance with the natural beauty of the Riviera Maya, ensuring every experience is memorable, meaningful, and unique.</p>
+    <h2 style="font-family:var(--serif);font-size:2.5rem;font-weight:400;margin-bottom:1rem">Client-First Philosophy</h2>
+    <p style="color:var(--text-muted);max-width:680px;margin:0 auto 1.5rem;line-height:1.8">At Ku Náay, we believe that real estate is ultimately a deeply personal pursuit. Every client arrives with a unique set of ambitions, constraints, and visions — and our role is to listen carefully before we speak, and to act deliberately before we advise. We do not operate on volume; we operate on trust, reputation, and the knowledge that a satisfied client becomes a lifelong partner.</p>
+    <p style="color:var(--text-muted);max-width:680px;margin:0 auto;line-height:1.8">From the initial discovery conversation to the final transfer of keys, our team provides dedicated, single-point-of-contact service throughout every stage of your real estate journey. We are available when you need us, transparent when it matters, and relentlessly focused on achieving an outcome that exceeds your expectations — whether you are buying, selling, or entrusting us with the management of your most valuable asset.</p>
   </div>
   <div class="about-img">
     <img src="https://expertvagabond.com/wp-content/uploads/cancun-things-to-do-guide.jpg" alt="Luxury Villa in Riviera Maya">
@@ -336,17 +337,17 @@ section{padding:5rem 3rem}
   <p class="section-desc" style="margin:0 auto">Our vision is to combine luxury, comfort, and authenticity in every experience we create. From stunning beachfront homes to tailored concierge services, everything we do is designed to make your Riviera Maya stay extraordinary.</p>
   <div class="values-grid">
     <div class="value-card animate-in">
-      <div class="value-icon">✦</div>
+      <div class="value-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="color:var(--gold)"><path d="M12 2l2.5 7H22l-6 4.5 2.5 7.5L12 17l-6.5 4 2.5-7.5L2 9h7.5z"/></svg></div>
       <h3>Luxury</h3>
       <p>Handpicked properties with refined finishes, stunning views, and premium amenities that exceed expectations.</p>
     </div>
     <div class="value-card animate-in">
-      <div class="value-icon">✦</div>
+      <div class="value-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="color:var(--gold)"><path d="M12 2l2.5 7H22l-6 4.5 2.5 7.5L12 17l-6.5 4 2.5-7.5L2 9h7.5z"/></svg></div>
       <h3>Authenticity</h3>
       <p>We believe travel is more than just a destination — it's about moments, connections, and memories that last a lifetime.</p>
     </div>
     <div class="value-card animate-in">
-      <div class="value-icon">✦</div>
+      <div class="value-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor" stroke="none" style="color:var(--gold)"><path d="M12 2l2.5 7H22l-6 4.5 2.5 7.5L12 17l-6.5 4 2.5-7.5L2 9h7.5z"/></svg></div>
       <h3>Dedication</h3>
       <p>Our dedicated team goes above and beyond to ensure your journey is effortless and inspiring, from arrival to departure.</p>
     </div>

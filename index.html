@@ -33,7 +33,7 @@ a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 
 /* ─── NAVBAR ─── */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);backdrop-filter:blur(0px);background:transparent}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);backdrop-filter:blur(0px);background:rgba(0,0,0,0.094)}
 .navbar.scrolled{background:rgba(12,12,12,0.92);backdrop-filter:blur(20px);padding:0.8rem 3rem;box-shadow:0 1px 0 rgba(201,168,76,0.1)}
 .nav-logo img{height:44px;transition:var(--transition)}
 .navbar.scrolled .nav-logo img{height:36px}
@@ -76,8 +76,13 @@ section{padding:5rem 3rem}
 
 /* ─── HOME HERO ─── */
 .hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:url('https://i.ibb.co/sBNn7VP/Secreto-maya-81-1.jpg') center/cover no-repeat}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,12,12,0.3) 0%,rgba(12,12,12,0.15) 40%,rgba(12,12,12,0.6) 80%,rgba(12,12,12,1) 100%)}
+.hero-slider{position:absolute;inset:0;z-index:0}
+.hero-slide{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 1.6s ease}
+.hero-slide.active{opacity:1}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,12,12,0.3) 0%,rgba(12,12,12,0.15) 40%,rgba(12,12,12,0.6) 80%,rgba(12,12,12,1) 100%);z-index:1}
+.hero-slider-dots{position:absolute;bottom:6rem;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:10px}
+.hero-slider-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.35);cursor:pointer;transition:var(--transition);border:none;padding:0;outline:none}
+.hero-slider-dot.active{background:var(--gold);width:26px;border-radius:4px}
 .hero-content{position:relative;z-index:2;text-align:center;max-width:800px;padding:0 2rem;animation:fadeUp 1.2s ease-out}
 .hero-badge{display:inline-block;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1.5rem;border-radius:100px;margin-bottom:2rem;font-weight:500}
 .hero h1{font-family:var(--serif);font-size:clamp(3rem,7vw,5.5rem);font-weight:300;line-height:1.1;margin-bottom:1.5rem}
@@ -123,6 +128,9 @@ section{padding:5rem 3rem}
 .card-title{font-family:var(--serif);font-size:1.4rem;font-weight:400;margin-bottom:0.5rem;color:var(--text)}
 .card-location{display:flex;align-items:center;gap:0.4rem;color:var(--text-dim);font-size:0.8rem;font-weight:400;margin-bottom:1.25rem}
 .card-location svg{color:var(--gold);flex-shrink:0}
+.card-amenities{display:flex;gap:1rem;align-items:center;margin-top:0.5rem;flex-wrap:wrap}
+.card-amenity{display:flex;align-items:center;gap:0.35rem;color:var(--gold);font-size:0.75rem;font-weight:500;letter-spacing:0.02em}
+.card-amenity svg{color:var(--gold);flex-shrink:0}
 .card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,0.06)}
 .card-link{display:inline-flex;align-items:center;gap:0.5rem;color:var(--gold);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;font-weight:600;transition:var(--transition)}
 .card-link:hover{gap:0.75rem}
@@ -130,6 +138,12 @@ section{padding:5rem 3rem}
 /* ─── REVIEWS ─── */
 .reviews{background:var(--bg-card);border-top:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04)}
 .reviews-header{text-align:center;margin-bottom:4rem}
+.reviews-wrapper{position:relative;display:flex;align-items:center;gap:0}
+.reviews-slider-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:var(--bg-card);border:1px solid rgba(201,168,76,0.3);color:var(--gold);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.3s ease;flex-shrink:0}
+.reviews-slider-btn:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.reviews-slider-prev{left:-24px}
+.reviews-slider-next{right:-24px}
+@media(max-width:768px){.reviews-slider-prev{left:-12px}.reviews-slider-next{right:-12px}.reviews-slider-btn{width:36px;height:36px}}
 .reviews-track{display:flex;gap:2rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:1rem;scrollbar-width:none}
 .reviews-track::-webkit-scrollbar{display:none}
 .review-card{min-width:420px;max-width:420px;scroll-snap-align:start;background:var(--bg-elevated);border-radius:var(--radius-lg);padding:2.5rem;border:1px solid rgba(255,255,255,0.04);flex-shrink:0;transition:var(--transition)}
@@ -289,7 +303,7 @@ section{padding:5rem 3rem}
     <li><a href="about.html">About Us</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
-  <a href="#" class="nav-cta">🇲🇽 Español</a>
+  <a href="#" class="nav-cta"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a>
   <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
@@ -298,13 +312,24 @@ section{padding:5rem 3rem}
   <a href="sales.html">Sales</a>
   <a href="about.html">About Us</a>
   <a href="contact.html">Contact</a>
-  <a href="#" class="mob-cta">🇲🇽 Español</a>
+  <a href="#" class="mob-cta"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a>
 </div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
+  <div class="hero-slider" id="heroSlider">
+    <div class="hero-slide active" style="background-image:url('https://i.ibb.co/2386rxRj/Casa-Violetta-019-1.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('https://i.ibb.co/cSyLRPjF/Casa-Mayette-087-1.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('https://i.ibb.co/pvZxHKBH/Casa-Ricardo-018-1.jpg')"></div>
+    <div class="hero-slide" style="background-image:url('https://i.ibb.co/r2g7c2Kg/Casa-Ricardo-035-1.jpg')"></div>
+  </div>
   <div class="hero-overlay"></div>
+  <div class="hero-slider-dots" id="heroSliderDots">
+    <button class="hero-slider-dot active" onclick="goToHeroSlide(0)"></button>
+    <button class="hero-slider-dot" onclick="goToHeroSlide(1)"></button>
+    <button class="hero-slider-dot" onclick="goToHeroSlide(2)"></button>
+    <button class="hero-slider-dot" onclick="goToHeroSlide(3)"></button>
+  </div>
   <div class="hero-content">
     <span class="hero-badge">Riviera Maya · Playa del Carmen · Tulum</span>
     <h1>Where the Sea Meets <em>Serenity</em></h1>
@@ -342,13 +367,19 @@ section{padding:5rem 3rem}
       <div class="card-gallery" id="g0">
         <img src="https://i.ibb.co/sBNn7VP/Secreto-maya-81-1.jpg" alt="Casa Secreto Maya">
         <span class="card-badge">Rental</span>
-        <button class="card-nav prev" onclick="slideGallery('g0',-1,event)">‹</button>
-        <button class="card-nav next" onclick="slideGallery('g0',1,event)">›</button>
+        <button class="card-nav prev" onclick="slideGallery('g0',-1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="card-nav next" onclick="slideGallery('g0',1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
         <div class="card-dots"><span class="card-dot active"></span><span class="card-dot"></span><span class="card-dot"></span></div>
       </div>
       <div class="card-info">
         <h3 class="card-title">Casa Secreto Maya</h3>
         <div class="card-location"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Playacar Phase 1, Playa Del Carmen</div>
+        <div class="card-amenities">
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17V9.5a2 2 0 012-2h5a2 2 0 012 2v2h2v-2a2 2 0 012-2h5a2 2 0 012 2V17"/><path d="M2 17h20"/><path d="M2 17v2M22 17v2"/></svg> <span>4</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 12V6a2 2 0 012-2h3a2 2 0 012 2v1"/><path d="M4 12v4a2 2 0 002 2h12a2 2 0 002-2v-4"/><path d="M8 20v1M16 20v1"/></svg> <span>5</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c1 1 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><circle cx="17" cy="7" r="2"/><path d="M6 13l2-4 3 2.5 2-3 3 3.5"/></svg> Pool</span>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;font-weight:300;margin-top:0.75rem">A masterpiece of privacy nestled within lush tropical gardens with direct ocean access. Four refined bedrooms and five baths create an intimate sanctuary for discerning travelers.</p>
         <div class="card-footer"><span class="card-link">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div>
       </div>
     </a>
@@ -358,13 +389,19 @@ section{padding:5rem 3rem}
       <div class="card-gallery" id="g1">
         <img src="https://i.ibb.co/vxVMbJNC/Casa-Violetta-101.jpg" alt="Casa Violetta">
         <span class="card-badge">Rental</span>
-        <button class="card-nav prev" onclick="slideGallery('g1',-1,event)">‹</button>
-        <button class="card-nav next" onclick="slideGallery('g1',1,event)">›</button>
+        <button class="card-nav prev" onclick="slideGallery('g1',-1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="card-nav next" onclick="slideGallery('g1',1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
         <div class="card-dots"><span class="card-dot active"></span><span class="card-dot"></span><span class="card-dot"></span></div>
       </div>
       <div class="card-info">
         <h3 class="card-title">Casa Violetta</h3>
         <div class="card-location"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Playacar Phase 1, Playa Del Carmen</div>
+        <div class="card-amenities">
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17V9.5a2 2 0 012-2h5a2 2 0 012 2v2h2v-2a2 2 0 012-2h5a2 2 0 012 2V17"/><path d="M2 17h20"/><path d="M2 17v2M22 17v2"/></svg> <span>5</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 12V6a2 2 0 012-2h3a2 2 0 012 2v1"/><path d="M4 12v4a2 2 0 002 2h12a2 2 0 002-2v-4"/><path d="M8 20v1M16 20v1"/></svg> <span>5</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c1 1 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><circle cx="17" cy="7" r="2"/><path d="M6 13l2-4 3 2.5 2-3 3 3.5"/></svg> Pool</span>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;font-weight:300;margin-top:0.75rem">An extraordinary beachfront estate where architectural elegance meets the Caribbean's infinite horizon. Five luxuriously appointed suites deliver a private retreat of rare distinction.</p>
         <div class="card-footer"><span class="card-link">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div>
       </div>
     </a>
@@ -374,13 +411,19 @@ section{padding:5rem 3rem}
       <div class="card-gallery" id="g2">
         <img src="https://i.ibb.co/1hD1Z5J/Casa-Mayette-097.jpg" alt="Casa Mayette">
         <span class="card-badge">Rental</span>
-        <button class="card-nav prev" onclick="slideGallery('g2',-1,event)">‹</button>
-        <button class="card-nav next" onclick="slideGallery('g2',1,event)">›</button>
+        <button class="card-nav prev" onclick="slideGallery('g2',-1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="card-nav next" onclick="slideGallery('g2',1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
         <div class="card-dots"><span class="card-dot active"></span><span class="card-dot"></span><span class="card-dot"></span></div>
       </div>
       <div class="card-info">
         <h3 class="card-title">Casa Mayette</h3>
         <div class="card-location"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Playacar Phase 1, Playa Del Carmen</div>
+        <div class="card-amenities">
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17V9.5a2 2 0 012-2h5a2 2 0 012 2v2h2v-2a2 2 0 012-2h5a2 2 0 012 2V17"/><path d="M2 17h20"/><path d="M2 17v2M22 17v2"/></svg> <span>4</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 12V6a2 2 0 012-2h3a2 2 0 012 2v1"/><path d="M4 12v4a2 2 0 002 2h12a2 2 0 002-2v-4"/><path d="M8 20v1M16 20v1"/></svg> <span>4</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c1 1 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><circle cx="17" cy="7" r="2"/><path d="M6 13l2-4 3 2.5 2-3 3 3.5"/></svg> Pool</span>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;font-weight:300;margin-top:0.75rem">Sophisticated poolside living steps from the pristine shores of Playa del Carmen. Thoughtfully curated interiors blend Mexican artisanship with contemporary comfort.</p>
         <div class="card-footer"><span class="card-link">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div>
       </div>
     </a>
@@ -390,13 +433,19 @@ section{padding:5rem 3rem}
       <div class="card-gallery" id="g3">
         <img src="https://i.ibb.co/Lhnw7mhr/Casa-Ricardo-036.jpg" alt="Casa Ricardo">
         <span class="card-badge">Rental</span>
-        <button class="card-nav prev" onclick="slideGallery('g3',-1,event)">‹</button>
-        <button class="card-nav next" onclick="slideGallery('g3',1,event)">›</button>
+        <button class="card-nav prev" onclick="slideGallery('g3',-1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="card-nav next" onclick="slideGallery('g3',1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
         <div class="card-dots"><span class="card-dot active"></span><span class="card-dot"></span><span class="card-dot"></span></div>
       </div>
       <div class="card-info">
         <h3 class="card-title">Casa Ricardo</h3>
         <div class="card-location"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Playacar Phase 1, Playa Del Carmen</div>
+        <div class="card-amenities">
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17V9.5a2 2 0 012-2h5a2 2 0 012 2v2h2v-2a2 2 0 012-2h5a2 2 0 012 2V17"/><path d="M2 17h20"/><path d="M2 17v2M22 17v2"/></svg> <span>5</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 12V6a2 2 0 012-2h3a2 2 0 012 2v1"/><path d="M4 12v4a2 2 0 002 2h12a2 2 0 002-2v-4"/><path d="M8 20v1M16 20v1"/></svg> <span>5</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c1 1 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><circle cx="17" cy="7" r="2"/><path d="M6 13l2-4 3 2.5 2-3 3 3.5"/></svg> Pool</span>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;font-weight:300;margin-top:0.75rem">A landmark residence offering five elegant bedrooms and resort-caliber amenities in a tranquil beachside setting. Ideal for those seeking uncompromising space and style.</p>
         <div class="card-footer"><span class="card-link">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div>
       </div>
     </a>
@@ -406,13 +455,19 @@ section{padding:5rem 3rem}
       <div class="card-gallery" id="g4">
         <img src="https://img1.wsimg.com/isteam/ip/3c60e503-1c29-4ec9-b0a0-20b112f1ba44/a-32812fe.jpeg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:2560,h:1920" alt="Casa FotoPlus">
         <span class="card-badge">Rental</span>
-        <button class="card-nav prev" onclick="slideGallery('g4',-1,event)">‹</button>
-        <button class="card-nav next" onclick="slideGallery('g4',1,event)">›</button>
+        <button class="card-nav prev" onclick="slideGallery('g4',-1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="card-nav next" onclick="slideGallery('g4',1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
         <div class="card-dots"><span class="card-dot active"></span><span class="card-dot"></span><span class="card-dot"></span></div>
       </div>
       <div class="card-info">
         <h3 class="card-title">Casa FotoPlus</h3>
         <div class="card-location"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Playacar Phase 1, Playa Del Carmen</div>
+        <div class="card-amenities">
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17V9.5a2 2 0 012-2h5a2 2 0 012 2v2h2v-2a2 2 0 012-2h5a2 2 0 012 2V17"/><path d="M2 17h20"/><path d="M2 17v2M22 17v2"/></svg> <span>3</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 12V6a2 2 0 012-2h3a2 2 0 012 2v1"/><path d="M4 12v4a2 2 0 002 2h12a2 2 0 002-2v-4"/><path d="M8 20v1M16 20v1"/></svg> <span>3</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c1 1 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><circle cx="17" cy="7" r="2"/><path d="M6 13l2-4 3 2.5 2-3 3 3.5"/></svg> Pool</span>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;font-weight:300;margin-top:0.75rem">A serene three-bedroom villa where lush landscaping and architectural detail create a truly private paradise. Perfect for intimate gatherings or a refined family getaway.</p>
         <div class="card-footer"><span class="card-link">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div>
       </div>
     </a>
@@ -422,13 +477,19 @@ section{padding:5rem 3rem}
       <div class="card-gallery" id="g5">
         <img src="https://i.ibb.co/Fb74sSYX/3de3f5d3-215c-49f0-ab09-4a3ff38fb1a3.jpg" alt="Casa Chukum">
         <span class="card-badge sale">For Sale</span>
-        <button class="card-nav prev" onclick="slideGallery('g5',-1,event)">‹</button>
-        <button class="card-nav next" onclick="slideGallery('g5',1,event)">›</button>
+        <button class="card-nav prev" onclick="slideGallery('g5',-1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="card-nav next" onclick="slideGallery('g5',1,event)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
         <div class="card-dots"><span class="card-dot active"></span><span class="card-dot"></span><span class="card-dot"></span></div>
       </div>
       <div class="card-info">
         <h3 class="card-title">Casa Chukum</h3>
         <div class="card-location"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Aldea Zama, Tulum</div>
+        <div class="card-amenities">
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17V9.5a2 2 0 012-2h5a2 2 0 012 2v2h2v-2a2 2 0 012-2h5a2 2 0 012 2V17"/><path d="M2 17h20"/><path d="M2 17v2M22 17v2"/></svg> <span>4</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 12V6a2 2 0 012-2h3a2 2 0 012 2v1"/><path d="M4 12v4a2 2 0 002 2h12a2 2 0 002-2v-4"/><path d="M8 20v1M16 20v1"/></svg> <span>4</span></span>
+          <span class="card-amenity"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c1 1 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><circle cx="17" cy="7" r="2"/><path d="M6 13l2-4 3 2.5 2-3 3 3.5"/></svg> Pool</span>
+        </div>
+        <p style="color:var(--text-muted);font-size:0.85rem;line-height:1.7;font-weight:300;margin-top:0.75rem">A rare acquisition opportunity — a stunning four-bedroom villa built with traditional chukum finish, offering timeless character and exceptional investment potential.</p>
         <div class="card-footer"><span class="card-link">View Details <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div>
       </div>
     </a>
@@ -442,13 +503,17 @@ section{padding:5rem 3rem}
     <span class="section-label">Testimonials</span>
     <h2 class="section-title">What Our Guests Say</h2>
   </div>
-  <div class="reviews-track">
-    <div class="review-card"><div class="review-stars">★ ★ ★ ★ ★</div><p class="review-text">La casa es muy bonita, y la ubicación muy buena (frente a la playa!!, colonia privada, cerca del centro). Pero la casa está excelente, muy recomendable!!</p><div class="review-author"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/photos/homereview01.jpg" alt="Rolando" class="review-avatar"><div><div class="review-name">Rolando</div><div class="review-date">May 2021</div></div></div></div>
-    <div class="review-card"><div class="review-stars">★ ★ ★ ★ ★</div><p class="review-text">Casa Violeta is a beautiful house and the pictures dont do it justice. It is much bigger in person. The beach is great and not crowded. We had 9 people in the house and the house felt very spacious. Overall, we really enjoyed our stay!</p><div class="review-author"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/photos/homereview02.jpg" alt="Dana" class="review-avatar"><div><div class="review-name">Dana</div><div class="review-date">March 2022</div></div></div></div>
-    <div class="review-card"><div class="review-stars">★ ★ ★ ★ ★</div><p class="review-text">Casa Violeta was a great stay in PDC for our group of 10! The house is beautiful and the views of the beach are spectacular. Caroline and Jessy were so helpful. Overall, highly recommended and would stay again!</p><div class="review-author"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/photos/homereview03.jpg" alt="Osbest" class="review-avatar"><div><div class="review-name">Osbest</div><div class="review-date">October 2021</div></div></div></div>
-    <div class="review-card"><div class="review-stars">★ ★ ★ ★ ★</div><p class="review-text">Casa Violeta es muy muy linda! La ubicación es perfecta, ya que tienes La Paz de no escuchar ruido pero a la vez estas a minutos del corazón de Playa del Carmen. Muy contentas de pasar ahí nuestras vacaciones.</p><div class="review-author"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/photos/homereview04.jpg" alt="Gaby" class="review-avatar"><div><div class="review-name">Gaby</div><div class="review-date">February 2020</div></div></div></div>
-    <div class="review-card"><div class="review-stars">★ ★ ★ ★ ★</div><p class="review-text">If I could give SIX stars to this house, I would. Ocean front beach and pool access in a gated community. The house is very VERY spacious. Caroline and the other host were accessible via WhatsApp around the clock. All in all, this would be a place that I stay again.</p><div class="review-author"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/photos/homereview05.jpg" alt="Michael" class="review-avatar"><div><div class="review-name">Michael</div><div class="review-date">August 2021</div></div></div></div>
-  </div>
+  <div class="reviews-wrapper">
+    <button class="reviews-slider-btn reviews-slider-prev" onclick="slideReviews(this,-1)" aria-label="Previous review"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg></button>
+    <div class="reviews-track">
+      <div class="review-card"><div class="review-stars">★ ★ ★ ★ ★</div><p class="review-text">La casa es muy bonita, y la ubicación muy buena (frente a la playa!!, colonia privada, cerca del centro). Pero la casa está excelente, muy recomendable!!</p><div class="review-author"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/photos/homereview01.jpg" alt="Rolando" class="review-avatar"><div><div class="review-name">Rolando</div><div class="review-date">May 2021</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★ ★ ★ ★ ★</div><p class="review-text">Casa Violeta is a beautiful house and the pictures dont do it justice. It is much bigger in person. The beach is great and not crowded. We had 9 people in the house and the house felt very spacious. Overall, we really enjoyed our stay!</p><div class="review-author"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/photos/homereview02.jpg" alt="Dana" class="review-avatar"><div><div class="review-name">Dana</div><div class="review-date">March 2022</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★ ★ ★ ★ ★</div><p class="review-text">Casa Violeta was a great stay in PDC for our group of 10! The house is beautiful and the views of the beach are spectacular. Caroline and Jessy were so helpful. Overall, highly recommended and would stay again!</p><div class="review-author"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/photos/homereview03.jpg" alt="Osbest" class="review-avatar"><div><div class="review-name">Osbest</div><div class="review-date">October 2021</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★ ★ ★ ★ ★</div><p class="review-text">Casa Violeta es muy muy linda! La ubicación es perfecta, ya que tienes La Paz de no escuchar ruido pero a la vez estas a minutos del corazón de Playa del Carmen. Muy contentas de pasar ahí nuestras vacaciones.</p><div class="review-author"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/photos/homereview04.jpg" alt="Gaby" class="review-avatar"><div><div class="review-name">Gaby</div><div class="review-date">February 2020</div></div></div></div>
+      <div class="review-card"><div class="review-stars">★ ★ ★ ★ ★</div><p class="review-text">If I could give SIX stars to this house, I would. Ocean front beach and pool access in a gated community. The house is very VERY spacious. Caroline and the other host were accessible via WhatsApp around the clock. All in all, this would be a place that I stay again.</p><div class="review-author"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/photos/homereview05.jpg" alt="Michael" class="review-avatar"><div><div class="review-name">Michael</div><div class="review-date">August 2021</div></div></div></div>
+    </div><!-- reviews-track -->
+    <button class="reviews-slider-btn reviews-slider-next" onclick="slideReviews(this,1)" aria-label="Next review"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg></button>
+  </div><!-- reviews-wrapper -->
 </section>
 
 <!-- FOOTER -->
@@ -599,10 +664,20 @@ function updateLightboxImage() {
   if (img) img.src = lightboxImages[lightboxIndex];
 }
 
+// ─── Reviews slider ───
+function slideReviews(btn, dir) {
+  const wrapper = btn.closest('.reviews-wrapper');
+  const track = wrapper.querySelector('.reviews-track');
+  const card = track.querySelector('.review-card');
+  if (!card) return;
+  const cardWidth = card.offsetWidth + parseInt(getComputedStyle(track).gap || 32);
+  track.scrollBy({ left: dir * cardWidth, behavior: 'smooth' });
+}
+
 // ─── Init on DOM ready ───
 document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
-  
+
   // Close lightbox on background click
   const lb = document.getElementById('lightbox');
   if (lb) {
@@ -610,7 +685,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.target === lb) closeLightbox();
     });
   }
-  
+
   // Keyboard nav for lightbox
   document.addEventListener('keydown', (e) => {
     if (!document.getElementById('lightbox')?.classList.contains('open')) return;
@@ -622,6 +697,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
 </script>
 <script>
+// ─── Hero slider ───
+(function(){
+  const slides = document.querySelectorAll('#heroSlider .hero-slide');
+  const dots = document.querySelectorAll('#heroSliderDots .hero-slider-dot');
+  let cur = 0;
+  let timer;
+  function goTo(n){
+    slides[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    cur = (n + slides.length) % slides.length;
+    slides[cur].classList.add('active');
+    dots[cur].classList.add('active');
+  }
+  window.goToHeroSlide = function(n){ clearInterval(timer); goTo(n); timer = setInterval(()=>goTo(cur+1), 5000); };
+  timer = setInterval(()=>goTo(cur+1), 5000);
+})();
+
 initGallery('g0',['https://i.ibb.co/sBNn7VP/Secreto-maya-81-1.jpg','https://i.ibb.co/60cHvKsX/Secreto-maya-74-1.jpg','https://i.ibb.co/vM6HB6g/Secreto-maya-10-1.jpg']);
 initGallery('g1',['https://i.ibb.co/vxVMbJNC/Casa-Violetta-101.jpg','https://i.ibb.co/DHv8b7cV/Casa-Violetta-019.jpg','https://i.ibb.co/3ynzCJnK/Casa-Violetta-028.jpg']);
 initGallery('g2',['https://i.ibb.co/1hD1Z5J/Casa-Mayette-097.jpg','https://i.ibb.co/fV1P7rCT/Casa-Mayette-092.jpg','https://i.ibb.co/FkRBxRRQ/Night-Photography-8.jpg']);
