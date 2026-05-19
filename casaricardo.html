@@ -143,10 +143,21 @@ section{padding:5rem 3rem}
 .review-date{font-size:0.75rem;color:var(--text-dim);margin-top:2px}
 
 /* ─── PROPERTY DETAIL PAGE ─── */
-.detail-gallery{padding:0 3rem;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:220px;gap:0.5rem;margin-top:-2rem;position:relative;z-index:2}
-.detail-gallery img{width:100%;height:100%;object-fit:cover;border-radius:var(--radius);cursor:pointer;transition:var(--transition)}
-.detail-gallery img:hover{opacity:0.85}
-.detail-gallery img:first-child{grid-column:span 2;grid-row:span 2}
+.detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:2}
+.detail-gallery-inner{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;height:480px}
+.detail-gallery-left{border-radius:var(--radius);overflow:hidden;position:relative}
+.detail-gallery-left img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
+.detail-gallery-left img:hover{opacity:0.88}
+.detail-gallery-right{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.gallery-thumb{border-radius:var(--radius);overflow:hidden;position:relative}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
+.gallery-thumb img:hover{opacity:0.88}
+.gallery-more{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer}
+.gallery-more img{width:100%;height:100%;object-fit:cover;display:block;transition:var(--transition)}
+.gallery-more-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.52);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:var(--transition)}
+.gallery-more:hover .gallery-more-overlay{background:rgba(0,0,0,0.38)}
+.gallery-more-label{font-family:var(--serif);font-size:1.6rem;font-weight:300;color:#fff;letter-spacing:0.05em}
+.gallery-more-sub{font-family:var(--sans);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-top:0.3rem}
 
 .detail-content{padding:4rem 3rem}
 .detail-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:4rem;max-width:1200px;margin:0 auto}
@@ -243,7 +254,7 @@ section{padding:5rem 3rem}
 @media(max-width:1024px){
   .properties-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
   .detail-grid{grid-template-columns:1fr}
-  .detail-gallery{grid-template-columns:repeat(3,1fr);grid-auto-rows:180px}
+  .detail-gallery-inner{height:360px}
   .related-grid{grid-template-columns:repeat(2,1fr)}
   .values-grid{grid-template-columns:1fr 1fr}
 }
@@ -261,8 +272,10 @@ section{padding:5rem 3rem}
   .footer-bottom{flex-direction:column;gap:0.75rem;text-align:center}
   .hero h1{font-size:clamp(2.4rem,6vw,4rem)}
   .properties-header{flex-direction:column;align-items:flex-start}
-  .detail-gallery{grid-template-columns:1fr 1fr;grid-auto-rows:160px;padding:0 1.5rem}
-  .detail-gallery img:first-child{grid-column:span 2}
+  .detail-gallery{padding:0 1.5rem}
+  .detail-gallery-inner{height:auto;grid-template-columns:1fr}
+  .detail-gallery-left{height:260px}
+  .detail-gallery-right{grid-template-columns:1fr 1fr;height:180px}
   .detail-content{padding:3rem 1.5rem}
   .detail-highlights{grid-template-columns:repeat(2,1fr)}
   .about-section{grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem}
@@ -281,10 +294,10 @@ section{padding:5rem 3rem}
 <nav class="navbar scrolled" id="navbar">
   <a href="index.html" class="nav-logo"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/logo-light.png" alt="Ku Náay"></a>
   <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="rentals.html" class="active">Rentals</a></li><li><a href="sales.html">Sales</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul>
-  <a href="#" class="nav-cta">🇲🇽 Español</a>
+  <a href="#" class="nav-cta"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a>
   <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
-<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta">🇲🇽 Español</a></div>
+<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a></div>
 
 <div class="page-hero" style="height:55vh">
   <div class="page-hero-bg" style="background-image:url('https://i.ibb.co/Lhnw7mhr/Casa-Ricardo-036.jpg')"></div>
@@ -292,7 +305,27 @@ section{padding:5rem 3rem}
   <div class="page-hero-content"><span class="section-label">Rental · Playacar Phase 1</span><h1>Casa Ricardo</h1></div>
 </div>
 
-<div class="detail-gallery" id="galleryGrid"><img class="lb-img" src="https://i.ibb.co/Lhnw7mhr/Casa-Ricardo-036.jpg" alt="Casa Ricardo"><img class="lb-img" src="https://i.ibb.co/nsXx2d5s/Casa-Ricardo-018.jpg" alt="Casa Ricardo"><img class="lb-img" src="https://i.ibb.co/V0yXGRk0/Casa-Ricardo-090.jpg" alt="Casa Ricardo"><img class="lb-img" src="https://i.ibb.co/6cgQn5Bp/Night-Photography-42.jpg" alt="Casa Ricardo"><img class="lb-img" src="https://i.ibb.co/r2JYbT0Q/Casa-Ricardo-120.jpg" alt="Casa Ricardo"><img class="lb-img" src="https://i.ibb.co/0pJXWCkz/Casa-Ricardo-014.jpg" alt="Casa Ricardo"></div>
+<div class="detail-gallery" id="galleryGrid">
+  <div class="detail-gallery-inner">
+    <div class="detail-gallery-left">
+      <img class="lb-img" src="https://i.ibb.co/Lhnw7mhr/Casa-Ricardo-036.jpg" alt="Casa Ricardo">
+    </div>
+    <div class="detail-gallery-right">
+      <div class="gallery-thumb"><img class="lb-img" src="https://i.ibb.co/nsXx2d5s/Casa-Ricardo-018.jpg" alt="Casa Ricardo"></div>
+      <div class="gallery-thumb"><img class="lb-img" src="https://i.ibb.co/V0yXGRk0/Casa-Ricardo-090.jpg" alt="Casa Ricardo"></div>
+      <div class="gallery-thumb"><img class="lb-img" src="https://i.ibb.co/6cgQn5Bp/Night-Photography-42.jpg" alt="Casa Ricardo"></div>
+      <div class="gallery-more" onclick="openGalleryLightbox(3)">
+        <img src="https://i.ibb.co/r2JYbT0Q/Casa-Ricardo-120.jpg" alt="Casa Ricardo">
+        <div class="gallery-more-overlay">
+          <span class="gallery-more-label">+2</span>
+          <span class="gallery-more-sub">View All Photos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="lb-img" style="display:none" src="https://i.ibb.co/r2JYbT0Q/Casa-Ricardo-120.jpg" alt="Casa Ricardo">
+  <img class="lb-img" style="display:none" src="https://i.ibb.co/0pJXWCkz/Casa-Ricardo-014.jpg" alt="Casa Ricardo">
+</div>
 
 <div class="detail-content">
   <div class="detail-grid">
@@ -322,7 +355,7 @@ section{padding:5rem 3rem}
   </div>
 </section>
 
-<div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="closeLightbox()">✕</button><button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)">‹</button><img id="lightboxImg" src="" alt="Gallery"><button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)">›</button></div>
+<div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="closeLightbox()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><img id="lightboxImg" src="" alt="Gallery"><button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button></div>
 
 <footer class="footer"><div class="footer-top"><div class="footer-brand"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where the Sea Meets Serenity — luxury vacation rentals and real estate in the Riviera Maya.</p></div><div class="footer-nav"><div class="footer-col"><h4>Navigation</h4><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div><div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a></div></div></div><div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div></footer>
 
@@ -483,6 +516,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-<script>document.addEventListener('DOMContentLoaded',()=>{initLightbox('.lb-img')});</script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{initLightbox('.lb-img');});
+function openGalleryLightbox(startIndex){lightboxIndex=startIndex;openLightbox();}
+</script>
 </body>
 </html>
