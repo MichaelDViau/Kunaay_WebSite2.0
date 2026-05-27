@@ -1,951 +1,721 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ARKTIK — Natural Protein Ice Cream</title>
+<title>SÍN CULPA — Helado de Proteína Natural</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════
-   RESET & TOKENS
-═══════════════════════════════ */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:      #050810;
-  --bg2:     #0c1120;
-  --mint:    #00e5b0;
-  --mintg:   rgba(0,229,176,.25);
-  --indigo:  #818cf8;
-  --pink:    #f472b6;
-  --cream:   #fef3c7;
-  --amber:   #d4956a;
-  --white:   #f1f5f9;
-  --muted:   #64748b;
-  --r-lg:    20px;
-  --r-pill:  100px;
+  --cream:  #FBF5EB;
+  --cream2: #F2E8D4;
+  --cream3: #E4D3B8;
+  --forest: #2C3A1A;
+  --green:  #4F6B42;
+  --sage:   #89AF83;
+  --sagel:  #B5CEB0;
+  --pink:   #E4AAAA;
+  --amber:  #C89A6A;
+  --coral:  #D97070;
+  --orange: #E09250;
+  --limeg:  #A8C87E;
+  --text:   #3A2E24;
+  --muted:  #8A7E72;
+  --white:  #FFFFFF;
 }
-html{scroll-behavior:smooth;font-size:16px}
-body{
-  background:var(--bg);
-  color:var(--white);
-  font-family:'Inter',system-ui,sans-serif;
-  overflow-x:hidden;
-  line-height:1.6;
-}
+html{scroll-behavior:smooth}
+body{background:var(--cream);color:var(--text);font-family:'Lato',system-ui,sans-serif;overflow-x:hidden;line-height:1.6}
 a{text-decoration:none;color:inherit}
-img{display:block;max-width:100%}
 
-/* ═══════════════════════════════
-   NOISE OVERLAY (texture)
-═══════════════════════════════ */
-body::before{
-  content:'';
-  position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:9999;opacity:.4;
-}
-
-/* ═══════════════════════════════
-   NAV
-═══════════════════════════════ */
+/* ── NAV ── */
 nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
+  position:fixed;top:0;left:0;right:0;z-index:600;
   display:flex;align-items:center;justify-content:space-between;
   padding:1.1rem 2.5rem;
-  background:rgba(5,8,16,.55);
-  backdrop-filter:blur(24px);
-  border-bottom:1px solid rgba(255,255,255,.05);
-  transition:background .4s;
+  background:rgba(251,245,235,.85);backdrop-filter:blur(22px);
+  border-bottom:1px solid rgba(44,58,26,.07);
+  transition:all .4s;
 }
-nav.scrolled{background:rgba(5,8,16,.92)}
+nav.scrolled{background:rgba(251,245,235,.97);box-shadow:0 2px 24px rgba(44,58,26,.09)}
+.nav-logo{display:flex;flex-direction:column;line-height:1}
+.logo-main{font-family:'Playfair Display',serif;font-size:1.65rem;font-weight:900;letter-spacing:.04em;color:var(--forest)}
+.logo-accent{color:var(--green)}
+.logo-tag{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--sage);margin-top:.1rem}
+.nav-links{display:flex;gap:2.2rem}
+.nav-links a{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);transition:color .25s}
+.nav-links a:hover{color:var(--green)}
+.nav-cta{padding:.52rem 1.4rem;border-radius:100px;background:var(--forest);color:var(--cream);font-size:.76rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;transition:all .3s}
+.nav-cta:hover{background:var(--green);transform:translateY(-2px)}
 
-.logo{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.9rem;letter-spacing:.12em;
-  color:var(--mint);
-  text-shadow:0 0 24px var(--mintg);
-}
-.logo span{color:var(--white)}
-
-.nav-links{display:flex;gap:2rem}
-.nav-links a{
-  font-size:.78rem;font-weight:700;
-  letter-spacing:.14em;text-transform:uppercase;
-  color:var(--muted);transition:color .25s;
-}
-.nav-links a:hover{color:var(--mint)}
-
-.nav-btn{
-  padding:.55rem 1.4rem;border-radius:var(--r-pill);
-  background:var(--mint);color:#050810;
-  font-size:.78rem;font-weight:800;letter-spacing:.08em;
-  text-transform:uppercase;
-  box-shadow:0 0 22px var(--mintg);
-  transition:all .3s;
-}
-.nav-btn:hover{
-  background:#fff;transform:translateY(-2px);
-  box-shadow:0 0 40px rgba(0,229,176,.5);
-}
-
-/* ═══════════════════════════════
-   HERO
-═══════════════════════════════ */
+/* ── HERO ── */
 .hero{
-  min-height:100vh;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:center;
-  text-align:center;
-  padding:7rem 2rem 5rem;
-  position:relative;overflow:hidden;
+  min-height:100vh;display:flex;align-items:center;
+  padding:7rem 2rem 4rem;position:relative;overflow:hidden;
+  background:var(--cream);
 }
+/* botanical deco */
+.deco{position:absolute;pointer-events:none;opacity:.14}
+.d1{top:-60px;right:-80px;width:380px;transform:rotate(25deg)}
+.d2{bottom:-80px;left:-60px;width:340px;transform:rotate(-18deg)}
+.d3{top:38%;left:-30px;width:180px;transform:rotate(8deg)}
 
-/* animated gradient blobs */
-.blob{
-  position:absolute;border-radius:50%;
-  filter:blur(80px);pointer-events:none;
-  animation:blobMove 12s ease-in-out infinite alternate;
-}
-.blob-1{
-  width:600px;height:600px;
-  top:-150px;left:-200px;
-  background:radial-gradient(circle,rgba(129,140,248,.18),transparent 70%);
-  animation-duration:14s;
-}
-.blob-2{
-  width:500px;height:500px;
-  top:100px;right:-150px;
-  background:radial-gradient(circle,rgba(0,229,176,.14),transparent 70%);
-  animation-duration:10s;animation-delay:-4s;
-}
-.blob-3{
-  width:400px;height:400px;
-  bottom:-100px;left:30%;
-  background:radial-gradient(circle,rgba(244,114,182,.12),transparent 70%);
-  animation-duration:16s;animation-delay:-2s;
-}
-@keyframes blobMove{
-  from{transform:translate(0,0) scale(1)}
-  to{transform:translate(40px,-30px) scale(1.15)}
-}
-
-/* particles canvas */
-#canvas{position:absolute;inset:0;pointer-events:none}
-
-.hero-badge{
-  display:inline-flex;align-items:center;gap:.5rem;
-  padding:.38rem 1.1rem;border-radius:var(--r-pill);
-  background:rgba(0,229,176,.08);
-  border:1px solid rgba(0,229,176,.25);
-  font-size:.72rem;font-weight:700;letter-spacing:.18em;
-  text-transform:uppercase;color:var(--mint);
-  margin-bottom:2.2rem;
-  animation:fadeDown .7s ease both;
-}
-.hero-badge::before{
-  content:'';width:6px;height:6px;border-radius:50%;
-  background:var(--mint);box-shadow:0 0 8px var(--mint);
-  animation:blink 2s infinite;
-}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-@keyframes fadeDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-
-/* ice cream visual */
-.scoop-wrap{
-  position:relative;
-  margin-bottom:2.5rem;
-  animation:scoopFloat 3.5s ease-in-out infinite;
-}
-@keyframes scoopFloat{
-  0%,100%{transform:translateY(0) rotate(-3deg)}
-  50%{transform:translateY(-22px) rotate(3deg)}
-}
-.scoop-emoji{
-  font-size:clamp(6rem,14vw,10rem);
-  display:block;
-  filter:drop-shadow(0 0 40px rgba(0,229,176,.35))
-         drop-shadow(0 0 100px rgba(244,114,182,.25));
-}
-/* orbit ring */
-.orbit{
-  position:absolute;top:50%;left:50%;
-  width:clamp(180px,28vw,240px);height:clamp(180px,28vw,240px);
-  border-radius:50%;
-  border:1.5px dashed rgba(0,229,176,.25);
-  transform:translate(-50%,-50%);
-  animation:orbit 18s linear infinite;
-}
-.orbit-dot{
-  position:absolute;top:-5px;left:50%;
-  width:10px;height:10px;border-radius:50%;
-  background:var(--mint);box-shadow:0 0 16px var(--mint);
-  transform:translateX(-50%);
-}
-@keyframes orbit{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
-
-/* headline */
-.hero-h1{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(4rem,14vw,11rem);
-  line-height:.88;
-  letter-spacing:.02em;
-  margin-bottom:1.4rem;
-  animation:fadeUp .8s .2s ease both;
-}
-.hero-h1 .top{color:var(--white)}
-.hero-h1 .grad{
-  background:linear-gradient(125deg,var(--mint) 0%,var(--indigo) 50%,var(--pink) 100%);
-  background-size:200% 200%;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  background-clip:text;
-  animation:gradFlow 4s ease infinite;
-}
-@keyframes gradFlow{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
-@keyframes fadeUp{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:translateY(0)}}
-
-.hero-sub{
-  font-size:clamp(1rem,2.2vw,1.22rem);
-  color:var(--muted);font-weight:300;
-  max-width:520px;line-height:1.7;
-  margin-bottom:2.8rem;
-  animation:fadeUp .8s .4s ease both;
-}
-.hero-sub strong{color:var(--white);font-weight:700}
-
-.hero-btns{
-  display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;
-  animation:fadeUp .8s .6s ease both;
-}
-.btn-primary{
-  padding:.95rem 2.4rem;border-radius:var(--r-pill);
-  background:linear-gradient(135deg,var(--mint),#00b894);
-  color:#050810;font-weight:800;font-size:.95rem;
-  letter-spacing:.04em;
-  box-shadow:0 0 30px rgba(0,229,176,.4);
-  transition:all .3s;display:inline-flex;align-items:center;gap:.5rem;
-}
-.btn-primary:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 0 60px rgba(0,229,176,.6)}
-.btn-ghost{
-  padding:.95rem 2.4rem;border-radius:var(--r-pill);
-  border:1px solid rgba(255,255,255,.14);
-  color:var(--white);font-weight:600;font-size:.95rem;
-  backdrop-filter:blur(10px);
-  background:rgba(255,255,255,.04);
-  transition:all .3s;display:inline-flex;align-items:center;gap:.4rem;
-}
-.btn-ghost:hover{background:rgba(255,255,255,.09);transform:translateY(-3px);border-color:rgba(255,255,255,.3)}
-
-/* ═══════════════════════════════
-   STATS STRIP
-═══════════════════════════════ */
-.stats{
-  background:rgba(12,17,32,.8);
-  backdrop-filter:blur(20px);
-  border-top:1px solid rgba(255,255,255,.06);
-  border-bottom:1px solid rgba(255,255,255,.06);
-  padding:2.2rem 2rem;
-}
-.stats-grid{
-  max-width:960px;margin:0 auto;
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:2rem;text-align:center;
-}
-.stat-val{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(2.2rem,5vw,3.4rem);
-  color:var(--mint);
-  text-shadow:0 0 24px var(--mintg);
-  display:block;line-height:1;
-}
-.stat-lbl{
-  font-size:.7rem;font-weight:700;
-  text-transform:uppercase;letter-spacing:.18em;
-  color:var(--muted);margin-top:.4rem;
-}
-
-/* ═══════════════════════════════
-   SHARED SECTION STYLES
-═══════════════════════════════ */
-section{padding:6rem 2rem}
-.wrap{max-width:1100px;margin:0 auto}
-
-.s-tag{
-  display:inline-block;
-  font-size:.7rem;font-weight:700;
-  text-transform:uppercase;letter-spacing:.22em;
-  color:var(--mint);margin-bottom:.8rem;
-}
-.s-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(2.6rem,7vw,5.5rem);
-  line-height:.92;margin-bottom:1.2rem;
-}
-.s-sub{
-  font-size:1.05rem;color:var(--muted);
-  max-width:540px;line-height:1.75;
-}
-
-/* ═══════════════════════════════
-   FEATURES
-═══════════════════════════════ */
-.features{background:var(--bg)}
-
-.feat-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:1.4rem;margin-top:4rem;
-}
-.feat-card{
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:var(--r-lg);padding:2rem 1.8rem;
-  position:relative;overflow:hidden;
-  transition:transform .4s,border-color .4s,background .4s;
-  cursor:default;
-}
-.feat-card::after{
-  content:'';
-  position:absolute;inset:0;
-  background:radial-gradient(circle at 50% 0%,rgba(0,229,176,.07),transparent 60%);
-  opacity:0;transition:opacity .4s;
-}
-.feat-card:hover{transform:translateY(-10px);border-color:rgba(0,229,176,.22);background:rgba(0,229,176,.03)}
-.feat-card:hover::after{opacity:1}
-.feat-card::before{
-  content:'';
-  position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--mint),transparent);
-  opacity:0;transition:opacity .4s;
-}
-.feat-card:hover::before{opacity:1}
-
-.feat-icon{font-size:2.4rem;margin-bottom:1.1rem;display:block;line-height:1}
-.feat-title{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.55rem;letter-spacing:.05em;
-  color:var(--white);margin-bottom:.6rem;
-}
-.feat-desc{font-size:.88rem;color:var(--muted);line-height:1.65}
-
-/* ═══════════════════════════════
-   INGREDIENTS
-═══════════════════════════════ */
-.ingredients{background:var(--bg2)}
-
-.ing-layout{
+.hero-inner{
+  max-width:1100px;margin:0 auto;width:100%;
   display:grid;grid-template-columns:1fr 1fr;
-  gap:5rem;align-items:center;margin-top:4rem;
+  gap:5rem;align-items:center;
 }
 
-.ing-list{display:flex;flex-direction:column;gap:1.1rem}
-.ing-item{
-  display:flex;align-items:center;gap:1.4rem;
-  padding:1.1rem 1.4rem;
-  background:rgba(255,255,255,.03);
-  border:1px solid rgba(255,255,255,.06);
-  border-radius:var(--r-lg);
-  transition:all .3s;cursor:default;
-}
-.ing-item:hover{
-  border-color:rgba(0,229,176,.28);
-  background:rgba(0,229,176,.04);
-  transform:translateX(8px);
-}
-.ing-num{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.9rem;color:rgba(0,229,176,.28);
-  min-width:2rem;line-height:1;flex-shrink:0;
-}
-.ing-info{flex:1}
-.ing-name{
-  font-weight:700;font-size:.95rem;
-  color:var(--white);display:block;
-}
-.ing-desc{font-size:.78rem;color:var(--muted);margin-top:.15rem}
-.ing-icon{font-size:1.7rem;flex-shrink:0}
+/* CSS Ice Cream Cup */
+.cup-scene{display:flex;justify-content:center;animation:heroFloat 4s ease-in-out infinite}
+@keyframes heroFloat{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-18px) rotate(1.5deg)}}
 
-/* Visual side */
-.ing-visual{
-  position:relative;display:flex;
-  align-items:center;justify-content:center;
+.cup-wrap{position:relative;width:clamp(210px,26vw,270px)}
+.cup-lid{position:relative;z-index:3;width:100%}
+.lid-oval{
+  width:100%;height:58px;
+  background:linear-gradient(185deg,#fff 0%,var(--cream2) 100%);
+  border-radius:50%;
+  box-shadow:0 6px 22px rgba(44,58,26,.13);
+  display:flex;align-items:center;justify-content:center;
 }
-.big-scoop{
-  font-size:clamp(8rem,15vw,13rem);
-  display:block;
-  animation:bigFloat 4s ease-in-out infinite;
-  filter:drop-shadow(0 30px 70px rgba(244,114,182,.4));
+.lid-text{font-family:'Playfair Display',serif;font-size:.88rem;font-weight:700;letter-spacing:.12em;color:var(--forest);display:flex;flex-direction:column;align-items:center;gap:.08rem}
+.lid-text span{font-size:.4rem;font-family:'Lato',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--sage)}
+.cup-body{
+  width:88%;margin:0 auto;
+  background:linear-gradient(168deg,var(--cream2) 0%,var(--cream3) 100%);
+  min-height:270px;
+  clip-path:polygon(11% 0%,89% 0%,100% 100%,0% 100%);
+  border-radius:0 0 16px 16px;
   position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:2rem 1.4rem;
+  box-shadow:0 22px 54px rgba(44,58,26,.13);
 }
-@keyframes bigFloat{
-  0%,100%{transform:translateY(0) scale(1)}
-  50%{transform:translateY(-28px) scale(1.04)}
-}
-.ring{
-  position:absolute;top:50%;left:50%;
-  width:300px;height:300px;border-radius:50%;
-  border:1.5px solid rgba(0,229,176,.18);
-  transform:translate(-50%,-50%);
-  animation:spinRing 22s linear infinite;
-}
-.ring::before{
-  content:'';position:absolute;
-  top:-7px;left:50%;transform:translateX(-50%);
-  width:12px;height:12px;border-radius:50%;
-  background:var(--mint);box-shadow:0 0 20px var(--mint);
-}
-.ring2{
-  width:200px;height:200px;
-  border:1px solid rgba(129,140,248,.15);
-  animation-duration:14s;animation-direction:reverse;
-}
-.ring2::before{background:var(--indigo);box-shadow:0 0 16px var(--indigo)}
-@keyframes spinRing{from{transform:translate(-50%,-50%) rotate(0)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+.cup-brand-name{font-family:'Playfair Display',serif;font-size:1.7rem;font-weight:900;color:var(--forest);letter-spacing:.05em;line-height:1;text-align:center}
+.cup-brand-name .ga{color:var(--green)}
+.cup-sub{font-size:.5rem;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--sage);margin-top:.25rem}
+.cup-hr{width:55%;height:1px;background:rgba(44,58,26,.12);margin:.7rem 0}
+.cup-nuts{display:flex;gap:1rem}
+.nut-v{font-size:.82rem;font-weight:900;color:var(--forest);display:block;line-height:1}
+.nut-k{font-size:.42rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:.1rem}
+.cup-badges{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center;margin-top:.7rem}
+.cup-badge{font-size:.42rem;font-weight:700;text-transform:uppercase;letter-spacing:.11em;padding:.18rem .5rem;border-radius:100px;border:1px solid rgba(44,58,26,.18);color:var(--green)}
 
-/* protein badge inside visual */
-.protein-badge{
-  position:absolute;bottom:10%;right:5%;z-index:3;
-  background:rgba(5,8,16,.85);backdrop-filter:blur(16px);
-  border:1px solid rgba(0,229,176,.3);
-  border-radius:16px;padding:1rem 1.3rem;
-  text-align:center;
+/* Hero text */
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--green);margin-bottom:1.1rem;
 }
-.pb-val{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:2.5rem;color:var(--mint);
-  text-shadow:0 0 20px var(--mintg);
-  line-height:1;display:block;
-}
-.pb-lbl{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.15em;color:var(--muted)}
+.hero-eyebrow::before{content:'';width:22px;height:1.5px;background:var(--sage)}
+.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,5.5vw,5rem);font-weight:900;line-height:1.04;color:var(--forest);margin-bottom:1.4rem}
+.hero-h1 em{font-style:italic;color:var(--green)}
+.hero-p{font-size:1.03rem;color:var(--muted);max-width:440px;line-height:1.78;margin-bottom:2.4rem;font-weight:300}
+.hero-p strong{color:var(--text);font-weight:700}
+.hero-btns{display:flex;gap:.9rem;flex-wrap:wrap}
+.btn-dark{padding:.88rem 2.1rem;border-radius:100px;background:var(--forest);color:var(--cream);font-size:.88rem;font-weight:700;letter-spacing:.04em;transition:all .3s;display:inline-flex;align-items:center;gap:.45rem}
+.btn-dark:hover{background:var(--green);transform:translateY(-3px);box-shadow:0 12px 32px rgba(44,58,26,.24)}
+.btn-outline{padding:.88rem 2.1rem;border-radius:100px;border:1.5px solid rgba(44,58,26,.22);color:var(--forest);font-size:.88rem;font-weight:700;transition:all .3s;display:inline-flex;align-items:center;gap:.4rem}
+.btn-outline:hover{border-color:var(--green);color:var(--green);transform:translateY(-3px)}
 
-/* ═══════════════════════════════
-   FLAVORS
-═══════════════════════════════ */
-.flavors{background:var(--bg);overflow:hidden}
-
-.fl-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);
-  gap:1.4rem;margin-top:4rem;
+/* ── SCROLL REVEAL SECTION ── */
+.scroll-reveal{position:relative;height:280vh}
+.sticky-scene{
+  position:sticky;top:0;height:100vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--cream2);
 }
-.fl-card{
-  border-radius:24px;padding:3rem 2rem 2.2rem;
-  text-align:center;position:relative;overflow:hidden;
-  border:1px solid transparent;
-  transition:transform .4s,box-shadow .4s;
-  cursor:pointer;
-}
-.fl-card:hover{transform:translateY(-12px) scale(1.02)}
-
-.fl-card.vanilla{
-  background:linear-gradient(155deg,#1a1525 0%,#241a33 100%);
-  border-color:rgba(254,243,199,.12);
-}
-.fl-card.vanilla:hover{box-shadow:0 32px 80px rgba(254,243,199,.1)}
-
-.fl-card.chocolate{
-  background:linear-gradient(155deg,#160d07 0%,#2a1a0e 100%);
-  border-color:rgba(212,149,106,.2);
-}
-.fl-card.chocolate:hover{box-shadow:0 32px 80px rgba(212,149,106,.18)}
-
-.fl-card.strawberry{
-  background:linear-gradient(155deg,#180a10 0%,#2b1019 100%);
-  border-color:rgba(244,114,182,.15);
-}
-.fl-card.strawberry:hover{box-shadow:0 32px 80px rgba(244,114,182,.18)}
-
-/* shimmer on cards */
-.fl-card::after{
-  content:'';position:absolute;
-  top:0;left:-100%;width:60%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.04),transparent);
-  transition:left .6s ease;pointer-events:none;
-}
-.fl-card:hover::after{left:140%}
-
-.fl-emoji{
-  font-size:4.5rem;display:block;
-  margin-bottom:1.4rem;
-  animation:flEmoji 3s ease-in-out infinite;
-}
-@keyframes flEmoji{0%,100%{transform:rotate(-4deg) scale(1)}50%{transform:rotate(4deg) scale(1.08)}}
-
-.fl-name{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:2rem;letter-spacing:.12em;margin-bottom:.4rem;
-}
-.vanilla .fl-name{color:var(--cream)}
-.chocolate .fl-name{color:var(--amber)}
-.strawberry .fl-name{color:var(--pink)}
-
-.fl-desc{font-size:.83rem;line-height:1.5;margin-bottom:1.6rem;opacity:.55}
-.vanilla .fl-desc{color:var(--cream)}
-.chocolate .fl-desc{color:var(--amber)}
-.strawberry .fl-desc{color:var(--pink)}
-
-.fl-macros{
-  display:flex;justify-content:center;gap:1.8rem;
-  padding-top:1.4rem;
-  border-top:1px solid rgba(255,255,255,.07);
-}
-.macro-v{font-weight:900;font-size:1.2rem;color:var(--white);display:block;line-height:1}
-.macro-k{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-top:.2rem}
-
-/* ═══════════════════════════════
-   CTA
-═══════════════════════════════ */
-.cta{
-  background:var(--bg2);text-align:center;
-  position:relative;overflow:hidden;
-}
-.cta::before{
-  content:'';position:absolute;inset:0;
-  background:radial-gradient(ellipse at 50% 50%,rgba(0,229,176,.07) 0%,transparent 65%);
-}
-.cta-h2{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:clamp(3rem,9vw,8rem);
-  line-height:.9;margin-bottom:1.4rem;
-}
-.cta-h2 .a{color:var(--mint);text-shadow:0 0 40px rgba(0,229,176,.35)}
-.cta-sub{
-  font-size:1.1rem;color:var(--muted);
-  max-width:480px;margin:0 auto 3rem;
-  line-height:1.75;
+.scene-inner{
+  max-width:1100px;width:100%;padding:0 2rem;
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;
 }
 
-/* social proof strip */
-.proof{
-  display:flex;justify-content:center;
-  gap:2.5rem;margin-top:3.5rem;
-  flex-wrap:wrap;
-}
-.proof-item{
-  display:flex;align-items:center;gap:.6rem;
-  font-size:.8rem;font-weight:600;color:var(--muted);
-  letter-spacing:.05em;
-}
-.proof-item span{color:var(--mint)}
+/* Animated cup */
+.anim-cup{display:flex;justify-content:center}
+.anim-cup-wrap{position:relative;width:clamp(240px,28vw,300px)}
 
-/* ═══════════════════════════════
-   FOOTER
-═══════════════════════════════ */
-footer{
-  background:#020408;
-  padding:2rem;text-align:center;
-  border-top:1px solid rgba(255,255,255,.04);
+#js-lid{
+  position:relative;z-index:3;
+  transform-origin:center 80%;
+  will-change:transform,opacity;
 }
-.footer-logo{
-  font-family:'Bebas Neue',sans-serif;
-  font-size:1.6rem;letter-spacing:.18em;
-  color:var(--mint);margin-bottom:.4rem;
+.a-lid-oval{
+  width:100%;height:68px;
+  background:linear-gradient(185deg,#fff 0%,var(--cream2) 100%);
+  border-radius:50%;
+  box-shadow:0 8px 28px rgba(44,58,26,.16);
+  display:flex;align-items:center;justify-content:center;
 }
-.footer-txt{font-size:.75rem;color:var(--muted)}
+.a-lid-text{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;color:var(--forest);display:flex;flex-direction:column;align-items:center;gap:.06rem}
+.a-lid-text span{font-size:.4rem;font-family:'Lato',sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--sage)}
 
-/* ═══════════════════════════════
-   SCROLL REVEAL
-═══════════════════════════════ */
-.reveal,
-.reveal-l,
-.reveal-r{opacity:0;transition:opacity .85s ease,transform .85s ease}
-.reveal{transform:translateY(40px)}
-.reveal-l{transform:translateX(-40px)}
-.reveal-r{transform:translateX(40px)}
-.reveal.in,
-.reveal-l.in,
-.reveal-r.in{opacity:1;transform:none}
+#js-scoop{
+  position:absolute;top:-10px;left:50%;
+  transform:translateX(-50%) translateY(30px);
+  z-index:2;opacity:0;
+  will-change:transform,opacity;
+  text-align:center;width:100%;
+}
+.scoop-big{font-size:clamp(5rem,9vw,7.5rem);display:block;filter:drop-shadow(0 10px 28px rgba(200,100,80,.28))}
 
-/* ═══════════════════════════════
-   RESPONSIVE
-═══════════════════════════════ */
+.a-cup-body{
+  width:88%;margin:0 auto;
+  background:linear-gradient(168deg,var(--cream) 0%,var(--cream3) 100%);
+  min-height:290px;
+  clip-path:polygon(11% 0%,89% 0%,100% 100%,0% 100%);
+  border-radius:0 0 16px 16px;
+  position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:2.5rem 1.5rem 2rem;
+  box-shadow:0 26px 64px rgba(44,58,26,.14);
+}
+.a-brand{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:900;color:var(--forest);letter-spacing:.05em;line-height:1;text-align:center}
+.a-brand .ga{color:var(--green)}
+.a-sub{font-size:.5rem;font-weight:700;text-transform:uppercase;letter-spacing:.18em;color:var(--sage);margin-top:.25rem}
+.a-hr{width:55%;height:1px;background:rgba(44,58,26,.12);margin:.65rem 0}
+.a-nuts{display:flex;gap:1.2rem}
+.a-nv{font-size:.88rem;font-weight:900;color:var(--forest);display:block;line-height:1}
+.a-nk{font-size:.44rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:.1rem}
+
+/* Facts */
+.facts-side{display:flex;flex-direction:column;gap:1.2rem}
+.facts-h{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,3.5vw,2.8rem);font-weight:700;color:var(--forest);line-height:1.1;margin-bottom:.4rem}
+.facts-h em{font-style:italic;color:var(--green)}
+.fact-item{
+  display:flex;align-items:center;gap:1.1rem;
+  padding:.9rem 1.2rem;
+  background:rgba(255,255,255,.62);
+  border:1px solid rgba(44,58,26,.07);
+  border-radius:14px;
+  backdrop-filter:blur(10px);
+  will-change:transform,opacity;
+}
+.fact-icon{width:44px;height:44px;background:var(--cream);border-radius:11px;box-shadow:0 2px 10px rgba(44,58,26,.07);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
+.fact-name{font-weight:700;font-size:.92rem;color:var(--forest);display:block}
+.fact-desc{font-size:.77rem;color:var(--muted);margin-top:.1rem;line-height:1.45}
+
+/* ── PRODUCTS ── */
+.products{padding:6rem 2rem;background:var(--cream)}
+.products .wrap,.flavors .wrap,.benefits .wrap,.mexico .wrap,.cta .wrap{max-width:1100px;margin:0 auto}
+.section-hd{text-align:center;margin-bottom:4rem}
+.s-tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.22em;color:var(--sage);display:block;margin-bottom:.6rem}
+.s-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.8rem);font-weight:700;color:var(--forest);line-height:1.05}
+.s-title em{font-style:italic;color:var(--green)}
+.s-sub{font-size:1rem;color:var(--muted);max-width:480px;margin:.7rem auto 0;line-height:1.72;font-weight:300}
+
+.prod-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+.prod-card{border-radius:22px;padding:2.4rem 1.9rem;position:relative;overflow:hidden;transition:transform .4s,box-shadow .4s;cursor:pointer;border:1px solid transparent}
+.prod-card:hover{transform:translateY(-10px)}
+.pc-protein{background:linear-gradient(148deg,var(--cream2),var(--cream3));border-color:rgba(200,154,106,.22)}
+.pc-protein:hover{box-shadow:0 28px 60px rgba(200,154,106,.2)}
+.pc-vegan{background:linear-gradient(148deg,#EEF4EC,#DDE9D8);border-color:rgba(137,175,131,.28)}
+.pc-vegan:hover{box-shadow:0 28px 60px rgba(137,175,131,.2)}
+.pc-sorbet{background:linear-gradient(148deg,#FBF0EB,#F5E2D6);border-color:rgba(217,112,112,.18)}
+.pc-sorbet:hover{box-shadow:0 28px 60px rgba(217,112,112,.16)}
+
+.prod-emoji{font-size:3.3rem;display:block;margin-bottom:1.1rem}
+.prod-line{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.17em;display:block;margin-bottom:.45rem}
+.pc-protein .prod-line{color:var(--amber)} .pc-vegan .prod-line{color:var(--sage)} .pc-sorbet .prod-line{color:var(--coral)}
+.prod-name{font-family:'Playfair Display',serif;font-size:1.42rem;font-weight:700;color:var(--forest);margin-bottom:.6rem}
+.prod-desc{font-size:.83rem;color:var(--muted);line-height:1.6}
+.prod-stat{font-family:'Playfair Display',serif;font-size:2.3rem;font-weight:900;line-height:1;margin-top:.9rem;display:block}
+.prod-stat small{font-size:.85rem;font-weight:400;color:var(--muted)}
+.pc-protein .prod-stat{color:var(--amber)} .pc-vegan .prod-stat{color:var(--sage)} .pc-sorbet .prod-stat{color:var(--coral)}
+
+/* ── FLAVORS ── */
+.flavors{padding:6rem 2rem;background:var(--cream2)}
+.fl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:3.5rem}
+.fl-card{border-radius:18px;padding:2rem 1.6rem;text-align:center;transition:transform .35s,box-shadow .35s;cursor:pointer;border:1px solid transparent}
+.fl-card:hover{transform:translateY(-8px)}
+.fc-cookies{background:linear-gradient(155deg,var(--cream2),var(--cream3));border-color:rgba(200,154,106,.2)}
+.fc-cookies:hover{box-shadow:0 20px 50px rgba(200,154,106,.2)}
+.fc-choco{background:linear-gradient(155deg,#F5E8E8,#EDD4D4);border-color:rgba(228,170,170,.32)}
+.fc-choco:hover{box-shadow:0 20px 50px rgba(228,170,170,.28)}
+.fc-matcha{background:linear-gradient(155deg,#EEF4EC,#DBE9D5);border-color:rgba(137,175,131,.24)}
+.fc-matcha:hover{box-shadow:0 20px 50px rgba(137,175,131,.22)}
+.fc-sandia{background:linear-gradient(155deg,#FBF0F0,#F5DADA);border-color:rgba(217,112,112,.18)}
+.fc-sandia:hover{box-shadow:0 20px 50px rgba(217,112,112,.18)}
+.fc-mango{background:linear-gradient(155deg,#FBF3E8,#F5E4CC);border-color:rgba(224,146,80,.18)}
+.fc-mango:hover{box-shadow:0 20px 50px rgba(224,146,80,.18)}
+.fc-lima{background:linear-gradient(155deg,#F3F8EE,#E5F0D9);border-color:rgba(168,200,126,.22)}
+.fc-lima:hover{box-shadow:0 20px 50px rgba(168,200,126,.2)}
+
+.fl-emoji{font-size:3.2rem;display:block;margin-bottom:.9rem}
+.fl-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--forest);margin-bottom:.3rem}
+.fl-line-tag{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;display:block;margin-bottom:.65rem}
+.fc-cookies .fl-line-tag,.fc-choco .fl-line-tag{color:var(--amber)}
+.fc-matcha .fl-line-tag{color:var(--sage)}
+.fc-sandia .fl-line-tag,.fc-mango .fl-line-tag,.fc-lima .fl-line-tag{color:var(--coral)}
+.fl-macros{display:flex;justify-content:center;gap:1.1rem;padding-top:.7rem;border-top:1px solid rgba(44,58,26,.07)}
+.fl-mv{font-weight:900;font-size:.95rem;color:var(--forest);display:block;line-height:1}
+.fl-mk{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-top:.15rem}
+
+/* ── BENEFITS ── */
+.benefits{padding:6rem 2rem;background:var(--forest);color:var(--cream)}
+.ben-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;margin-top:3.5rem}
+.ben-item{padding:1.8rem 1.5rem;border-radius:18px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);transition:all .35s}
+.ben-item:hover{background:rgba(255,255,255,.1);transform:translateY(-6px)}
+.ben-icon{font-size:2.3rem;display:block;margin-bottom:.9rem}
+.ben-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--cream);margin-bottom:.45rem}
+.ben-desc{font-size:.81rem;color:var(--sagel);line-height:1.6}
+
+/* ── MEXICO ── */
+.mexico{padding:6rem 2rem;background:var(--cream2);text-align:center}
+.mx-flag{font-size:5.5rem;margin:2rem 0;animation:flagPulse 3s ease-in-out infinite;display:block}
+@keyframes flagPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.mx-cities{display:flex;flex-wrap:wrap;justify-content:center;gap:.65rem;max-width:680px;margin:1.8rem auto}
+.city-chip{padding:.38rem .95rem;border-radius:100px;font-size:.76rem;font-weight:700;background:rgba(255,255,255,.7);border:1px solid rgba(44,58,26,.11);color:var(--forest);backdrop-filter:blur(10px)}
+.mx-note{font-size:.85rem;color:var(--muted);margin-top:1.2rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6}
+
+/* ── CTA ── */
+.cta{padding:7rem 2rem;background:var(--cream);text-align:center;position:relative;overflow:hidden}
+.cta::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(137,175,131,.1) 0%,transparent 65%)}
+.cta-h2{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,8vw,6.5rem);font-weight:900;line-height:.95;color:var(--forest);margin-bottom:1.2rem;position:relative;z-index:1}
+.cta-h2 em{font-style:italic;color:var(--green)}
+.cta-sub{font-size:1.05rem;color:var(--muted);max-width:460px;margin:0 auto 3rem;line-height:1.75;font-weight:300;position:relative;z-index:1}
+.cta-btns{display:flex;gap:.9rem;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.proof-strip{display:flex;justify-content:center;gap:2rem;margin-top:2.8rem;flex-wrap:wrap;position:relative;z-index:1}
+.proof-item{font-size:.78rem;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:.4rem}
+.proof-item strong{color:var(--green)}
+
+/* ── FOOTER ── */
+footer{background:var(--forest);padding:2.5rem 2rem;text-align:center}
+.foot-logo{font-family:'Playfair Display',serif;font-size:1.55rem;font-weight:900;letter-spacing:.05em;color:var(--cream);margin-bottom:.25rem}
+.foot-tag{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.2em;color:var(--sage);margin-bottom:.7rem}
+.foot-ig{font-size:.8rem;font-weight:700;color:var(--sagel);letter-spacing:.06em;margin-bottom:1.3rem}
+.foot-links{display:flex;justify-content:center;gap:2rem;margin-bottom:1.3rem;flex-wrap:wrap}
+.foot-links a{font-size:.73rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--sagel);transition:color .25s}
+.foot-links a:hover{color:var(--cream)}
+.foot-txt{font-size:.72rem;color:rgba(251,245,235,.35)}
+
+/* ── SCROLL REVEAL ── */
+.reveal,.reveal-l,.reveal-r{opacity:0;transition:opacity .8s ease,transform .8s ease}
+.reveal{transform:translateY(28px)}.reveal-l{transform:translateX(-28px)}.reveal-r{transform:translateX(28px)}
+.reveal.in,.reveal-l.in,.reveal-r.in{opacity:1;transform:none}
+
+/* ── RESPONSIVE ── */
 @media(max-width:900px){
   .nav-links{display:none}
-  .ing-layout{grid-template-columns:1fr}
-  .ing-visual{display:none}
-  .fl-grid{grid-template-columns:1fr}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-text{order:-1}
+  .hero-eyebrow,.hero-btns{justify-content:center}
+  .hero-p{margin:0 auto 2.4rem}
+  .scene-inner{grid-template-columns:1fr}
+  .anim-cup{display:none}
+  .facts-side{order:-1}
+  .prod-grid,.ben-grid{grid-template-columns:1fr}
+  .fl-grid{grid-template-columns:1fr 1fr}
 }
-@media(max-width:520px){
+@media(max-width:560px){
   nav{padding:1rem 1.2rem}
-  .logo{font-size:1.5rem}
-  .stats-grid{grid-template-columns:repeat(2,1fr);gap:1.2rem}
-  .hero{padding:6rem 1.2rem 4rem}
+  .logo-main{font-size:1.35rem}
+  .fl-grid{grid-template-columns:1fr}
+  .ben-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<!-- ─────────── NAV ─────────── -->
-<nav id="nav">
-  <div class="logo">ARK<span>TIK</span></div>
-  <div class="nav-links">
-    <a href="#features">Why Us</a>
-    <a href="#ingredients">Ingredients</a>
-    <a href="#flavors">Flavors</a>
-    <a href="#cta">Shop</a>
+<!-- ── NAV ── -->
+<nav id="mainNav">
+  <div class="nav-logo">
+    <div class="logo-main">SÍ<span class="logo-accent">N</span> CULPA</div>
+    <div class="logo-tag">Disfruta sin culpa</div>
   </div>
-  <a href="#cta" class="nav-btn">Order Now</a>
+  <div class="nav-links">
+    <a href="#productos">Productos</a>
+    <a href="#sabores">Sabores</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#mexico">Envíos</a>
+  </div>
+  <a href="#pedido" class="nav-cta">Pedir Ahora</a>
 </nav>
 
-<!-- ─────────── HERO ─────────── -->
-<section class="hero" id="hero">
-  <div class="blob blob-1"></div>
-  <div class="blob blob-2"></div>
-  <div class="blob blob-3"></div>
-  <canvas id="canvas"></canvas>
+<!-- ── HERO ── -->
+<section class="hero" id="inicio">
+  <!-- Botanical decorations -->
+  <svg class="deco d1" viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M150 10 Q200 80 190 160 Q180 240 150 290 Q120 240 110 160 Q100 80 150 10Z" fill="#4F6B42"/>
+    <line x1="150" y1="10" x2="150" y2="290" stroke="#3A5530" stroke-width="2.5"/>
+    <line x1="150" y1="80" x2="105" y2="130" stroke="#3A5530" stroke-width="1.5"/>
+    <line x1="150" y1="80" x2="195" y2="130" stroke="#3A5530" stroke-width="1.5"/>
+    <line x1="150" y1="140" x2="95" y2="195" stroke="#3A5530" stroke-width="1.5"/>
+    <line x1="150" y1="140" x2="205" y2="195" stroke="#3A5530" stroke-width="1.5"/>
+    <line x1="150" y1="195" x2="105" y2="245" stroke="#3A5530" stroke-width="1"/>
+    <line x1="150" y1="195" x2="195" y2="245" stroke="#3A5530" stroke-width="1"/>
+  </svg>
+  <svg class="deco d2" viewBox="0 0 300 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M150 10 Q200 80 190 160 Q180 240 150 290 Q120 240 110 160 Q100 80 150 10Z" fill="#89AF83"/>
+    <line x1="150" y1="10" x2="150" y2="290" stroke="#6A9464" stroke-width="2.5"/>
+    <line x1="150" y1="80" x2="105" y2="130" stroke="#6A9464" stroke-width="1.5"/>
+    <line x1="150" y1="80" x2="195" y2="130" stroke="#6A9464" stroke-width="1.5"/>
+    <line x1="150" y1="140" x2="95" y2="195" stroke="#6A9464" stroke-width="1.5"/>
+    <line x1="150" y1="140" x2="205" y2="195" stroke="#6A9464" stroke-width="1.5"/>
+  </svg>
+  <svg class="deco d3" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M100 8 Q135 60 128 130 Q120 200 100 230 Q80 200 72 130 Q65 60 100 8Z" fill="#C89A6A"/>
+    <line x1="100" y1="8" x2="100" y2="230" stroke="#A87C50" stroke-width="2"/>
+    <line x1="100" y1="70" x2="68" y2="110" stroke="#A87C50" stroke-width="1.2"/>
+    <line x1="100" y1="70" x2="132" y2="110" stroke="#A87C50" stroke-width="1.2"/>
+  </svg>
 
-  <div class="hero-badge">🧊 World's Cleanest Protein Ice Cream</div>
+  <div class="hero-inner">
+    <!-- CSS Cup -->
+    <div class="cup-scene">
+      <div class="cup-wrap">
+        <div class="cup-lid">
+          <div class="lid-oval">
+            <div class="lid-text">SÍN CULPA<span>Protein Ice Cream</span></div>
+          </div>
+        </div>
+        <div class="cup-body">
+          <div class="cup-brand-name">SÍ<span class="ga">N</span><br>CULPA</div>
+          <div class="cup-sub">Protein Ice Cream · 473ml</div>
+          <div class="cup-hr"></div>
+          <div class="cup-nuts">
+            <div><span class="nut-v">48g</span><div class="nut-k">Proteína</div></div>
+            <div><span class="nut-v">Low</span><div class="nut-k">Calorías</div></div>
+            <div><span class="nut-v">Sin</span><div class="nut-k">Azúcar</div></div>
+          </div>
+          <div class="cup-badges">
+            <span class="cup-badge">🌿 Natural</span>
+            <span class="cup-badge">✓ Opción Vegana</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-  <div class="scoop-wrap">
-    <div class="orbit"><div class="orbit-dot"></div></div>
-    <span class="scoop-emoji">🍦</span>
-  </div>
-
-  <h1 class="hero-h1">
-    <span class="top">FUEL YOUR</span><br>
-    <span class="grad">GAINS</span>
-  </h1>
-
-  <p class="hero-sub">
-    <strong>48g of pure protein</strong> per pint. Only <strong>5 clean ingredients</strong>.
-    Zero artificial crap. Built for athletes who refuse to choose between
-    results and dessert.
-  </p>
-
-  <div class="hero-btns">
-    <a href="#cta" class="btn-primary">🛒 Shop Now</a>
-    <a href="#ingredients" class="btn-ghost">See What's Inside →</a>
+    <!-- Text -->
+    <div class="hero-text">
+      <div class="hero-eyebrow">Helado de proteína natural</div>
+      <h1 class="hero-h1">Disfruta<br>sin <em>culpa.</em></h1>
+      <p class="hero-p">
+        Hecho con <strong>ingredientes reales</strong> que puedes pronunciar.
+        Hasta <strong>48g de proteína</strong> por envase. Sin azúcar añadida,
+        sin químicos, sin pretextos. Disponible en todo México.
+      </p>
+      <div class="hero-btns">
+        <a href="#pedido" class="btn-dark">🛒 Pedir Ahora</a>
+        <a href="#sabores" class="btn-outline">Ver Sabores →</a>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ─────────── STATS ─────────── -->
-<div class="stats">
-  <div class="stats-grid">
-    <div>
-      <span class="stat-val" data-target="48" data-suffix="g">0</span>
-      <div class="stat-lbl">Grams of Protein</div>
-    </div>
-    <div>
-      <span class="stat-val" data-target="5" data-prefix="≤">0</span>
-      <div class="stat-lbl">Total Ingredients</div>
-    </div>
-    <div>
-      <span class="stat-val" data-target="100" data-suffix="%">0</span>
-      <div class="stat-lbl">Natural &amp; Real</div>
-    </div>
-    <div>
-      <span class="stat-val" data-target="0">0</span>
-      <div class="stat-lbl">Artificial Additives</div>
+<!-- ── SCROLL REVEAL (lid opens) ── -->
+<div class="scroll-reveal" id="nosotros">
+  <div class="sticky-scene">
+    <div class="scene-inner">
+
+      <!-- Animated Cup -->
+      <div class="anim-cup">
+        <div class="anim-cup-wrap">
+          <div id="js-lid">
+            <div class="a-lid-oval">
+              <div class="a-lid-text">SÍN CULPA<span>Helado de Proteína</span></div>
+            </div>
+          </div>
+          <div id="js-scoop">
+            <span class="scoop-big" id="scoopEmoji">🍨</span>
+          </div>
+          <div class="a-cup-body">
+            <div class="a-brand">SÍ<span class="ga">N</span> CULPA</div>
+            <div class="a-sub">Protein Ice Cream · 473ml</div>
+            <div class="a-hr"></div>
+            <div class="a-nuts">
+              <div><span class="a-nv">48g</span><div class="a-nk">Proteína</div></div>
+              <div><span class="a-nv">Bajo</span><div class="a-nk">Calorías</div></div>
+              <div><span class="a-nv">0g</span><div class="a-nk">Az. Añadida</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Facts -->
+      <div class="facts-side">
+        <div class="facts-h">Lo que hay<br><em>adentro</em> importa.</div>
+        <div class="fact-item js-fact" data-d="0">
+          <div class="fact-icon">🍃</div>
+          <div><span class="fact-name">Sin Azúcar Añadida</span><div class="fact-desc">Dulzura natural, sin glucosa ni jarabe. Solo lo que la naturaleza pone.</div></div>
+        </div>
+        <div class="fact-item js-fact" data-d="0.1">
+          <div class="fact-icon">💪</div>
+          <div><span class="fact-name">Hasta 48g de Proteína</span><div class="fact-desc">Más proteína por envase que la mayoría de los shakes. Come rico y recupera.</div></div>
+        </div>
+        <div class="fact-item js-fact" data-d="0.2">
+          <div class="fact-icon">🌿</div>
+          <div><span class="fact-name">100% Ingredientes Naturales</span><div class="fact-desc">Si no lo puedes pronunciar, no está aquí. Etiqueta limpia garantizada.</div></div>
+        </div>
+        <div class="fact-item js-fact" data-d="0.3">
+          <div class="fact-icon">🚫</div>
+          <div><span class="fact-name">Cero Químicos Artificiales</span><div class="fact-desc">Sin colorantes, conservadores ni saborizantes artificiales. Punto.</div></div>
+        </div>
+        <div class="fact-item js-fact" data-d="0.4">
+          <div class="fact-icon">🌱</div>
+          <div><span class="fact-name">Opción Vegana Disponible</span><div class="fact-desc">Misma proteína, mismo sabor increíble, cero productos de origen animal.</div></div>
+        </div>
+        <div class="fact-item js-fact" data-d="0.5">
+          <div class="fact-icon">⚡</div>
+          <div><span class="fact-name">Electrolitos Naturales</span><div class="fact-desc">La línea Sorbet trae electrolitos para hidratarte y recuperarte.</div></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
 
-<!-- ─────────── FEATURES ─────────── -->
-<section class="features" id="features">
+<!-- ── PRODUCTS ── -->
+<section class="products" id="productos">
   <div class="wrap">
-    <div class="reveal">
-      <span class="s-tag">// Why Arktik</span>
-      <h2 class="s-title">BUILT DIFFERENT.<br>EATEN BETTER.</h2>
-      <p class="s-sub">We got tired of choosing between clean eating and enjoying dessert.
-        So we built the solution.</p>
+    <div class="section-hd reveal">
+      <span class="s-tag">// Nuestras Líneas</span>
+      <h2 class="s-title">Tres líneas,<br><em>una misión.</em></h2>
+      <p class="s-sub">Proteína, vegano o sorbet — siempre natural, siempre delicioso.</p>
     </div>
-
-    <div class="feat-grid">
-      <div class="feat-card reveal" style="transition-delay:.1s">
-        <span class="feat-icon">🧬</span>
-        <h3 class="feat-title">Grass-Fed Whey Isolate</h3>
-        <p class="feat-desc">Sourced from 100% pasture-raised cows. Superior amino acid
-          profile — leucine-packed for max muscle protein synthesis.</p>
+    <div class="prod-grid">
+      <div class="prod-card pc-protein reveal" style="transition-delay:.08s">
+        <span class="prod-emoji">🍦</span>
+        <span class="prod-line">Protein Ice Cream</span>
+        <div class="prod-name">Helado de Proteína</div>
+        <p class="prod-desc">Alto en proteína, bajo en calorías, sin azúcar añadida. El postre que sí te puedes comer todos los días.</p>
+        <span class="prod-stat">48g <small>proteína / envase</small></span>
       </div>
-      <div class="feat-card reveal" style="transition-delay:.18s">
-        <span class="feat-icon">🌿</span>
-        <h3 class="feat-title">5 Ingredients. Period.</h3>
-        <p class="feat-desc">If you can't pronounce it, it's not in here.
-          We believe simplicity is strength — and our label proves it.</p>
+      <div class="prod-card pc-vegan reveal" style="transition-delay:.15s">
+        <span class="prod-emoji">🥥</span>
+        <span class="prod-line">Vegan Ice Cream</span>
+        <div class="prod-name">Helado Vegano</div>
+        <p class="prod-desc">Plant-based sin compromisos. Misma cremosidad, misma proteína, cero productos de origen animal.</p>
+        <span class="prod-stat">17g <small>proteína / porción</small></span>
       </div>
-      <div class="feat-card reveal" style="transition-delay:.26s">
-        <span class="feat-icon">⚡</span>
-        <h3 class="feat-title">48g Per Pint</h3>
-        <p class="feat-desc">More protein than most shakes. Eat a full pint and still crush
-          your macros. Post-workout never tasted this good.</p>
-      </div>
-      <div class="feat-card reveal" style="transition-delay:.34s">
-        <span class="feat-icon">❄️</span>
-        <h3 class="feat-title">Real Ice Cream Taste</h3>
-        <p class="feat-desc">Dense, creamy, satisfying. Tastes like actual premium ice cream —
-          because it IS, just made with better ingredients.</p>
+      <div class="prod-card pc-sorbet reveal" style="transition-delay:.22s">
+        <span class="prod-emoji">🍓</span>
+        <span class="prod-line">Sorbet · Frutas + Electrolitos</span>
+        <div class="prod-name">Sorbet Natural</div>
+        <p class="prod-desc">Frutas reales con electrolitos naturales. Refrescante, hidratante y delicioso. Ideal post-entreno.</p>
+        <span class="prod-stat">Real <small>frutas + electrolitos</small></span>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─────────── INGREDIENTS ─────────── -->
-<section class="ingredients" id="ingredients">
+<!-- ── FLAVORS ── -->
+<section class="flavors" id="sabores">
   <div class="wrap">
-    <div class="ing-layout">
-
-      <!-- left: list -->
-      <div class="reveal-l">
-        <span class="s-tag">// The Formula</span>
-        <h2 class="s-title">ONLY 5.<br>THAT'S IT.</h2>
-        <p class="s-sub" style="margin-bottom:2rem">We dare you to find something
-          you can't understand on our label. Clean ingredients. Clean conscience.
-          Clean gains.</p>
-
-        <div class="ing-list">
-          <div class="ing-item">
-            <span class="ing-num">01</span>
-            <div class="ing-info">
-              <span class="ing-name">Grass-Fed Whey Isolate</span>
-              <span class="ing-desc">90%+ protein by weight — the purest source on earth.</span>
-            </div>
-            <span class="ing-icon">🐄</span>
-          </div>
-          <div class="ing-item">
-            <span class="ing-num">02</span>
-            <div class="ing-info">
-              <span class="ing-name">Organic Whole Cream</span>
-              <span class="ing-desc">Real fat for real creaminess. No substitutes, ever.</span>
-            </div>
-            <span class="ing-icon">🥛</span>
-          </div>
-          <div class="ing-item">
-            <span class="ing-num">03</span>
-            <div class="ing-info">
-              <span class="ing-name">Raw Honey</span>
-              <span class="ing-desc">Nature's sweetener. No refined sugars. No syrups.</span>
-            </div>
-            <span class="ing-icon">🍯</span>
-          </div>
-          <div class="ing-item">
-            <span class="ing-num">04</span>
-            <div class="ing-info">
-              <span class="ing-name">Organic Egg Yolks</span>
-              <span class="ing-desc">Natural emulsifier + whole food nutrition density.</span>
-            </div>
-            <span class="ing-icon">🥚</span>
-          </div>
-          <div class="ing-item">
-            <span class="ing-num">05</span>
-            <div class="ing-info">
-              <span class="ing-name">Vanilla Bean / Raw Cacao / Strawberry</span>
-              <span class="ing-desc">Real flavor from real sources. That's the whole list.</span>
-            </div>
-            <span class="ing-icon">🌱</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- right: visual -->
-      <div class="ing-visual reveal-r">
-        <div class="ring"></div>
-        <div class="ring ring2"></div>
-        <span class="big-scoop">🍨</span>
-        <div class="protein-badge">
-          <span class="pb-val">48g</span>
-          <div class="pb-lbl">Protein / Pint</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ─────────── FLAVORS ─────────── -->
-<section class="flavors" id="flavors">
-  <div class="wrap">
-    <div class="reveal" style="text-align:center">
+    <div class="section-hd reveal">
       <span class="s-tag">// Drop 001</span>
-      <h2 class="s-title" style="text-align:center">PICK YOUR<br>WEAPON</h2>
-      <p class="s-sub" style="margin:0 auto">
-        Three flavors. One mission. All protein. All natural.
-      </p>
+      <h2 class="s-title">Elige tu <em>arma.</em></h2>
+      <p class="s-sub">6 sabores. Todos naturales. Todos deliciosos. Ningún pretexto.</p>
     </div>
-
     <div class="fl-grid">
-
-      <div class="fl-card vanilla reveal" style="transition-delay:.1s">
-        <span class="fl-emoji">🍦</span>
-        <div class="fl-name">VANILLA BEAST</div>
-        <p class="fl-desc">Madagascar vanilla bean. Rich, bold, and criminally good after leg day.</p>
+      <div class="fl-card fc-cookies reveal" style="transition-delay:.06s">
+        <span class="fl-emoji">🍪</span>
+        <div class="fl-name">Cookies &amp; Cream</div>
+        <span class="fl-line-tag">Protein Ice Cream</span>
         <div class="fl-macros">
-          <div><span class="macro-v">48g</span><div class="macro-k">Protein</div></div>
-          <div><span class="macro-v">320</span><div class="macro-k">Calories</div></div>
-          <div><span class="macro-v">18g</span><div class="macro-k">Fat</div></div>
-          <div><span class="macro-v">22g</span><div class="macro-k">Carbs</div></div>
+          <div><span class="fl-mv">18g</span><div class="fl-mk">Proteína</div></div>
+          <div><span class="fl-mv">Low</span><div class="fl-mk">Calorías</div></div>
+          <div><span class="fl-mv">Sin</span><div class="fl-mk">Azúcar</div></div>
         </div>
       </div>
-
-      <div class="fl-card chocolate reveal" style="transition-delay:.18s">
+      <div class="fl-card fc-choco reveal" style="transition-delay:.11s">
         <span class="fl-emoji">🍫</span>
-        <div class="fl-name">DARK GAINS</div>
-        <p class="fl-desc">Raw cacao. Deep, intense, unforgiving. Just like your training.</p>
+        <div class="fl-name">Chocolate Avellana</div>
+        <span class="fl-line-tag">Protein Ice Cream</span>
         <div class="fl-macros">
-          <div><span class="macro-v">48g</span><div class="macro-k">Protein</div></div>
-          <div><span class="macro-v">340</span><div class="macro-k">Calories</div></div>
-          <div><span class="macro-v">20g</span><div class="macro-k">Fat</div></div>
-          <div><span class="macro-v">24g</span><div class="macro-k">Carbs</div></div>
+          <div><span class="fl-mv">19g</span><div class="fl-mk">Proteína</div></div>
+          <div><span class="fl-mv">Low</span><div class="fl-mk">Calorías</div></div>
+          <div><span class="fl-mv">Sin</span><div class="fl-mk">Azúcar</div></div>
         </div>
       </div>
-
-      <div class="fl-card strawberry reveal" style="transition-delay:.26s">
-        <span class="fl-emoji">🍓</span>
-        <div class="fl-name">BERRY PUMP</div>
-        <p class="fl-desc">Real strawberries. Sweet. Sharp. No BS. No artificial flavors.</p>
+      <div class="fl-card fc-matcha reveal" style="transition-delay:.16s">
+        <span class="fl-emoji">🍵</span>
+        <div class="fl-name">Coco Matcha</div>
+        <span class="fl-line-tag" style="color:var(--sage)">Vegan Ice Cream</span>
         <div class="fl-macros">
-          <div><span class="macro-v">48g</span><div class="macro-k">Protein</div></div>
-          <div><span class="macro-v">300</span><div class="macro-k">Calories</div></div>
-          <div><span class="macro-v">16g</span><div class="macro-k">Fat</div></div>
-          <div><span class="macro-v">20g</span><div class="macro-k">Carbs</div></div>
+          <div><span class="fl-mv">17g</span><div class="fl-mk">Proteína</div></div>
+          <div><span class="fl-mv">Plant</span><div class="fl-mk">Based</div></div>
+          <div><span class="fl-mv">Vegan</span><div class="fl-mk">✓</div></div>
         </div>
       </div>
-
+      <div class="fl-card fc-sandia reveal" style="transition-delay:.21s">
+        <span class="fl-emoji">🍉</span>
+        <div class="fl-name">Sandía Limón</div>
+        <span class="fl-line-tag">Sorbet · Electrolitos</span>
+        <div class="fl-macros">
+          <div><span class="fl-mv">Real</span><div class="fl-mk">Fruta</div></div>
+          <div><span class="fl-mv">⚡</span><div class="fl-mk">Electrolitos</div></div>
+          <div><span class="fl-mv">Sin</span><div class="fl-mk">Azúcar</div></div>
+        </div>
+      </div>
+      <div class="fl-card fc-mango reveal" style="transition-delay:.26s">
+        <span class="fl-emoji">🥭</span>
+        <div class="fl-name">Mango Maracuyá</div>
+        <span class="fl-line-tag">Sorbet · Electrolitos</span>
+        <div class="fl-macros">
+          <div><span class="fl-mv">Real</span><div class="fl-mk">Fruta</div></div>
+          <div><span class="fl-mv">⚡</span><div class="fl-mk">Electrolitos</div></div>
+          <div><span class="fl-mv">Sin</span><div class="fl-mk">Azúcar</div></div>
+        </div>
+      </div>
+      <div class="fl-card fc-lima reveal" style="transition-delay:.31s">
+        <span class="fl-emoji">🍋</span>
+        <div class="fl-name">Lima Coco</div>
+        <span class="fl-line-tag">Sorbet · Electrolitos</span>
+        <div class="fl-macros">
+          <div><span class="fl-mv">Real</span><div class="fl-mk">Fruta</div></div>
+          <div><span class="fl-mv">⚡</span><div class="fl-mk">Electrolitos</div></div>
+          <div><span class="fl-mv">Sin</span><div class="fl-mk">Azúcar</div></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ─────────── CTA ─────────── -->
-<section class="cta" id="cta">
+<!-- ── BENEFITS ── -->
+<section class="benefits">
+  <div class="wrap">
+    <div class="section-hd reveal">
+      <span class="s-tag" style="color:var(--sage)">// Por qué elegirnos</span>
+      <h2 class="s-title" style="color:var(--cream)">Hecho con <em style="color:var(--sagel)">consciencia.</em></h2>
+      <p class="s-sub" style="color:var(--sagel)">Cada decisión de ingrediente es intencional. Cada sabor, honesto.</p>
+    </div>
+    <div class="ben-grid">
+      <div class="ben-item reveal" style="transition-delay:.07s"><span class="ben-icon">🧬</span><h3 class="ben-title">Alto en Proteína</h3><p class="ben-desc">Hasta 48g de proteína de alta calidad por envase. Recuperación muscular máxima, sin sacrificar sabor.</p></div>
+      <div class="ben-item reveal" style="transition-delay:.13s"><span class="ben-icon">🍯</span><h3 class="ben-title">Sin Azúcar Añadida</h3><p class="ben-desc">Dulzura natural, sin glucosa, sin jarabe de maíz, sin endulzantes artificiales. Solo lo real.</p></div>
+      <div class="ben-item reveal" style="transition-delay:.19s"><span class="ben-icon">🌿</span><h3 class="ben-title">Ingredientes Naturales</h3><p class="ben-desc">Puedes leer — y pronunciar — cada ingrediente en nuestra etiqueta. Transparencia total.</p></div>
+      <div class="ben-item reveal" style="transition-delay:.25s"><span class="ben-icon">⚖️</span><h3 class="ben-title">Bajo en Calorías</h3><p class="ben-desc">Diseñado para que encaje en tus macros sin hacer trampa. Disfruta más por menos.</p></div>
+      <div class="ben-item reveal" style="transition-delay:.31s"><span class="ben-icon">🌱</span><h3 class="ben-title">Opción Vegana</h3><p class="ben-desc">Nuestra línea plant-based demuestra que "vegano" y "delicioso" van perfectamente juntos.</p></div>
+      <div class="ben-item reveal" style="transition-delay:.37s"><span class="ben-icon">⚡</span><h3 class="ben-title">Electrolitos Naturales</h3><p class="ben-desc">La línea Sorbet tiene electrolitos de origen natural. Hidratación que sabe increíble.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── MEXICO ── -->
+<section class="mexico" id="mexico">
   <div class="wrap">
     <div class="reveal">
-      <h2 class="cta-h2">
-        STOP SETTLING.<br>
-        <span class="a">START FUELING.</span>
-      </h2>
-      <p class="cta-sub">
-        The gym deserves better. Your recovery deserves better.
-        Your dessert deserves better. ARKTIK is that better.
-      </p>
-      <div class="hero-btns">
-        <a href="#" class="btn-primary">🛒 Shop All Flavors</a>
-        <a href="#" class="btn-ghost">Learn Our Story →</a>
-      </div>
+      <span class="s-tag">// Disponibilidad</span>
+      <h2 class="s-title">Enviamos a <em>todo México.</em></h2>
+      <p class="s-sub" style="margin:0 auto">Empaque especial con hielo seco. Tu helado llega congelado a la puerta, donde estés.</p>
+    </div>
+    <span class="mx-flag reveal">🇲🇽</span>
+    <div class="mx-cities reveal">
+      <span class="city-chip">Ciudad de México</span><span class="city-chip">Guadalajara</span>
+      <span class="city-chip">Monterrey</span><span class="city-chip">Puebla</span>
+      <span class="city-chip">Querétaro</span><span class="city-chip">Cancún</span>
+      <span class="city-chip">Mérida</span><span class="city-chip">Tijuana</span>
+      <span class="city-chip">León</span><span class="city-chip">San Luis Potosí</span>
+      <span class="city-chip">Aguascalientes</span><span class="city-chip">Playa del Carmen</span>
+      <span class="city-chip">Tulum</span><span class="city-chip">CDMX · Envío Express 🚀</span>
+      <span class="city-chip">+ Todo el País 🇲🇽</span>
+    </div>
+    <p class="mx-note reveal">Envío express en CDMX y Área Metropolitana. Envío estándar en 24–72 hrs al resto del país con empaque térmico especial.</p>
+    <div style="display:flex;justify-content:center;margin-top:2rem" class="reveal">
+      <a href="#pedido" class="btn-dark">📦 Verificar Disponibilidad</a>
+    </div>
+  </div>
+</section>
 
-      <div class="proof">
-        <div class="proof-item"><span>✓</span> Free shipping over $60</div>
-        <div class="proof-item"><span>✓</span> 30-day satisfaction guarantee</div>
-        <div class="proof-item"><span>✓</span> Lab-tested every batch</div>
-        <div class="proof-item"><span>✓</span> Ships frozen nationwide</div>
+<!-- ── CTA ── -->
+<section class="cta" id="pedido">
+  <div class="wrap">
+    <div class="reveal">
+      <h2 class="cta-h2">Come rico.<br><em>Sin culpa.</em></h2>
+      <p class="cta-sub">El gym lo merece. Tu recuperación lo merece. Tu postre lo merece. SÍN CULPA es ese postre.</p>
+      <div class="cta-btns">
+        <a href="#" class="btn-dark">🛒 Ordenar Ahora</a>
+        <a href="#productos" class="btn-outline">Ver Productos →</a>
+      </div>
+      <div class="proof-strip">
+        <div class="proof-item"><strong>✓</strong> Envío gratis sobre $600</div>
+        <div class="proof-item"><strong>✓</strong> Llega congelado garantizado</div>
+        <div class="proof-item"><strong>✓</strong> Probado en laboratorio</div>
+        <div class="proof-item"><strong>✓</strong> 100% satisfacción</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─────────── FOOTER ─────────── -->
+<!-- ── FOOTER ── -->
 <footer>
-  <div class="footer-logo">ARKTIK</div>
-  <p class="footer-txt">Pure Protein Ice Cream · Natural · Powerful · Uncompromising</p>
-  <p class="footer-txt" style="margin-top:.4rem;opacity:.35">© 2026 ARKTIK Inc. · Eat clean. Lift heavy. Repeat.</p>
+  <div class="foot-logo">SÍN CULPA</div>
+  <div class="foot-tag">Disfruta sin culpa</div>
+  <div class="foot-ig">📸 @sinculpa.mx</div>
+  <div class="foot-links">
+    <a href="#">Productos</a><a href="#">Nosotros</a>
+    <a href="#">Envíos</a><a href="#">Contacto</a><a href="#">Distribuidores</a>
+  </div>
+  <p class="foot-txt">© 2026 SÍN CULPA · Hecho con ingredientes reales, para que disfrutes sin culpa.</p>
+  <p class="foot-txt" style="margin-top:.3rem;opacity:.35">Ciudad de México, México 🇲🇽</p>
 </footer>
 
-<!-- ─────────── SCRIPTS ─────────── -->
 <script>
-/* ── Floating particles (canvas) ── */
-(function(){
-  const canvas = document.getElementById('canvas');
-  const ctx    = canvas.getContext('2d');
-  let W, H, particles = [];
+/* ── Nav scroll ── */
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
 
-  function resize(){
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+/* ── Scroll-driven cup opening ── */
+(function () {
+  const section = document.querySelector('.scroll-reveal');
+  const lid     = document.getElementById('js-lid');
+  const scoop   = document.getElementById('js-scoop');
+  const emojiEl = document.getElementById('scoopEmoji');
+  const facts   = document.querySelectorAll('.js-fact');
+  if (!section || !lid) return;
+
+  const scoops = ['🍪', '🍫', '🥥', '🍉', '🥭', '🍋'];
+  let lastIdx = -1;
+
+  function progress() {
+    const top   = section.getBoundingClientRect().top;
+    const total = section.offsetHeight - window.innerHeight;
+    return Math.max(0, Math.min(1, -top / Math.max(total, 1)));
   }
-  resize();
-  window.addEventListener('resize', resize);
 
-  const COLORS = ['rgba(0,229,176,', 'rgba(129,140,248,', 'rgba(244,114,182,'];
+  function ease(t) { return 1 - Math.pow(1 - t, 3); }
 
-  function rand(a,b){return Math.random()*(b-a)+a}
+  function tick() {
+    const p = progress();
 
-  for(let i=0;i<55;i++){
-    particles.push({
-      x: rand(0, 1),
-      y: rand(0, 1),
-      r: rand(1, 3.5),
-      dx: rand(-.15, .15),
-      dy: rand(-.25, -.08),
-      alpha: rand(.2, .7),
-      color: COLORS[Math.floor(Math.random()*3)]
+    // lid lifts and fades
+    lid.style.transform = `translateY(${p * -210}px) rotate(${p * -14}deg)`;
+    lid.style.opacity   = String(Math.max(0, 1 - p * 1.8));
+
+    // scoop rises in
+    const sp = ease(Math.max(0, Math.min(1, (p - 0.18) / 0.45)));
+    scoop.style.opacity   = String(sp);
+    scoop.style.transform = `translateX(-50%) translateY(${(1 - sp) * 42}px)`;
+
+    // cycle emoji
+    const idx = Math.min(Math.floor(p * scoops.length * 0.98), scoops.length - 1);
+    if (idx !== lastIdx) { lastIdx = idx; emojiEl.textContent = scoops[idx]; }
+
+    // facts stagger
+    facts.forEach(f => {
+      const d  = parseFloat(f.dataset.d) || 0;
+      const fp = ease(Math.max(0, Math.min(1, (p - 0.22 - d) / 0.38)));
+      f.style.opacity   = String(fp);
+      f.style.transform = `translateX(${(1 - fp) * 38}px)`;
     });
+
+    requestAnimationFrame(tick);
   }
-
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    particles.forEach(p=>{
-      ctx.beginPath();
-      ctx.arc(p.x*W, p.y*H, p.r, 0, Math.PI*2);
-      ctx.fillStyle = p.color + p.alpha + ')';
-      ctx.fill();
-
-      p.x += p.dx / W * 0.5;
-      p.y += p.dy / H * 0.5;
-
-      if(p.y < -0.02){ p.y = 1.02; p.x = rand(0,1); }
-      if(p.x < 0) p.x = 1;
-      if(p.x > 1) p.x = 0;
-    });
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-/* ── Nav scroll class ── */
-(function(){
-  const nav = document.getElementById('nav');
-  window.addEventListener('scroll',()=>{
-    nav.classList.toggle('scrolled', window.scrollY > 60);
-  }, {passive:true});
-})();
-
-/* ── Counter animation ── */
-(function(){
-  const counters = document.querySelectorAll('[data-target]');
-  let fired = false;
-
-  function animateAll(){
-    counters.forEach(el=>{
-      const target = +el.dataset.target;
-      const suffix = el.dataset.suffix || '';
-      const prefix = el.dataset.prefix || '';
-      const dur    = 1800;
-      const start  = performance.now();
-
-      (function tick(now){
-        const t = Math.min((now - start) / dur, 1);
-        const ease = 1 - Math.pow(1-t, 3);
-        el.textContent = prefix + Math.round(ease * target) + suffix;
-        if(t < 1) requestAnimationFrame(tick);
-      })(start);
-    });
-  }
-
-  const ob = new IntersectionObserver(entries=>{
-    if(entries[0].isIntersecting && !fired){
-      fired = true;
-      animateAll();
-    }
-  },{threshold:.5});
-
-  const strip = document.querySelector('.stats');
-  if(strip) ob.observe(strip);
+  tick();
 })();
 
 /* ── Scroll reveal ── */
-(function(){
-  const els = document.querySelectorAll('.reveal,.reveal-l,.reveal-r');
-  const ob  = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('in'); ob.unobserve(e.target); }
+(function () {
+  const ob = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); ob.unobserve(e.target); }
     });
-  },{threshold:.12});
-  els.forEach(el=>ob.observe(el));
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => ob.observe(el));
 })();
 </script>
-
 </body>
 </html>
