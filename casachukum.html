@@ -586,7 +586,9 @@ function calNav(dir) {
   renderCal();
 }
 function renderCal() {
-  var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var monthNamesEN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var monthNamesES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var monthNames = (window.KUNAAY_LANG === 'es') ? monthNamesES : monthNamesEN;
   document.getElementById('calMonthLabel').textContent = monthNames[calMonth] + ' ' + calYear;
   var firstDay = new Date(calYear, calMonth, 1).getDay();
   var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();

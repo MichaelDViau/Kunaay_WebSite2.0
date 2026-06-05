@@ -143,6 +143,8 @@
     });
 
     document.documentElement.setAttribute('lang', isSpanish ? 'es' : 'en');
+    window.KUNAAY_LANG = lang;
+    if (typeof window.renderCal === 'function') window.renderCal();
     updateToggleText(lang);
     setStoredLanguage(lang);
   }
