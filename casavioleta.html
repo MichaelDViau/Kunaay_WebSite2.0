@@ -33,7 +33,7 @@ a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 
 /* ─── NAVBAR ─── */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);backdrop-filter:blur(0px);background:transparent}
+.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);backdrop-filter:blur(0px);background:rgba(0,0,0,0.094)}
 .navbar.scrolled{background:rgba(12,12,12,0.92);backdrop-filter:blur(20px);padding:0.8rem 3rem;box-shadow:0 1px 0 rgba(201,168,76,0.1)}
 .nav-logo img{height:44px;transition:var(--transition)}
 .navbar.scrolled .nav-logo img{height:36px}
@@ -143,10 +143,21 @@ section{padding:5rem 3rem}
 .review-date{font-size:0.75rem;color:var(--text-dim);margin-top:2px}
 
 /* ─── PROPERTY DETAIL PAGE ─── */
-.detail-gallery{padding:0 3rem;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:220px;gap:0.5rem;margin-top:-2rem;position:relative;z-index:2}
-.detail-gallery img{width:100%;height:100%;object-fit:cover;border-radius:var(--radius);cursor:pointer;transition:var(--transition)}
-.detail-gallery img:hover{opacity:0.85}
-.detail-gallery img:first-child{grid-column:span 2;grid-row:span 2}
+.detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:2}
+.detail-gallery-inner{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;height:480px}
+.detail-gallery-left{border-radius:var(--radius);overflow:hidden;position:relative}
+.detail-gallery-left img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
+.detail-gallery-left img:hover{opacity:0.88}
+.detail-gallery-right{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.gallery-thumb{border-radius:var(--radius);overflow:hidden;position:relative}
+.gallery-thumb img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
+.gallery-thumb img:hover{opacity:0.88}
+.gallery-more{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer}
+.gallery-more img{width:100%;height:100%;object-fit:cover;display:block;transition:var(--transition)}
+.gallery-more-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.52);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:var(--transition)}
+.gallery-more:hover .gallery-more-overlay{background:rgba(0,0,0,0.38)}
+.gallery-more-label{font-family:var(--serif);font-size:1.6rem;font-weight:300;color:#fff;letter-spacing:0.05em}
+.gallery-more-sub{font-family:var(--sans);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-top:0.3rem}
 
 .detail-content{padding:4rem 3rem}
 .detail-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:4rem;max-width:1200px;margin:0 auto}
@@ -243,7 +254,7 @@ section{padding:5rem 3rem}
 @media(max-width:1024px){
   .properties-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
   .detail-grid{grid-template-columns:1fr}
-  .detail-gallery{grid-template-columns:repeat(3,1fr);grid-auto-rows:180px}
+  .detail-gallery-inner{height:360px}
   .related-grid{grid-template-columns:repeat(2,1fr)}
   .values-grid{grid-template-columns:1fr 1fr}
 }
@@ -261,8 +272,10 @@ section{padding:5rem 3rem}
   .footer-bottom{flex-direction:column;gap:0.75rem;text-align:center}
   .hero h1{font-size:clamp(2.4rem,6vw,4rem)}
   .properties-header{flex-direction:column;align-items:flex-start}
-  .detail-gallery{grid-template-columns:1fr 1fr;grid-auto-rows:160px;padding:0 1.5rem}
-  .detail-gallery img:first-child{grid-column:span 2}
+  .detail-gallery{padding:0 1.5rem}
+  .detail-gallery-inner{height:auto;grid-template-columns:1fr}
+  .detail-gallery-left{height:260px}
+  .detail-gallery-right{grid-template-columns:1fr 1fr;height:180px}
   .detail-content{padding:3rem 1.5rem}
   .detail-highlights{grid-template-columns:repeat(2,1fr)}
   .about-section{grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem}
@@ -275,16 +288,43 @@ section{padding:5rem 3rem}
   .footer{padding:3rem 1.5rem 1.5rem}
 }
 
+.availability-card .cal-widget{background:var(--bg);border-radius:var(--radius);padding:1rem;border:1px solid rgba(201,168,76,0.1)}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.cal-month-label{font-family:var(--serif);font-size:1.05rem;font-weight:500;color:var(--gold);letter-spacing:0.05em}
+.cal-nav{background:none;border:1px solid rgba(201,168,76,0.25);color:var(--gold);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.3s}
+.cal-nav:hover{background:var(--gold);color:var(--bg)}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.cal-weekdays span{text-align:center;font-size:0.65rem;color:var(--text-dim);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:4px 0}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day{text-align:center;padding:6px 2px;font-size:0.78rem;border-radius:6px;cursor:default;transition:0.2s}
+.cal-day.empty{background:transparent}
+.cal-day.available{color:var(--text);background:rgba(201,168,76,0.08)}
+.cal-day.available:hover{background:rgba(201,168,76,0.2)}
+.cal-day.booked{color:var(--text-dim);background:rgba(255,255,255,0.03);text-decoration:line-through}
+.cal-day.past{color:var(--text-dim);opacity:0.4}
+.cal-day.today{border:1px solid var(--gold);color:var(--gold);font-weight:600}
+.cal-legend{display:flex;gap:1rem;justify-content:center;margin-top:0.75rem;flex-wrap:wrap}
+.cal-legend-item{display:flex;align-items:center;gap:0.35rem;font-size:0.7rem;color:var(--text-muted)}
+.cal-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+.cal-dot-available{background:rgba(201,168,76,0.5)}
+.cal-dot-booked{background:rgba(255,255,255,0.15)}
+.reviews-wrapper{position:relative;display:flex;align-items:center;gap:0}
+.reviews-slider-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:var(--bg-card);border:1px solid rgba(201,168,76,0.3);color:var(--gold);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.3s ease;flex-shrink:0}
+.reviews-slider-btn:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
+.reviews-slider-prev{left:-24px}
+.reviews-slider-next{right:-24px}
+@media(max-width:768px){.reviews-slider-prev{left:-12px}.reviews-slider-next{right:-12px}.reviews-slider-btn{width:36px;height:36px}}
+
 </style>
 </head>
 <body>
 <nav class="navbar scrolled" id="navbar">
   <a href="index.html" class="nav-logo"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/logo-light.png" alt="Ku Náay"></a>
   <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="rentals.html" class="active">Rentals</a></li><li><a href="sales.html">Sales</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul>
-  <a href="#" class="nav-cta">🇲🇽 Español</a>
+  <a href="#" class="nav-cta"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a>
   <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
-<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta">🇲🇽 Español</a></div>
+<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a></div>
 
 <div class="page-hero" style="height:55vh">
   <div class="page-hero-bg" style="background-image:url('https://i.ibb.co/vxVMbJNC/Casa-Violetta-101.jpg')"></div>
@@ -293,12 +333,25 @@ section{padding:5rem 3rem}
 </div>
 
 <div class="detail-gallery" id="galleryGrid">
-  <img class="lb-img" src="https://i.ibb.co/vxVMbJNC/Casa-Violetta-101.jpg" alt="Casa Violetta">
-  <img class="lb-img" src="https://i.ibb.co/DHv8b7cV/Casa-Violetta-019.jpg" alt="Casa Violetta">
-  <img class="lb-img" src="https://i.ibb.co/3ynzCJnK/Casa-Violetta-028.jpg" alt="Casa Violetta">
-  <img class="lb-img" src="https://i.ibb.co/4RSz2jC9/Casa-Violetta-031.jpg" alt="Casa Violetta">
-  <img class="lb-img" src="https://i.ibb.co/WvZ3hL6L/Night-Photography-13.jpg" alt="Casa Violetta">
-  <img class="lb-img" src="https://i.ibb.co/yBSDJ8Yp/Casa-Violetta-058.jpg" alt="Casa Violetta">
+  <div class="detail-gallery-inner">
+    <div class="detail-gallery-left">
+      <img class="lb-img" src="https://i.ibb.co/vxVMbJNC/Casa-Violetta-101.jpg" alt="Casa Violetta">
+    </div>
+    <div class="detail-gallery-right">
+      <div class="gallery-thumb"><img class="lb-img" src="https://i.ibb.co/DHv8b7cV/Casa-Violetta-019.jpg" alt="Casa Violetta"></div>
+      <div class="gallery-thumb"><img class="lb-img" src="https://i.ibb.co/3ynzCJnK/Casa-Violetta-028.jpg" alt="Casa Violetta"></div>
+      <div class="gallery-thumb"><img class="lb-img" src="https://i.ibb.co/4RSz2jC9/Casa-Violetta-031.jpg" alt="Casa Violetta"></div>
+      <div class="gallery-more" onclick="openGalleryLightbox(3)">
+        <img src="https://i.ibb.co/WvZ3hL6L/Night-Photography-13.jpg" alt="Casa Violetta">
+        <div class="gallery-more-overlay">
+          <span class="gallery-more-label">+2</span>
+          <span class="gallery-more-sub">View All Photos</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <img class="lb-img" style="display:none" src="https://i.ibb.co/WvZ3hL6L/Night-Photography-13.jpg" alt="Casa Violetta">
+  <img class="lb-img" style="display:none" src="https://i.ibb.co/yBSDJ8Yp/Casa-Violetta-058.jpg" alt="Casa Violetta">
 </div>
 
 <div class="detail-content">
@@ -307,15 +360,16 @@ section{padding:5rem 3rem}
       <h2 class="detail-title">Lagoonfront Luxury in Playacar Phase 1</h2>
       <div class="detail-subtitle">Playa Del Carmen, Riviera Maya</div>
       <div class="detail-highlights">
-        <div class="highlight-item"><div class="highlight-icon">🛏</div><div class="highlight-label">5 Bedrooms</div></div>
-        <div class="highlight-item"><div class="highlight-icon">🚿</div><div class="highlight-label">5 Bathrooms</div></div>
-        <div class="highlight-item"><div class="highlight-icon">🌊</div><div class="highlight-label">Beach Front</div></div>
-        <div class="highlight-item"><div class="highlight-icon">🏊</div><div class="highlight-label">Private Pool</div></div>
-        <div class="highlight-item"><div class="highlight-icon">🍳</div><div class="highlight-label">Full Kitchen</div></div>
-        <div class="highlight-item"><div class="highlight-icon">🅿️</div><div class="highlight-label">Parking</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17V9.5a2 2 0 012-2h5a2 2 0 012 2v2h2v-2a2 2 0 012-2h5a2 2 0 012 2V17"/><path d="M2 17h20"/><path d="M2 17v2M22 17v2"/></svg></div><div class="highlight-label">5 Bedrooms</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 12V6a2 2 0 012-2h3a2 2 0 012 2v1"/><path d="M4 12v4a2 2 0 002 2h12a2 2 0 002-2v-4"/><path d="M8 20v1M16 20v1"/></svg></div><div class="highlight-label">5 Bathrooms</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8c1 1 2 1.5 4 1.5S8 8 10 8s2 1.5 4 1.5S16 8 18 8s2 1.5 4 1.5"/><path d="M2 14c1 1 2 1.5 4 1.5S8 13 10 13s2 1.5 4 1.5S16 13 18 13s2 1.5 4 1.5"/></svg></div><div class="highlight-label">Beach Front</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c1 1 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><circle cx="17" cy="7" r="2"/><path d="M6 13l2-4 3 2.5 2-3 3 3.5"/></svg></div><div class="highlight-label">Private Pool</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h2l1 5M7 13l-2-8h16l-2 8H7z"/><path d="M7 13a5 5 0 0010 0"/></svg></div><div class="highlight-label">Full Kitchen</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 010 6H9"/></svg></div><div class="highlight-label">Parking</div></div>
       </div>
-      <p class="detail-desc">Casa Violetta is a beautiful, spacious beachfront villa in the exclusive gated community of Playacar Phase 1. The house is much bigger in person than it appears in photos, with room for large groups and families to spread out and enjoy the Caribbean lifestyle.</p>
-      <p class="detail-desc">Located just a 15-minute walk from the heart of Playa Del Carmen, Casa Violetta offers the perfect balance of privacy and convenience. The beach is great and uncrowded, giving you a true escape without sacrificing access to restaurants, shopping, and nightlife.</p>
+      <p class="detail-desc">Casa Violetta is a landmark beachfront estate that redefines luxury living along the Riviera Maya. Set directly on the crystalline Caribbean shore, this extraordinary five-bedroom, five-bathroom residence commands sweeping ocean panoramas from virtually every room. The architecture seamlessly marries the warmth of traditional Mexican craftsmanship with the clean lines of contemporary design — hand-carved stone details, terracotta accents, and soaring palapa ceilings coexist with state-of-the-art appliances and designer furnishings that satisfy the most discerning palate.</p>
+      <p class="detail-desc">The heart of Casa Violetta is its expansive open-plan living and dining area, which flows effortlessly through full-height glass doors onto a wraparound terrace and the breathtaking infinity-edge pool that seems to dissolve into the sea beyond. Each of the five bedrooms is a private retreat in its own right — featuring king-size beds dressed in fine linens, ensuite marble baths, and curated artwork inspired by the vibrant culture of the Yucatán Peninsula. The master suite occupies its own wing, offering a private terrace, a deep soaking tub positioned to capture sunrise views, and a walk-in dressing room of generous proportion.</p>
+      <p class="detail-desc">Beyond the residence itself, Casa Violetta is attended by a dedicated property team including a private chef available upon request, daily housekeeping, and a concierge service fluent in arranging bespoke experiences — from private cenote excursions and yacht charters to curated culinary tours of local markets. The property sits within a gated community just minutes from the boutique shops and vibrant dining of Playa del Carmen's Fifth Avenue, offering the rare combination of secluded tranquility and effortless urban access. Whether sought as a private holiday retreat or a premier income-generating asset, Casa Violetta represents a singular opportunity in the most coveted address along Mexico's Caribbean coast.</p>
     </div>
     <div class="detail-sidebar">
       <div class="sidebar-card">
@@ -323,6 +377,25 @@ section{padding:5rem 3rem}
         <p>Contact us directly for the best rates and personalized service.</p>
         <a href="https://wa.me/529841681121" target="_blank" class="btn-primary">Book via WhatsApp</a>
         <a href="contact.html" class="btn-outline">Request Info</a>
+      </div>
+      <div class="sidebar-card availability-card" style="margin-top:1.5rem;text-align:left">
+        <h3 style="text-align:center;margin-bottom:0.5rem">Availability</h3>
+        <p style="text-align:center;color:var(--text-muted);font-size:0.82rem;margin-bottom:1.5rem">Check open dates for your stay</p>
+        <div class="cal-widget">
+          <div class="cal-header">
+            <button class="cal-nav" onclick="calNav(-1)" aria-label="Previous month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg></button>
+            <span class="cal-month-label" id="calMonthLabel"></span>
+            <button class="cal-nav" onclick="calNav(1)" aria-label="Next month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg></button>
+          </div>
+          <div class="cal-weekdays">
+            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+          </div>
+          <div class="cal-days" id="calDays"></div>
+          <div class="cal-legend">
+            <span class="cal-legend-item"><span class="cal-dot cal-dot-available"></span>Available</span>
+            <span class="cal-legend-item"><span class="cal-dot cal-dot-booked"></span>Booked</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -338,7 +411,7 @@ section{padding:5rem 3rem}
   </div>
 </section>
 
-<div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="closeLightbox()">✕</button><button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)">‹</button><img id="lightboxImg" src="" alt="Gallery"><button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)">›</button></div>
+<div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="closeLightbox()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><img id="lightboxImg" src="" alt="Gallery"><button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button></div>
 
 <footer class="footer"><div class="footer-top"><div class="footer-brand"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where the Sea Meets Serenity — luxury vacation rentals and real estate in the Riviera Maya.</p></div><div class="footer-nav"><div class="footer-col"><h4>Navigation</h4><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div><div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a></div></div></div><div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div></footer>
 
@@ -499,6 +572,58 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 </script>
-<script>document.addEventListener('DOMContentLoaded',()=>{initLightbox('.lb-img')});</script>
+<script>
+document.addEventListener('DOMContentLoaded',()=>{initLightbox('.lb-img');});
+function openGalleryLightbox(startIndex){lightboxIndex=startIndex;openLightbox();}
+// Availability Calendar
+var calCurrentDate = new Date();
+var calYear = calCurrentDate.getFullYear();
+var calMonth = calCurrentDate.getMonth();
+// Simulated booked dates (day numbers for current month display)
+var bookedDays = [3,4,5,12,13,14,20,21,22];
+function calNav(dir) {
+  calMonth += dir;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCal();
+}
+function renderCal() {
+  var monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('calMonthLabel').textContent = monthNames[calMonth] + ' ' + calYear;
+  var firstDay = new Date(calYear, calMonth, 1).getDay();
+  var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  var today = new Date();
+  var container = document.getElementById('calDays');
+  container.innerHTML = '';
+  for (var i = 0; i < firstDay; i++) {
+    var empty = document.createElement('div');
+    empty.className = 'cal-day empty';
+    container.appendChild(empty);
+  }
+  for (var d = 1; d <= daysInMonth; d++) {
+    var cell = document.createElement('div');
+    var isPast = (calYear < today.getFullYear()) || (calYear === today.getFullYear() && calMonth < today.getMonth()) || (calYear === today.getFullYear() && calMonth === today.getMonth() && d < today.getDate());
+    var isToday = calYear === today.getFullYear() && calMonth === today.getMonth() && d === today.getDate();
+    var isBooked = bookedDays.indexOf(d) !== -1;
+    cell.textContent = d;
+    if (isPast) cell.className = 'cal-day past';
+    else if (isToday) cell.className = 'cal-day today';
+    else if (isBooked) cell.className = 'cal-day booked';
+    else cell.className = 'cal-day available';
+    container.appendChild(cell);
+  }
+}
+renderCal();
+function slideReviews(btn, dir) {
+  var wrapper = btn.closest('.reviews-wrapper');
+  var track = wrapper.querySelector('.reviews-track');
+  var card = track.querySelector('.review-card');
+  if (!card) return;
+  var style = getComputedStyle(track);
+  var gap = parseInt(style.gap || style.columnGap || '32');
+  var cardWidth = card.offsetWidth + gap;
+  track.scrollBy({ left: dir * cardWidth, behavior: 'smooth' });
+}
+</script>
 </body>
 </html>
