@@ -4,11 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About Us — Ku Náay Real Estate</title>
+<meta name="description" content="Meet Ku Náay Real Estate — your trusted local partner for luxury vacation rentals and property sales across the Riviera Maya, Playa del Carmen and Tulum.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0C0C0C">
+<meta name="author" content="Ku Náay Real Estate">
+<link rel="canonical" href="https://www.kunaay.com/about.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ku Náay Real Estate">
+<meta property="og:title" content="About Us — Ku Náay Real Estate">
+<meta property="og:description" content="Meet Ku Náay Real Estate — your trusted local partner for luxury vacation rentals and property sales across the Riviera Maya, Playa del Carmen and Tulum.">
+<meta property="og:url" content="https://www.kunaay.com/about.html">
+<meta property="og:image" content="https://expertvagabond.com/wp-content/uploads/cancun-things-to-do-guide.jpg">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="About Us — Ku Náay Real Estate">
+<meta name="twitter:description" content="Meet Ku Náay Real Estate — your trusted local partner for luxury vacation rentals and property sales across the Riviera Maya, Playa del Carmen and Tulum.">
+<meta name="twitter:image" content="https://expertvagabond.com/wp-content/uploads/cancun-things-to-do-guide.jpg">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/logo.png" sizes="any">
+<link rel="apple-touch-icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://i.ibb.co">
+<link rel="preconnect" href="https://expertvagabond.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap">
+<link rel="preload" as="image" href="https://expertvagabond.com/wp-content/uploads/cancun-things-to-do-guide.jpg" fetchpriority="high">
 <style>
 /* ═══════════════════════════════════════════
    KU NÁAY REAL ESTATE — DESIGN SYSTEM
    ═══════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap');
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -280,7 +305,7 @@ section{padding:5rem 3rem}
 <body>
 
 <nav class="navbar scrolled" id="navbar">
-  <a href="index.html" class="nav-logo"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/logo-light.png" alt="Ku Náay"></a>
+  <a href="index.html" class="nav-logo"><img src="assets/img/logo-light.png" alt="Ku Náay"></a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="rentals.html">Rentals</a></li>
@@ -364,7 +389,7 @@ section{padding:5rem 3rem}
 
 <footer class="footer">
   <div class="footer-top">
-    <div class="footer-brand"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where the Sea Meets Serenity — luxury vacation rentals and real estate in the Riviera Maya.</p></div>
+    <div class="footer-brand"><img src="assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where the Sea Meets Serenity — luxury vacation rentals and real estate in the Riviera Maya.</p></div>
     <div class="footer-nav">
       <div class="footer-col"><h4>Navigation</h4><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div>
       <div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a></div>
@@ -373,163 +398,7 @@ section{padding:5rem 3rem}
   <div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div>
 </footer>
 
-<script>
-/* ═══════════════════════════════════════════
-   KU NÁAY — SHARED JAVASCRIPT
-   ═══════════════════════════════════════════ */
-
-// ─── Navbar scroll effect ───
-const navbar = document.getElementById('navbar');
-if (navbar) {
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 60);
-  });
-  // Init on load
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
-}
-
-// ─── Mobile hamburger menu ───
-const mobileToggle = document.getElementById('mobileToggle');
-const mobileMenu = document.getElementById('mobileMenu');
-if (mobileToggle && mobileMenu) {
-  mobileToggle.addEventListener('click', () => {
-    mobileToggle.classList.toggle('open');
-    mobileMenu.classList.toggle('open');
-    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
-  });
-  // Close menu when clicking a link
-  mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      mobileToggle.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
-}
-
-// ─── Card gallery slider ───
-const galleryData = {};
-const galleryIndexes = {};
-
-function initGallery(id, images) {
-  galleryData[id] = images;
-  galleryIndexes[id] = 0;
-}
-
-function slideGallery(id, dir, event) {
-  if (event) event.stopPropagation();
-  const imgs = galleryData[id];
-  if (!imgs) return;
-  galleryIndexes[id] = (galleryIndexes[id] + dir + imgs.length) % imgs.length;
-  const el = document.getElementById(id);
-  if (!el) return;
-  const img = el.querySelector('img');
-  img.style.opacity = '0';
-  setTimeout(() => {
-    img.src = imgs[galleryIndexes[id]];
-    img.style.opacity = '1';
-  }, 200);
-  const dots = el.querySelectorAll('.card-dot');
-  dots.forEach((d, i) => d.classList.toggle('active', i === galleryIndexes[id]));
-}
-
-// ─── Filter properties ───
-function filterProps(type, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.property-card').forEach(card => {
-    if (type === 'all') {
-      card.style.display = '';
-    } else {
-      card.style.display = card.dataset.type === type ? '' : 'none';
-    }
-  });
-}
-
-// ─── Scroll fade-in animation ───
-function initScrollAnimations() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.animate-in').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-  });
-}
-
-// ─── Lightbox ───
-let lightboxImages = [];
-let lightboxIndex = 0;
-
-function initLightbox(selector) {
-  const imgs = document.querySelectorAll(selector);
-  lightboxImages = Array.from(imgs).map(img => img.src || img.href);
-  
-  imgs.forEach((img, i) => {
-    img.style.cursor = 'pointer';
-    img.addEventListener('click', (e) => {
-      e.preventDefault();
-      lightboxIndex = i;
-      openLightbox();
-    });
-  });
-}
-
-function openLightbox() {
-  const lb = document.getElementById('lightbox');
-  if (!lb) return;
-  lb.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  updateLightboxImage();
-}
-
-function closeLightbox() {
-  const lb = document.getElementById('lightbox');
-  if (!lb) return;
-  lb.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function lightboxNav(dir) {
-  lightboxIndex = (lightboxIndex + dir + lightboxImages.length) % lightboxImages.length;
-  updateLightboxImage();
-}
-
-function updateLightboxImage() {
-  const img = document.getElementById('lightboxImg');
-  if (img) img.src = lightboxImages[lightboxIndex];
-}
-
-// ─── Init on DOM ready ───
-document.addEventListener('DOMContentLoaded', () => {
-  initScrollAnimations();
-  
-  // Close lightbox on background click
-  const lb = document.getElementById('lightbox');
-  if (lb) {
-    lb.addEventListener('click', (e) => {
-      if (e.target === lb) closeLightbox();
-    });
-  }
-  
-  // Keyboard nav for lightbox
-  document.addEventListener('keydown', (e) => {
-    if (!document.getElementById('lightbox')?.classList.contains('open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') lightboxNav(-1);
-    if (e.key === 'ArrowRight') lightboxNav(1);
-  });
-});
-
-</script>
+<script src="assets/js/main.js"></script>
 <script src="assets/js/translations-data.js"></script>
 <script src="assets/js/language-toggle.js"></script>
 </body>

@@ -4,11 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact — Ku Náay Real Estate</title>
+<meta name="description" content="Contact Ku Náay Real Estate about luxury vacation rentals and property sales in the Riviera Maya. Reach our team by email or WhatsApp.">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0C0C0C">
+<meta name="author" content="Ku Náay Real Estate">
+<link rel="canonical" href="https://www.kunaay.com/contact.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ku Náay Real Estate">
+<meta property="og:title" content="Contact — Ku Náay Real Estate">
+<meta property="og:description" content="Contact Ku Náay Real Estate about luxury vacation rentals and property sales in the Riviera Maya. Reach our team by email or WhatsApp.">
+<meta property="og:url" content="https://www.kunaay.com/contact.html">
+<meta property="og:image" content="https://i.ibb.co/4R1DBhVF/Secreto-maya-25-1.jpg">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Contact — Ku Náay Real Estate">
+<meta name="twitter:description" content="Contact Ku Náay Real Estate about luxury vacation rentals and property sales in the Riviera Maya. Reach our team by email or WhatsApp.">
+<meta name="twitter:image" content="https://i.ibb.co/4R1DBhVF/Secreto-maya-25-1.jpg">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="assets/img/logo.png" sizes="any">
+<link rel="apple-touch-icon" href="assets/img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://i.ibb.co">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap">
+<link rel="preload" as="image" href="https://i.ibb.co/4R1DBhVF/Secreto-maya-25-1.jpg" fetchpriority="high">
 <style>
 /* ═══════════════════════════════════════════
    KU NÁAY REAL ESTATE — DESIGN SYSTEM
    ═══════════════════════════════════════════ */
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap');
 
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -217,6 +241,8 @@ section{padding:5rem 3rem}
 .form-group input:focus,.form-group textarea:focus{border-color:var(--gold)}
 .form-group textarea{height:140px;resize:vertical}
 .form-submit{margin-top:0.5rem}
+.form-status{margin-top:1rem;font-size:0.85rem;font-weight:400;line-height:1.5}
+.form-group input:user-invalid,.form-group textarea:user-invalid{border-color:#e06a5a}
 
 /* ─── FOOTER ─── */
 .footer{padding:4rem 3rem 2rem;border-top:1px solid rgba(255,255,255,0.04)}
@@ -280,7 +306,7 @@ section{padding:5rem 3rem}
 <body>
 
 <nav class="navbar scrolled" id="navbar">
-  <a href="index.html" class="nav-logo"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/logo-light.png" alt="Ku Náay"></a>
+  <a href="index.html" class="nav-logo"><img src="assets/img/logo-light.png" alt="Ku Náay"></a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="rentals.html">Rentals</a></li>
@@ -312,50 +338,51 @@ section{padding:5rem 3rem}
       <div class="contact-card animate-in">
         <h4>Jessy A.</h4>
         <a href="mailto:jessy@kunaay.com">✉ jessy@kunaay.com</a>
-        <a href="https://wa.me/529842345900" class="whatsapp-link" target="_blank">💬 +52 984 234 5900 (WhatsApp)</a>
+        <a href="https://wa.me/529842345900" class="whatsapp-link" target="_blank" rel="noopener noreferrer">💬 +52 984 234 5900 (WhatsApp)</a>
       </div>
       <div class="contact-card animate-in">
         <h4>Carolina D.</h4>
         <a href="mailto:carolina@kunaay.com">✉ carolina@kunaay.com</a>
-        <a href="https://wa.me/529841681121" class="whatsapp-link" target="_blank">💬 +52 984 168 1121 (WhatsApp)</a>
+        <a href="https://wa.me/529841681121" class="whatsapp-link" target="_blank" rel="noopener noreferrer">💬 +52 984 168 1121 (WhatsApp)</a>
       </div>
       <div class="contact-card animate-in">
         <h4>Main Office</h4>
         <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.25rem">Monday to Friday, 9:00 AM – 5:00 PM</p>
-        <a href="https://wa.me/529841327945" class="whatsapp-link" target="_blank">💬 +52 984 132 7945 (WhatsApp)</a>
+        <a href="https://wa.me/529841327945" class="whatsapp-link" target="_blank" rel="noopener noreferrer">💬 +52 984 132 7945 (WhatsApp)</a>
       </div>
     </div>
 
     <!-- Right: Contact Form -->
-    <div class="contact-form animate-in">
+    <form class="contact-form animate-in" id="contactForm" novalidate>
       <h3>Request Information</h3>
       <div class="form-group">
         <label for="name">Name</label>
-        <input type="text" id="name" placeholder="Your full name">
+        <input type="text" id="name" name="name" autocomplete="name" placeholder="Your full name" required>
       </div>
       <div class="form-group">
         <label for="email">Email</label>
-        <input type="email" id="email" placeholder="your@email.com">
+        <input type="email" id="email" name="email" autocomplete="email" placeholder="your@email.com" required>
       </div>
       <div class="form-group">
         <label for="subject">Subject</label>
-        <input type="text" id="subject" placeholder="How can we help?">
+        <input type="text" id="subject" name="subject" placeholder="How can we help?">
       </div>
       <div class="form-group">
         <label for="message">Message</label>
-        <textarea id="message" placeholder="Tell us about your ideal stay..."></textarea>
+        <textarea id="message" name="message" placeholder="Tell us about your ideal stay..." required></textarea>
       </div>
       <div class="form-submit">
-        <button class="btn-primary" onclick="alert('Thank you! Your request has been submitted. We will get back to you shortly.')">Submit Request <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
+        <button type="submit" class="btn-primary">Submit Request <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></button>
       </div>
-    </div>
+      <p class="form-status" id="formStatus" role="status" aria-live="polite" hidden></p>
+    </form>
 
   </div>
 </section>
 
 <footer class="footer">
   <div class="footer-top">
-    <div class="footer-brand"><img src="https://michaeldviau.github.io/Kunaay_WebSite/assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where the Sea Meets Serenity — luxury vacation rentals and real estate in the Riviera Maya.</p></div>
+    <div class="footer-brand"><img src="assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where the Sea Meets Serenity — luxury vacation rentals and real estate in the Riviera Maya.</p></div>
     <div class="footer-nav">
       <div class="footer-col"><h4>Navigation</h4><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div>
       <div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a></div>
@@ -364,162 +391,48 @@ section{padding:5rem 3rem}
   <div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div>
 </footer>
 
+<script src="assets/js/main.js"></script>
 <script>
-/* ═══════════════════════════════════════════
-   KU NÁAY — SHARED JAVASCRIPT
-   ═══════════════════════════════════════════ */
+// ─── Contact form: client-side validation + mailto submission ───
+(function () {
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+  const status = document.getElementById('formStatus');
+  const es = () => (window.KUNAAY_LANG === 'es');
 
-// ─── Navbar scroll effect ───
-const navbar = document.getElementById('navbar');
-if (navbar) {
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 60);
-  });
-  // Init on load
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
-}
-
-// ─── Mobile hamburger menu ───
-const mobileToggle = document.getElementById('mobileToggle');
-const mobileMenu = document.getElementById('mobileMenu');
-if (mobileToggle && mobileMenu) {
-  mobileToggle.addEventListener('click', () => {
-    mobileToggle.classList.toggle('open');
-    mobileMenu.classList.toggle('open');
-    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
-  });
-  // Close menu when clicking a link
-  mobileMenu.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', () => {
-      mobileToggle.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
-}
-
-// ─── Card gallery slider ───
-const galleryData = {};
-const galleryIndexes = {};
-
-function initGallery(id, images) {
-  galleryData[id] = images;
-  galleryIndexes[id] = 0;
-}
-
-function slideGallery(id, dir, event) {
-  if (event) event.stopPropagation();
-  const imgs = galleryData[id];
-  if (!imgs) return;
-  galleryIndexes[id] = (galleryIndexes[id] + dir + imgs.length) % imgs.length;
-  const el = document.getElementById(id);
-  if (!el) return;
-  const img = el.querySelector('img');
-  img.style.opacity = '0';
-  setTimeout(() => {
-    img.src = imgs[galleryIndexes[id]];
-    img.style.opacity = '1';
-  }, 200);
-  const dots = el.querySelectorAll('.card-dot');
-  dots.forEach((d, i) => d.classList.toggle('active', i === galleryIndexes[id]));
-}
-
-// ─── Filter properties ───
-function filterProps(type, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.querySelectorAll('.property-card').forEach(card => {
-    if (type === 'all') {
-      card.style.display = '';
-    } else {
-      card.style.display = card.dataset.type === type ? '' : 'none';
-    }
-  });
-}
-
-// ─── Scroll fade-in animation ───
-function initScrollAnimations() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.animate-in').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-  });
-}
-
-// ─── Lightbox ───
-let lightboxImages = [];
-let lightboxIndex = 0;
-
-function initLightbox(selector) {
-  const imgs = document.querySelectorAll(selector);
-  lightboxImages = Array.from(imgs).map(img => img.src || img.href);
-  
-  imgs.forEach((img, i) => {
-    img.style.cursor = 'pointer';
-    img.addEventListener('click', (e) => {
-      e.preventDefault();
-      lightboxIndex = i;
-      openLightbox();
-    });
-  });
-}
-
-function openLightbox() {
-  const lb = document.getElementById('lightbox');
-  if (!lb) return;
-  lb.classList.add('open');
-  document.body.style.overflow = 'hidden';
-  updateLightboxImage();
-}
-
-function closeLightbox() {
-  const lb = document.getElementById('lightbox');
-  if (!lb) return;
-  lb.classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function lightboxNav(dir) {
-  lightboxIndex = (lightboxIndex + dir + lightboxImages.length) % lightboxImages.length;
-  updateLightboxImage();
-}
-
-function updateLightboxImage() {
-  const img = document.getElementById('lightboxImg');
-  if (img) img.src = lightboxImages[lightboxIndex];
-}
-
-// ─── Init on DOM ready ───
-document.addEventListener('DOMContentLoaded', () => {
-  initScrollAnimations();
-  
-  // Close lightbox on background click
-  const lb = document.getElementById('lightbox');
-  if (lb) {
-    lb.addEventListener('click', (e) => {
-      if (e.target === lb) closeLightbox();
-    });
+  function show(msg, isError) {
+    status.hidden = false;
+    status.textContent = msg;
+    status.style.color = isError ? '#e06a5a' : 'var(--gold)';
   }
-  
-  // Keyboard nav for lightbox
-  document.addEventListener('keydown', (e) => {
-    if (!document.getElementById('lightbox')?.classList.contains('open')) return;
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowLeft') lightboxNav(-1);
-    if (e.key === 'ArrowRight') lightboxNav(1);
-  });
-});
 
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const subject = form.subject.value.trim() || 'Website enquiry';
+    const message = form.message.value.trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!name || !emailOk || !message) {
+      show(es()
+        ? 'Por favor complete su nombre, un correo electrónico válido y un mensaje.'
+        : 'Please enter your name, a valid email address, and a message.', true);
+      return;
+    }
+
+    const body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + message;
+    const href = 'mailto:jessy@kunaay.com?cc=carolina@kunaay.com'
+      + '&subject=' + encodeURIComponent('[' + subject + '] ' + name)
+      + '&body=' + encodeURIComponent(body);
+
+    show(es()
+      ? '¡Gracias! Se abrirá su aplicación de correo para enviar el mensaje.'
+      : 'Thank you! Your email app will open to send the message.', false);
+    window.location.href = href;
+    form.reset();
+  });
+})();
 </script>
 <script src="assets/js/translations-data.js"></script>
 <script src="assets/js/language-toggle.js"></script>
