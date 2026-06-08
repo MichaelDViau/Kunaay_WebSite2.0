@@ -402,25 +402,6 @@ section{padding:5rem 3rem}
         <a href="https://wa.me/529841681121" target="_blank" rel="noopener noreferrer" class="btn-primary">Inquire via WhatsApp</a>
         <a href="contact.html" class="btn-outline">Request Info</a>
       </div>
-      <div class="sidebar-card availability-card" style="margin-top:1.5rem;text-align:left">
-        <h3 style="text-align:center;margin-bottom:0.5rem">Availability</h3>
-        <p style="text-align:center;color:var(--text-muted);font-size:0.82rem;margin-bottom:1.5rem">Check open dates for viewings</p>
-        <div class="cal-widget">
-          <div class="cal-header">
-            <button class="cal-nav" onclick="calNav(-1)" aria-label="Previous month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg></button>
-            <span class="cal-month-label" id="calMonthLabel"></span>
-            <button class="cal-nav" onclick="calNav(1)" aria-label="Next month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg></button>
-          </div>
-          <div class="cal-weekdays">
-            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
-          </div>
-          <div class="cal-days" id="calDays"></div>
-          <div class="cal-legend">
-            <span class="cal-legend-item"><span class="cal-dot cal-dot-available"></span>Available</span>
-            <span class="cal-legend-item"><span class="cal-dot cal-dot-booked"></span>Booked</span>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -443,45 +424,6 @@ section{padding:5rem 3rem}
 <script>
 document.addEventListener('DOMContentLoaded',()=>{initLightbox('.lb-img');});
 function openGalleryLightbox(startIndex){lightboxIndex=startIndex;openLightbox();}
-var calCurrentDate = new Date();
-var calYear = calCurrentDate.getFullYear();
-var calMonth = calCurrentDate.getMonth();
-var bookedDays = [3,4,5,12,13,14,20,21,22];
-function calNav(dir) {
-  calMonth += dir;
-  if (calMonth > 11) { calMonth = 0; calYear++; }
-  if (calMonth < 0) { calMonth = 11; calYear--; }
-  renderCal();
-}
-function renderCal() {
-  var monthNamesEN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  var monthNamesES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  var monthNames = (window.KUNAAY_LANG === 'es') ? monthNamesES : monthNamesEN;
-  document.getElementById('calMonthLabel').textContent = monthNames[calMonth] + ' ' + calYear;
-  var firstDay = new Date(calYear, calMonth, 1).getDay();
-  var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-  var today = new Date();
-  var container = document.getElementById('calDays');
-  container.innerHTML = '';
-  for (var i = 0; i < firstDay; i++) {
-    var empty = document.createElement('div');
-    empty.className = 'cal-day empty';
-    container.appendChild(empty);
-  }
-  for (var d = 1; d <= daysInMonth; d++) {
-    var cell = document.createElement('div');
-    var isPast = (calYear < today.getFullYear()) || (calYear === today.getFullYear() && calMonth < today.getMonth()) || (calYear === today.getFullYear() && calMonth === today.getMonth() && d < today.getDate());
-    var isToday = calYear === today.getFullYear() && calMonth === today.getMonth() && d === today.getDate();
-    var isBooked = bookedDays.indexOf(d) !== -1;
-    cell.textContent = d;
-    if (isPast) cell.className = 'cal-day past';
-    else if (isToday) cell.className = 'cal-day today';
-    else if (isBooked) cell.className = 'cal-day booked';
-    else cell.className = 'cal-day available';
-    container.appendChild(cell);
-  }
-}
-renderCal();
 </script>
 <script src="assets/js/translations-data.js"></script>
 <script src="assets/js/language-toggle.js"></script>
