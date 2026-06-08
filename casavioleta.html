@@ -166,13 +166,13 @@ section{padding:5rem 3rem}
 .review-date{font-size:0.75rem;color:var(--text-dim);margin-top:2px}
 
 /* ─── PROPERTY DETAIL PAGE ─── */
-.detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:1}
-.detail-gallery-inner{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;height:480px}
-.detail-gallery-left{border-radius:var(--radius);overflow:hidden;position:relative}
+.detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:2;overflow:hidden}
+.detail-gallery-inner{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;height:480px;overflow:hidden}
+.detail-gallery-left{border-radius:var(--radius);overflow:hidden;position:relative;min-height:0}
 .detail-gallery-left img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
 .detail-gallery-left img:hover{opacity:0.88}
-.detail-gallery-right{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
-.gallery-thumb{border-radius:var(--radius);overflow:hidden;position:relative}
+.detail-gallery-right{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:0.5rem;height:100%;min-height:0}
+.gallery-thumb{border-radius:var(--radius);overflow:hidden;position:relative;min-height:0}
 .gallery-thumb img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
 .gallery-thumb img:hover{opacity:0.88}
 .gallery-more{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer}
@@ -344,10 +344,10 @@ section{padding:5rem 3rem}
 <nav class="navbar scrolled" id="navbar">
   <a href="index.html" class="nav-logo"><img src="assets/img/logo-light.png" alt="Ku Náay"></a>
   <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="rentals.html" class="active">Rentals</a></li><li><a href="sales.html">Sales</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul>
-  <a href="#" class="nav-cta" data-language-toggle><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a>
+  <a href="#" class="nav-cta" data-language-toggle>Español</a>
   <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
-<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta" data-language-toggle><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a></div>
+<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta" data-language-toggle>Español</a></div>
 
 <div class="page-hero" style="height:55vh">
   <div class="page-hero-bg" style="background-image:url('assets/img/photos/rentas/casavioleta/CasaViolettaTop.JPG')"></div>
@@ -410,8 +410,8 @@ section{padding:5rem 3rem}
 <div class="detail-content">
   <div class="detail-grid">
     <div>
-      <h2 class="detail-title">Lagoonfront Luxury in Playacar Phase 1</h2>
-      <div class="detail-subtitle">Playa Del Carmen, Riviera Maya</div>
+      <h2 class="detail-title">Casa Violeta</h2>
+      <div class="detail-subtitle">Ocean Front, Playacar Phase 1</div>
       <div class="detail-highlights">
         <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17V9.5a2 2 0 012-2h5a2 2 0 012 2v2h2v-2a2 2 0 012-2h5a2 2 0 012 2V17"/><path d="M2 17h20"/><path d="M2 17v2M22 17v2"/></svg></div><div class="highlight-label">5 Bedrooms</div></div>
         <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 12V6a2 2 0 012-2h3a2 2 0 012 2v1"/><path d="M4 12v4a2 2 0 002 2h12a2 2 0 002-2v-4"/><path d="M8 20v1M16 20v1"/></svg></div><div class="highlight-label">5 Bathrooms</div></div>
@@ -420,14 +420,44 @@ section{padding:5rem 3rem}
         <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h2l1 5M7 13l-2-8h16l-2 8H7z"/><path d="M7 13a5 5 0 0010 0"/></svg></div><div class="highlight-label">Full Kitchen</div></div>
         <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 010 6H9"/></svg></div><div class="highlight-label">Parking</div></div>
       </div>
-      <p class="detail-desc">Casa Violetta is a landmark beachfront estate that redefines luxury living along the Riviera Maya. Set directly on the crystalline Caribbean shore, this extraordinary five-bedroom, five-bathroom residence commands sweeping ocean panoramas from virtually every room. The architecture seamlessly marries the warmth of traditional Mexican craftsmanship with the clean lines of contemporary design — hand-carved stone details, terracotta accents, and soaring palapa ceilings coexist with state-of-the-art appliances and designer furnishings that satisfy the most discerning palate.</p>
-      <p class="detail-desc">The heart of Casa Violetta is its expansive open-plan living and dining area, which flows effortlessly through full-height glass doors onto a wraparound terrace and the breathtaking infinity-edge pool that seems to dissolve into the sea beyond. Each of the five bedrooms is a private retreat in its own right — featuring king-size beds dressed in fine linens, ensuite marble baths, and curated artwork inspired by the vibrant culture of the Yucatán Peninsula. The master suite occupies its own wing, offering a private terrace, a deep soaking tub positioned to capture sunrise views, and a walk-in dressing room of generous proportion.</p>
-      <p class="detail-desc">Beyond the residence itself, Casa Violetta is attended by a dedicated property team including a private chef available upon request, daily housekeeping, and a concierge service fluent in arranging bespoke experiences — from private cenote excursions and yacht charters to curated culinary tours of local markets. The property sits within a gated community just minutes from the boutique shops and vibrant dining of Playa del Carmen's Fifth Avenue, offering the rare combination of secluded tranquility and effortless urban access. Whether sought as a private holiday retreat or a premier income-generating asset, Casa Violetta represents a singular opportunity in the most coveted address along Mexico's Caribbean coast.</p>
+      <p class="detail-desc">Casa Violetta is an extraordinary beachfront estate that embodies the essence of luxury coastal living in the Riviera Maya. Positioned directly along the pristine shores of the Caribbean Sea, this remarkable five-bedroom, five-bathroom residence captures breathtaking ocean views from nearly every space, creating an atmosphere of effortless elegance and tranquility.</p>
+      <p class="detail-desc">The architecture masterfully blends authentic Mexican craftsmanship with contemporary sophistication. Hand-finished stonework, warm terracotta accents, and soaring palapa ceilings reflect the region&#8217;s rich heritage, while designer furnishings, premium finishes, and modern amenities deliver the highest standard of comfort and style.</p>
+      <p class="detail-desc">At the center of the home, an expansive open-concept living and dining area creates a seamless connection between indoor and outdoor living. Floor-to-ceiling glass doors open onto a sprawling oceanfront terrace, where an impressive infinity-edge pool appears to merge with the turquoise waters beyond. Designed for both intimate gatherings and elegant entertaining, every space has been thoughtfully curated to embrace the beauty of its surroundings.</p>
+      <p class="detail-desc">Each of the five bedroom suites offers a private sanctuary of comfort and refinement. Featuring king-size accommodations, luxurious ensuite marble bathrooms, and carefully selected artwork inspired by the culture and colors of the Yucat&#225;n Peninsula, every room provides a distinctive sense of place. The primary suite occupies its own private wing and features a spacious oceanfront terrace, a deep soaking tub positioned to capture spectacular sunrise views, and an expansive walk-in dressing room designed with both elegance and functionality in mind.</p>
+      <p class="detail-desc">Complementing the residence is a dedicated service team committed to delivering a seamless ownership or guest experience. Daily housekeeping, concierge services, and access to a private chef upon request allow every stay to be tailored to individual preferences. From exclusive cenote adventures and private yacht charters to curated culinary experiences, every detail can be arranged with exceptional care and attention.</p>
+      <p class="detail-desc">Located within a prestigious gated community just minutes from the boutiques, restaurants, and vibrant atmosphere of Playa del Carmen&#8217;s renowned Fifth Avenue, Casa Violetta offers a rare balance of privacy and convenience. Whether enjoyed as a luxurious private retreat or held as a premier investment property, this exceptional residence represents one of the Riviera Maya&#8217;s most compelling opportunities for beachfront ownership.</p>
+
+      <div class="detail-features">
+        <h3>Property Features</h3>
+        <div class="features-list">
+          <div class="feature-item">Central Air Conditioning</div>
+          <div class="feature-item">Digital Safe</div>
+          <div class="feature-item">Washer &amp; Dryer</div>
+          <div class="feature-item">Fast WiFi – 160 Mbps</div>
+          <div class="feature-item">Pool Table</div>
+          <div class="feature-item">Hair Dryer</div>
+          <div class="feature-item">Outdoor Shower</div>
+          <div class="feature-item">Hangers</div>
+          <div class="feature-item">Iron</div>
+          <div class="feature-item">Walk-in Closets</div>
+          <div class="feature-item">Ceiling Fans</div>
+          <div class="feature-item">Private Outdoor Pool</div>
+          <div class="feature-item">Smoke Alarms</div>
+          <div class="feature-item">Carbon Monoxide Alarms</div>
+          <div class="feature-item">Dedicated Workspace</div>
+          <div class="feature-item">Microwave</div>
+          <div class="feature-item">Dishwasher</div>
+          <div class="feature-item">Coffee Maker</div>
+          <div class="feature-item">Blender</div>
+          <div class="feature-item">Toaster</div>
+          <div class="feature-item">Mosquito Nets</div>
+        </div>
+      </div>
     </div>
     <div class="detail-sidebar">
       <div class="sidebar-card">
         <h3>Book Your Stay</h3>
-        <p>Contact us directly for the best rates and personalized service.</p>
+        <p>Contact us directly for the best rates and personalized service for your Riviera Maya vacation.</p>
         <a href="https://wa.me/529841681121" target="_blank" rel="noopener noreferrer" class="btn-primary">Book via WhatsApp</a>
         <a href="contact.html" class="btn-outline">Request Info</a>
       </div>
@@ -466,7 +496,7 @@ section{padding:5rem 3rem}
 
 <div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="closeLightbox()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><img id="lightboxImg" src="" alt="Gallery"><button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button></div>
 
-<footer class="footer"><div class="footer-top"><div class="footer-brand"><img src="assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where the Sea Meets Serenity — luxury vacation rentals and real estate in the Riviera Maya.</p></div><div class="footer-nav"><div class="footer-col"><h4>Navigation</h4><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div><div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a></div></div></div><div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div></footer>
+<footer class="footer"><div class="footer-top"><div class="footer-brand"><img src="assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where Coastal Beauty Meets Timeless Luxury</p></div><div class="footer-nav"><div class="footer-col"><h4>Navigation</h4><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div><div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a></div></div></div><div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div></footer>
 
 <script src="assets/js/main.js"></script>
 <script>

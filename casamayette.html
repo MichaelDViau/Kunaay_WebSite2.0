@@ -166,13 +166,13 @@ section{padding:5rem 3rem}
 .review-date{font-size:0.75rem;color:var(--text-dim);margin-top:2px}
 
 /* ─── PROPERTY DETAIL PAGE ─── */
-.detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:1}
-.detail-gallery-inner{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;height:480px}
-.detail-gallery-left{border-radius:var(--radius);overflow:hidden;position:relative}
+.detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:2;overflow:hidden}
+.detail-gallery-inner{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;height:480px;overflow:hidden}
+.detail-gallery-left{border-radius:var(--radius);overflow:hidden;position:relative;min-height:0}
 .detail-gallery-left img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
 .detail-gallery-left img:hover{opacity:0.88}
-.detail-gallery-right{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
-.gallery-thumb{border-radius:var(--radius);overflow:hidden;position:relative}
+.detail-gallery-right{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:0.5rem;height:100%;min-height:0}
+.gallery-thumb{border-radius:var(--radius);overflow:hidden;position:relative;min-height:0}
 .gallery-thumb img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
 .gallery-thumb img:hover{opacity:0.88}
 .gallery-more{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer}
@@ -349,10 +349,10 @@ section{padding:5rem 3rem}
 <nav class="navbar scrolled" id="navbar">
   <a href="index.html" class="nav-logo"><img src="assets/img/logo-light.png" alt="Ku Náay"></a>
   <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="rentals.html" class="active">Rentals</a></li><li><a href="sales.html">Sales</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul>
-  <a href="#" class="nav-cta" data-language-toggle><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-1px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a>
+  <a href="#" class="nav-cta" data-language-toggle>Español</a>
   <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
-<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta" data-language-toggle><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a></div>
+<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta" data-language-toggle>Español</a></div>
 
 <div class="page-hero" style="height:55vh">
   <div class="page-hero-bg" style="background-image:url('assets/img/photos/rentas/casamayette/CasaMayetteTop.JPG')"></div>
@@ -416,8 +416,8 @@ section{padding:5rem 3rem}
 <div class="detail-content">
   <div class="detail-grid">
     <div>
-      <h2 class="detail-title">Tropical Paradise in Playacar Phase 1</h2>
-      <div class="detail-subtitle">Playa Del Carmen, Riviera Maya</div>
+      <h2 class="detail-title">Casa Mayette</h2>
+      <div class="detail-subtitle">Ocean Front, Playacar Phase 1</div>
       <div class="detail-highlights">
         <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17V9.5a2 2 0 012-2h5a2 2 0 012 2v2h2v-2a2 2 0 012-2h5a2 2 0 012 2V17"/><path d="M2 17h20"/><path d="M2 17v2M22 17v2"/></svg></div><div class="highlight-label">4 Bedrooms</div></div>
         <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 12V6a2 2 0 012-2h3a2 2 0 012 2v1"/><path d="M4 12v4a2 2 0 002 2h12a2 2 0 002-2v-4"/><path d="M8 20v1M16 20v1"/></svg></div><div class="highlight-label">4 Bathrooms</div></div>
@@ -426,14 +426,43 @@ section{padding:5rem 3rem}
         <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h2l1 5M7 13l-2-8h16l-2 8H7z"/><path d="M7 13a5 5 0 0010 0"/></svg></div><div class="highlight-label">Full Kitchen</div></div>
         <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 010 6H9"/></svg></div><div class="highlight-label">Parking</div></div>
       </div>
-      <p class="detail-desc">Casa Mayette is a graciously proportioned beachfront retreat that captures the relaxed sophistication of Playa del Carmen living at its finest. Positioned along a prime stretch of Caribbean shoreline, this four-bedroom, four-bathroom villa has been designed with an unwavering commitment to comfort and style. High ceilings and generous room proportions create an immediate sense of ease upon arrival, while the careful selection of natural materials — pale stone floors, hand-finished plaster walls, and native timber accents — grounds the interior in the authentic spirit of the Riviera Maya. The villa's layout flows intuitively, with social spaces that open to terraces and garden areas crafted for both sun-drenched afternoons and candlelit evenings.</p>
-      <p class="detail-desc">At the centre of outdoor life at Casa Mayette is a beautifully appointed private pool, its clear waters framed by mature palms and a generous sundeck furnished with premium loungers and shaded seating. The ground-floor open-plan living and dining area connects seamlessly to this outdoor realm through sliding glass doors — a design choice that invites the tropical breeze and ocean air to become a constant presence throughout the home. The fully equipped kitchen serves as a culinary hub for the villa, outfitted with professional-grade appliances, ample worktop space, and every tool a private chef or adventurous home cook could require. Breakfast taken on the terrace with the sound of gentle waves is, for many guests, the defining memory of a stay at Casa Mayette.</p>
-      <p class="detail-desc">Each of the four bedrooms has been individually styled to offer its own character while maintaining a coherent language of quality and care. The primary suite commands direct ocean views from a private terrace, enhanced by a luxurious ensuite bathroom featuring a rain shower, freestanding bath, and artisan tile work of exceptional craftsmanship. Three additional bedrooms — each with their own ensuite or dedicated bathroom — ensure that all guests enjoy genuine privacy and comfort throughout their stay. A dedicated housekeeping team maintains the villa to an impeccable standard daily, while the concierge service stands ready to arrange everything from private sunset sailing to curated excursions to the ancient ruins of Tulum and Cobá. Casa Mayette is more than a holiday villa — it is an experience of the Riviera Maya at its most authentic and refined.</p>
+      <p class="detail-desc">Casa Mayette is an elegant beachfront retreat that embodies the effortless sophistication of Riviera Maya living. Set along a coveted stretch of Caribbean coastline, this exceptional four-bedroom, four-bathroom villa has been thoughtfully designed to offer a seamless blend of comfort, style, and coastal serenity.</p>
+      <p class="detail-desc">From the moment you arrive, the home&#8217;s generous proportions and airy interiors create an immediate sense of relaxation. High ceilings, natural light, and carefully selected materials including pale stone flooring, hand-finished plaster walls, and native wood accents establish an atmosphere that is both refined and deeply connected to its surroundings. The villa&#8217;s flowing layout encourages effortless indoor-outdoor living, with inviting social spaces that open onto terraces and landscaped gardens designed for both sun-filled afternoons and elegant evenings under the stars.</p>
+      <p class="detail-desc">At the heart of the outdoor experience is a beautifully designed private pool surrounded by mature palm trees, expansive sun terraces, and thoughtfully arranged lounge areas. Sliding glass doors connect the open-concept living and dining spaces to the outdoors, allowing the gentle ocean breeze and tropical ambiance to become part of everyday life. The fully equipped gourmet kitchen serves as the centerpiece for memorable gatherings, featuring professional-grade appliances, generous preparation areas, and every convenience needed for both private chefs and passionate home cooks. Morning coffee or breakfast on the terrace, accompanied by the sound of the Caribbean waves, is among the many simple luxuries that define life at Casa Mayette.</p>
+      <p class="detail-desc">Each of the four bedrooms has been individually designed to offer comfort, privacy, and understated elegance. The primary suite enjoys a privileged oceanfront position with direct sea views from its private terrace. Its luxurious ensuite bathroom features a freestanding soaking tub, rain shower, and beautifully crafted artisan tilework that reflects the region&#8217;s rich design heritage. Three additional guest bedrooms, each with a private or dedicated bathroom, provide an exceptional level of comfort and privacy for family and guests alike.</p>
+      <p class="detail-desc">A dedicated housekeeping team ensures the residence is maintained to the highest standards, while personalized concierge services can arrange a wide range of bespoke experiences, from private sunset sailing and exclusive dining experiences to guided visits to the ancient wonders of Tulum and Cob&#225;. More than a beachfront villa, Casa Mayette offers an immersive experience defined by authentic luxury, exceptional comfort, and the timeless beauty of the Riviera Maya.</p>
+
+      <div class="detail-features">
+        <h3>Property Features</h3>
+        <div class="features-list">
+          <div class="feature-item">Central Air Conditioning</div>
+          <div class="feature-item">Digital Safe</div>
+          <div class="feature-item">Washer &amp; Dryer</div>
+          <div class="feature-item">Fast WiFi – 160 Mbps</div>
+          <div class="feature-item">Pool Table</div>
+          <div class="feature-item">Hair Dryer</div>
+          <div class="feature-item">Outdoor Shower</div>
+          <div class="feature-item">Hangers</div>
+          <div class="feature-item">Iron</div>
+          <div class="feature-item">Walk-in Closets</div>
+          <div class="feature-item">Ceiling Fans</div>
+          <div class="feature-item">Private Outdoor Pool</div>
+          <div class="feature-item">Smoke Alarms</div>
+          <div class="feature-item">Carbon Monoxide Alarms</div>
+          <div class="feature-item">Dedicated Workspace</div>
+          <div class="feature-item">Microwave</div>
+          <div class="feature-item">Dishwasher</div>
+          <div class="feature-item">Coffee Maker</div>
+          <div class="feature-item">Blender</div>
+          <div class="feature-item">Toaster</div>
+          <div class="feature-item">Mosquito Nets</div>
+        </div>
+      </div>
     </div>
     <div class="detail-sidebar">
       <div class="sidebar-card">
-        <h3>Casa Mayette</h3>
-        <p>Contact us directly for more information and personalized service.</p>
+        <h3>Book Your Stay</h3>
+        <p>Contact us directly for the best rates and personalized service for your Riviera Maya vacation.</p>
         <a href="https://wa.me/529841681121" target="_blank" rel="noopener noreferrer" class="btn-primary">Book via WhatsApp</a>
         <a href="contact.html" class="btn-outline">Request Info</a>
       </div>
@@ -472,7 +501,7 @@ section{padding:5rem 3rem}
 
 <div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="closeLightbox()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><img id="lightboxImg" src="" alt="Gallery"><button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button></div>
 
-<footer class="footer"><div class="footer-top"><div class="footer-brand"><img src="assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where the Sea Meets Serenity — luxury vacation rentals and real estate in the Riviera Maya.</p></div><div class="footer-nav"><div class="footer-col"><h4>Navigation</h4><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div><div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a></div></div></div><div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div></footer>
+<footer class="footer"><div class="footer-top"><div class="footer-brand"><img src="assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where Coastal Beauty Meets Timeless Luxury</p></div><div class="footer-nav"><div class="footer-col"><h4>Navigation</h4><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div><div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a></div></div></div><div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div></footer>
 
 <script src="assets/js/main.js"></script>
 <script>
