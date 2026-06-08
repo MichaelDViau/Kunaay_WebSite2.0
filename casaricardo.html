@@ -26,9 +26,8 @@
 <link rel="apple-touch-icon" href="assets/img/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://i.ibb.co">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap">
-<link rel="preload" as="image" href="https://i.ibb.co/Lhnw7mhr/Casa-Ricardo-036.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="assets/img/photos/rentas/casaricardo/CasaRicardoTop.JPG" fetchpriority="high">
 <style>
 /* ═══════════════════════════════════════════
    KU NÁAY REAL ESTATE — DESIGN SYSTEM
@@ -167,7 +166,7 @@ section{padding:5rem 3rem}
 .review-date{font-size:0.75rem;color:var(--text-dim);margin-top:2px}
 
 /* ─── PROPERTY DETAIL PAGE ─── */
-.detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:2}
+.detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:1}
 .detail-gallery-inner{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;height:480px}
 .detail-gallery-left{border-radius:var(--radius);overflow:hidden;position:relative}
 .detail-gallery-left img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
@@ -183,7 +182,7 @@ section{padding:5rem 3rem}
 .gallery-more-label{font-family:var(--serif);font-size:1.6rem;font-weight:300;color:#fff;letter-spacing:0.05em}
 .gallery-more-sub{font-family:var(--sans);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-top:0.3rem}
 
-.detail-content{padding:4rem 3rem}
+.detail-content{padding:4rem 3rem;position:relative;z-index:2}
 .detail-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:4rem;max-width:1200px;margin:0 auto}
 .detail-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:300;margin-bottom:0.5rem}
 .detail-subtitle{color:var(--text-dim);font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2rem}
@@ -327,8 +326,8 @@ section{padding:5rem 3rem}
   .properties-header{flex-direction:column;align-items:flex-start}
   .detail-gallery{padding:0 1.5rem}
   .detail-gallery-inner{height:auto;grid-template-columns:1fr}
-  .detail-gallery-left{height:260px}
-  .detail-gallery-right{grid-template-columns:1fr 1fr;height:180px}
+  .detail-gallery-left{height:300px}
+  .detail-gallery-right{grid-template-columns:1fr 1fr;height:210px}
   .detail-content{padding:3rem 1.5rem}
   .detail-highlights{grid-template-columns:repeat(2,1fr)}
   .about-section{grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem}
@@ -356,7 +355,7 @@ section{padding:5rem 3rem}
 <div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta" data-language-toggle><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="vertical-align:-2px;margin-right:5px"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Español</a></div>
 
 <div class="page-hero" style="height:55vh">
-  <div class="page-hero-bg" style="background-image:url('https://i.ibb.co/Lhnw7mhr/Casa-Ricardo-036.jpg')"></div>
+  <div class="page-hero-bg" style="background-image:url('assets/img/photos/rentas/casaricardo/CasaRicardoTop.JPG')"></div>
   <div class="page-hero-overlay"></div>
   <div class="page-hero-content"><span class="section-label">Rental · Playacar Phase 1</span><h1>Casa Ricardo</h1></div>
 </div>
@@ -364,23 +363,53 @@ section{padding:5rem 3rem}
 <div class="detail-gallery" id="galleryGrid">
   <div class="detail-gallery-inner">
     <div class="detail-gallery-left">
-      <img class="lb-img" src="https://i.ibb.co/Lhnw7mhr/Casa-Ricardo-036.jpg" alt="Casa Ricardo">
+      <img class="lb-img" src="assets/img/photos/rentas/casaricardo/CasaRicardoTop.JPG" alt="Casa Ricardo" fetchpriority="high" decoding="async">
     </div>
     <div class="detail-gallery-right">
-      <div class="gallery-thumb"><img class="lb-img" src="https://i.ibb.co/nsXx2d5s/Casa-Ricardo-018.jpg" alt="Casa Ricardo"></div>
-      <div class="gallery-thumb"><img class="lb-img" src="https://i.ibb.co/V0yXGRk0/Casa-Ricardo-090.jpg" alt="Casa Ricardo"></div>
-      <div class="gallery-thumb"><img class="lb-img" src="https://i.ibb.co/6cgQn5Bp/Night-Photography-42.jpg" alt="Casa Ricardo"></div>
+      <div class="gallery-thumb"><img class="lb-img" src="assets/img/photos/rentas/casaricardo/CasaRi1.JPG" alt="Casa Ricardo" decoding="async"></div>
+      <div class="gallery-thumb"><img class="lb-img" src="assets/img/photos/rentas/casaricardo/CasaRi2.JPG" alt="Casa Ricardo" decoding="async"></div>
+      <div class="gallery-thumb"><img class="lb-img" src="assets/img/photos/rentas/casaricardo/CasaRi3.JPG" alt="Casa Ricardo" decoding="async"></div>
       <div class="gallery-more" onclick="openGalleryLightbox(3)">
-        <img src="https://i.ibb.co/r2JYbT0Q/Casa-Ricardo-120.jpg" alt="Casa Ricardo">
+        <img src="assets/img/photos/rentas/casaricardo/CasaRi4.JPG" alt="Casa Ricardo" loading="lazy">
         <div class="gallery-more-overlay">
-          <span class="gallery-more-label">+2</span>
+          <span class="gallery-more-label">+32</span>
           <span class="gallery-more-sub">View All Photos</span>
         </div>
       </div>
     </div>
   </div>
-  <img class="lb-img" style="display:none" src="https://i.ibb.co/r2JYbT0Q/Casa-Ricardo-120.jpg" alt="Casa Ricardo">
-  <img class="lb-img" style="display:none" src="https://i.ibb.co/0pJXWCkz/Casa-Ricardo-014.jpg" alt="Casa Ricardo">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi4.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi5.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi6.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi7.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi8.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi9.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi10.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi11.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi12.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi13.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi14.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi15.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi16.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi17.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi18.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi19.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi20.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi21.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi22.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi23.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi24.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi25.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi26.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi27.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi28.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi29.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi30.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi31.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi32.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi33.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi34.JPG" alt="Casa Ricardo" loading="lazy">
+  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casaricardo/CasaRi35.JPG" alt="Casa Ricardo" loading="lazy">
 </div>
 
 <div class="detail-content">
@@ -434,9 +463,9 @@ section{padding:5rem 3rem}
   <span class="section-label">You May Also Like</span>
   <h2 class="section-title">Similar Properties</h2>
   <div class="related-grid">
-    <a href="casasecretomaya.html" class="related-item"><img src="https://i.ibb.co/sBNn7VP/Secreto-maya-81-1.jpg" alt="Casa Secreto Maya"><div class="related-item-info"><h4>Casa Secreto Maya</h4><span>Playa Del Carmen</span></div></a>
-    <a href="casavioleta.html" class="related-item"><img src="https://i.ibb.co/vxVMbJNC/Casa-Violetta-101.jpg" alt="Casa Violetta"><div class="related-item-info"><h4>Casa Violetta</h4><span>Playa Del Carmen</span></div></a>
-    <a href="casamayette.html" class="related-item"><img src="https://i.ibb.co/1hD1Z5J/Casa-Mayette-097.jpg" alt="Casa Mayette"><div class="related-item-info"><h4>Casa Mayette</h4><span>Playa Del Carmen</span></div></a>
+    <a href="casasecretomaya.html" class="related-item"><img src="assets/img/photos/rentas/casasecretomaya/Secretomayatop.JPG" alt="Casa Secreto Maya" loading="lazy" decoding="async"><div class="related-item-info"><h4>Casa Secreto Maya</h4><span>Playa Del Carmen</span></div></a>
+    <a href="casavioleta.html" class="related-item"><img src="assets/img/photos/rentas/casavioleta/CasaViolettaTop.JPG" alt="Casa Violeta" loading="lazy" decoding="async"><div class="related-item-info"><h4>Casa Violetta</h4><span>Playa Del Carmen</span></div></a>
+    <a href="casamayette.html" class="related-item"><img src="assets/img/photos/rentas/casamayette/CasaMayetteTop.JPG" alt="Casa Mayette" loading="lazy" decoding="async"><div class="related-item-info"><h4>Casa Mayette</h4><span>Playa Del Carmen</span></div></a>
   </div>
 </section>
 
