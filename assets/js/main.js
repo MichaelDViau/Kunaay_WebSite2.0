@@ -7,14 +7,22 @@
    KU NÁAY — SHARED JAVASCRIPT
    ═══════════════════════════════════════════ */
 
-// ─── Navbar scroll effect ───
+// ─── Navbar scroll effect (rAF-throttled, passive) ───
 const navbar = document.getElementById('navbar');
 if (navbar) {
-  window.addEventListener('scroll', () => {
+  let navTicking = false;
+  const updateNav = () => {
     navbar.classList.toggle('scrolled', window.scrollY > 60);
-  });
+    navTicking = false;
+  };
+  window.addEventListener('scroll', () => {
+    if (!navTicking) {
+      window.requestAnimationFrame(updateNav);
+      navTicking = true;
+    }
+  }, { passive: true });
   // Init on load
-  navbar.classList.toggle('scrolled', window.scrollY > 60);
+  updateNav();
 }
 
 // ─── Mobile hamburger menu ───
