@@ -168,16 +168,16 @@ section{padding:5rem 3rem}
 .review-date{font-size:0.75rem;color:var(--text-dim);margin-top:2px}
 
 /* ─── PROPERTY DETAIL PAGE ─── */
-.detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:2}
-.detail-gallery-inner{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;height:480px;overflow:hidden}
-.detail-gallery-left{border-radius:var(--radius);overflow:hidden;position:relative;min-height:0}
+.detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:1}
+.detail-gallery-inner{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;height:480px}
+.detail-gallery-left{border-radius:var(--radius);overflow:hidden;position:relative}
 .detail-gallery-left img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
 .detail-gallery-left img:hover{opacity:0.88}
-.detail-gallery-right{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:0.5rem;height:100%;min-height:0}
-.gallery-thumb{border-radius:var(--radius);overflow:hidden;position:relative;min-height:0}
+.detail-gallery-right{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem}
+.gallery-thumb{border-radius:var(--radius);overflow:hidden;position:relative}
 .gallery-thumb img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
 .gallery-thumb img:hover{opacity:0.88}
-.gallery-more{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer;min-height:0}
+.gallery-more{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer}
 .gallery-more img{width:100%;height:100%;object-fit:cover;display:block;transition:var(--transition)}
 .gallery-more-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.52);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:var(--transition)}
 .gallery-more:hover .gallery-more-overlay{background:rgba(0,0,0,0.38)}
@@ -325,8 +325,8 @@ section{padding:5rem 3rem}
   .properties-header{flex-direction:column;align-items:flex-start}
   .detail-gallery{padding:0 1.5rem}
   .detail-gallery-inner{height:auto;grid-template-columns:1fr}
-  .detail-gallery-left{height:260px}
-  .detail-gallery-right{grid-template-columns:1fr 1fr;height:180px}
+  .detail-gallery-left{height:300px}
+  .detail-gallery-right{grid-template-columns:1fr 1fr;height:210px}
   .detail-content{padding:3rem 1.5rem}
   .detail-highlights{grid-template-columns:repeat(2,1fr)}
   .reviews-slider-prev{left:-12px}.reviews-slider-next{right:-12px}.reviews-slider-btn{width:36px;height:36px}
