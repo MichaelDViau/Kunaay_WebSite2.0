@@ -103,9 +103,10 @@
 
   function updateToggleText(lang) {
     const nextLabel = lang === 'es' ? 'English' : 'Español';
+    // Accessible name must start with the visible text (WCAG 2.5.3 Label in Name).
     const ariaLabel = lang === 'es'
-      ? 'Cambiar el idioma del sitio a inglés'
-      : 'Switch site language to Spanish';
+      ? 'English. Cambiar el idioma del sitio a inglés.'
+      : 'Español. Switch site language to Spanish.';
 
     state.toggles.forEach((button) => {
       button.textContent = nextLabel;
