@@ -157,15 +157,17 @@ section{padding:5rem 3rem}
 .reviews-header{text-align:center;margin-bottom:4rem}
 .reviews-track{display:flex;gap:2rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:1rem;scrollbar-width:none}
 .reviews-track::-webkit-scrollbar{display:none}
-.review-card{min-width:420px;max-width:420px;scroll-snap-align:start;background:var(--bg-elevated);border-radius:var(--radius-lg);padding:2.5rem;border:1px solid rgba(255,255,255,0.04);flex-shrink:0;transition:var(--transition)}
+.review-card{min-width:420px;max-width:420px;scroll-snap-align:start;background:var(--bg-elevated);border-radius:var(--radius-lg);padding:2.5rem;border:1px solid rgba(255,255,255,0.04);flex-shrink:0;transition:var(--transition);display:flex;flex-direction:column}
 .review-card:hover{border-color:rgba(201,168,76,0.15)}
 .review-stars{color:var(--gold);font-size:0.85rem;letter-spacing:4px;margin-bottom:1.5rem}
-.review-text{color:var(--text-muted);font-size:0.9rem;line-height:1.8;margin-bottom:2rem;font-weight:300;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
+.review-text{color:var(--text-muted);font-size:0.9rem;line-height:1.8;margin-bottom:2rem;font-weight:300;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;flex:1}
 .review-text.full{-webkit-line-clamp:unset}
 .review-author{display:flex;align-items:center;gap:1rem}
 .review-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,168,76,0.3)}
 .review-name{font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--text)}
 .review-date{font-size:0.75rem;color:var(--text-dim);margin-top:2px}
+.review-toggle{background:none;border:none;color:var(--gold);font-size:0.75rem;cursor:pointer;padding:0;margin-bottom:1.5rem;font-family:inherit;letter-spacing:0.07em;text-transform:uppercase;opacity:0.8;transition:opacity 0.2s}
+.review-toggle:hover{opacity:1}
 
 /* ─── PROPERTY DETAIL PAGE ─── */
 .detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:1}
@@ -469,17 +471,17 @@ section{padding:5rem 3rem}
       <div class="review-card">
         <div class="review-stars">★★★★★</div>
         <p class="review-text">An absolutely stunning villa — the photographs do not do it justice. The garden and pool area were our favourite feature; we spent every evening dining outside. The concierge was exceptionally helpful throughout our stay.</p>
-        <div class="review-author"><img class="review-avatar" src="https://i.pravatar.cc/48?img=47" alt="Sarah M."><div><div class="review-name">Sarah M.</div><div class="review-date">March 2025</div></div></div>
+        <div class="review-author"><img class="review-avatar" src="https://i.pravatar.cc/48?img=47" alt="Sarah M."><div><div class="review-name">Sarah M.</div></div></div>
       </div>
       <div class="review-card">
         <div class="review-stars">★★★★★</div>
         <p class="review-text">Casa FotoPlus exceeded every expectation. The quality of the finishes, the artwork throughout the villa, and the attention to detail made our stay truly memorable. We will absolutely return.</p>
-        <div class="review-author"><img class="review-avatar" src="https://i.pravatar.cc/48?img=32" alt="James L."><div><div class="review-name">James L.</div><div class="review-date">January 2025</div></div></div>
+        <div class="review-author"><img class="review-avatar" src="https://i.pravatar.cc/48?img=32" alt="James L."><div><div class="review-name">James L.</div></div></div>
       </div>
       <div class="review-card">
         <div class="review-stars">★★★★★</div>
         <p class="review-text">Perfect for a family holiday. The three bedrooms gave everyone plenty of space and privacy, and the pool was the children's highlight. The location within Playacar is ideal — quiet and safe, yet minutes from the beach.</p>
-        <div class="review-author"><img class="review-avatar" src="https://i.pravatar.cc/48?img=15" alt="Claire R."><div><div class="review-name">Claire R.</div><div class="review-date">December 2024</div></div></div>
+        <div class="review-author"><img class="review-avatar" src="https://i.pravatar.cc/48?img=15" alt="Claire R."><div><div class="review-name">Claire R.</div></div></div>
       </div>
     </div>
     <button class="reviews-slider-btn reviews-slider-next" onclick="slideReviews(this,1)" aria-label="Next"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg></button>

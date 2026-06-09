@@ -145,6 +145,22 @@ function updateLightboxImage() {
   if (img) img.src = lightboxImages[lightboxIndex];
 }
 
+// ─── Review expand on click ───
+function initReviewExpand() {
+  document.querySelectorAll('.review-card').forEach(card => {
+    const text = card.querySelector('.review-text');
+    if (!text || text.scrollHeight <= text.clientHeight + 2) return;
+    const btn = document.createElement('button');
+    btn.className = 'review-toggle';
+    btn.textContent = 'Read more';
+    text.after(btn);
+    btn.addEventListener('click', () => {
+      const expanded = text.classList.toggle('full');
+      btn.textContent = expanded ? 'Show less' : 'Read more';
+    });
+  });
+}
+
 // ─── Reviews slider ───
 function slideReviews(btn, dir) {
   const wrapper = btn.closest('.reviews-wrapper');
@@ -158,6 +174,7 @@ function slideReviews(btn, dir) {
 // ─── Init on DOM ready ───
 document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
+  initReviewExpand();
 
   // Close lightbox on background click
   const lb = document.getElementById('lightbox');
