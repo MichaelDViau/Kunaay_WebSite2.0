@@ -44,7 +44,7 @@
   --bg-elevated:#1C1C1C;
   --text:#F5F0E8;
   --text-muted:#9A9589;
-  --text-dim:#6B655A;
+  --text-dim:#938C7E;
   --serif:'Cormorant Garamond',Georgia,serif;
   --sans:'Manrope',system-ui,sans-serif;
   --radius:12px;
@@ -59,7 +59,7 @@ img{max-width:100%;display:block}
 /* ─── NAVBAR ─── */
 .navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);backdrop-filter:blur(0px);background:rgba(0,0,0,0.094)}
 .navbar.scrolled{background:rgba(12,12,12,0.92);backdrop-filter:blur(20px);padding:0.8rem 3rem;box-shadow:0 1px 0 rgba(201,168,76,0.1)}
-.nav-logo img{height:44px;transition:var(--transition)}
+.nav-logo img{height:44px;width:auto;transition:var(--transition)}
 .navbar.scrolled .nav-logo img{height:36px}
 .nav-links{display:flex;gap:2.5rem;align-items:center;list-style:none}
 .nav-links a{color:var(--text-muted);text-decoration:none;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;transition:var(--transition);position:relative}
@@ -228,7 +228,7 @@ section{padding:5rem 3rem}
 .contact-cards{display:flex;flex-direction:column;gap:1.5rem}
 .contact-card{background:var(--bg-card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius-lg);padding:2rem;transition:var(--transition)}
 .contact-card:hover{border-color:rgba(201,168,76,0.15)}
-.contact-card h4{font-family:var(--serif);font-size:1.3rem;font-weight:400;margin-bottom:0.5rem}
+.contact-card h2{font-family:var(--serif);font-size:1.3rem;font-weight:400;margin-bottom:0.5rem}
 .contact-card a{color:var(--text-muted);font-size:0.9rem;display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;transition:var(--transition);text-decoration:none}
 .contact-card a:hover{color:var(--gold)}
 .contact-card .whatsapp-link{color:var(--gold);font-weight:500}
@@ -247,10 +247,10 @@ section{padding:5rem 3rem}
 /* ─── FOOTER ─── */
 .footer{padding:4rem 3rem 2rem;border-top:1px solid rgba(255,255,255,0.04)}
 .footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:3rem;margin-bottom:3rem}
-.footer-brand img{height:40px;margin-bottom:1rem}
+.footer-brand img{height:40px;width:auto;margin-bottom:1rem}
 .footer-tagline{color:var(--text-dim);font-size:0.85rem;max-width:300px;line-height:1.7;font-weight:300}
 .footer-nav{display:flex;gap:4rem}
-.footer-col h4{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;font-weight:600}
+.footer-col h3{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;font-weight:600}
 .footer-col a{display:block;color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-bottom:0.6rem;transition:var(--transition);font-weight:300}
 .footer-col a:hover{color:var(--gold)}
 .footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.04);font-size:0.75rem;color:var(--text-dim)}
@@ -306,7 +306,7 @@ section{padding:5rem 3rem}
 <body>
 
 <nav class="navbar scrolled" id="navbar">
-  <a href="index.html" class="nav-logo"><img src="assets/img/logo-light.png" alt="Ku Náay"></a>
+  <a href="index.html" class="nav-logo"><img src="assets/img/logo-light.png" alt="Ku Náay" width="348" height="90"></a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="rentals.html">Rentals</a></li>
@@ -320,6 +320,7 @@ section{padding:5rem 3rem}
 <div class="mobile-menu" id="mobileMenu">
   <a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta" data-language-toggle>Español</a>
 </div>
+<main>
 
 <div class="page-hero" style="min-height:300px;height:40vh">
   <div class="page-hero-bg" style="background-image:url('assets/img/photos/aboutbanner.jpg')"></div>
@@ -336,12 +337,12 @@ section{padding:5rem 3rem}
     <!-- Left: Contact Cards -->
     <div class="contact-cards">
       <div class="contact-card animate-in">
-        <h4>Jessy A.</h4>
+        <h2>Jessy A.</h2>
         <a href="mailto:jessy@kunaay.com"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/></svg>jessy@kunaay.com</a>
         <a href="https://wa.me/529842345900" class="whatsapp-link" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>+52 984 234 5900 (WhatsApp)</a>
       </div>
       <div class="contact-card animate-in">
-        <h4>Carolina D.</h4>
+        <h2>Carolina D.</h2>
         <a href="mailto:carolina@kunaay.com"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 01-2.06 0L2 7"/></svg>carolina@kunaay.com</a>
         <a href="https://wa.me/529841681121" class="whatsapp-link" target="_blank" rel="noopener noreferrer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>+52 984 168 1121 (WhatsApp)</a>
       </div>
@@ -375,12 +376,13 @@ section{padding:5rem 3rem}
   </div>
 </section>
 
+</main>
 <footer class="footer">
   <div class="footer-top">
-    <div class="footer-brand"><img src="assets/img/logo-light.png" alt="Ku Náay"><p class="footer-tagline">Where Coastal Beauty Meets Timeless Luxury</p></div>
+    <div class="footer-brand"><img src="assets/img/logo-light.png" alt="Ku Náay" width="348" height="90"><p class="footer-tagline">Where Coastal Beauty Meets Timeless Luxury</p></div>
     <div class="footer-nav">
-      <div class="footer-col"><h4>Navigation</h4><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div>
-      <div class="footer-col"><h4>Company</h4><a href="about.html">About Us</a><a href="contact.html">Contact</a></div>
+      <div class="footer-col"><h3>Navigation</h3><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div>
+      <div class="footer-col"><h3>Company</h3><a href="about.html">About Us</a><a href="contact.html">Contact</a></div>
     </div>
   </div>
   <div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div>
