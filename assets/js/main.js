@@ -150,13 +150,15 @@ function initReviewExpand() {
   document.querySelectorAll('.review-card').forEach(card => {
     const text = card.querySelector('.review-text');
     if (!text || text.scrollHeight <= text.clientHeight + 2) return;
+    card.classList.add('expandable');
     const btn = document.createElement('button');
     btn.className = 'review-toggle';
     btn.textContent = 'Read more';
     text.after(btn);
-    btn.addEventListener('click', () => {
+    card.addEventListener('click', () => {
       const expanded = text.classList.toggle('full');
       btn.textContent = expanded ? 'Show less' : 'Read more';
+      card.classList.toggle('expanded', expanded);
     });
   });
 }

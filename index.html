@@ -188,7 +188,7 @@ section{padding:5rem 3rem}
 .reviews-slider-prev{left:-24px}
 .reviews-slider-next{right:-24px}
 @media(max-width:768px){.reviews-slider-prev{left:-12px}.reviews-slider-next{right:-12px}.reviews-slider-btn{width:36px;height:36px}}
-.reviews-track{display:flex;gap:2rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:1rem;scrollbar-width:none}
+.reviews-track{display:flex;gap:2rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:1rem;scrollbar-width:none;align-items:flex-start}
 .reviews-track::-webkit-scrollbar{display:none}
 .review-card{min-width:420px;max-width:420px;scroll-snap-align:start;background:var(--bg-elevated);border-radius:var(--radius-lg);padding:2.5rem;border:1px solid rgba(255,255,255,0.04);flex-shrink:0;transition:var(--transition);display:flex;flex-direction:column}
 .review-card:hover{border-color:rgba(201,168,76,0.15)}
@@ -201,6 +201,8 @@ section{padding:5rem 3rem}
 .review-date{font-size:0.75rem;color:var(--text-dim);margin-top:2px}
 .review-toggle{background:none;border:none;color:var(--gold);font-size:0.75rem;cursor:pointer;padding:0;margin-bottom:1.5rem;font-family:inherit;letter-spacing:0.07em;text-transform:uppercase;opacity:0.8;transition:opacity 0.2s}
 .review-toggle:hover{opacity:1}
+.review-card.expandable{cursor:pointer}
+.review-card.expanded{border-color:rgba(201,168,76,0.2)}
 
 /* ─── PROPERTY DETAIL PAGE ─── */
 .detail-gallery{padding:0 3rem;display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:220px;gap:0.5rem;margin-top:-2rem;position:relative;z-index:2}
