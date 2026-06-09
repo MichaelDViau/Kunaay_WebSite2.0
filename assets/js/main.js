@@ -153,10 +153,12 @@ function initReviewExpand() {
     // Always insert the toggle placeholder so every card reserves the same vertical space.
     const btn = document.createElement('button');
     btn.className = 'review-toggle';
+    btn.textContent = 'Read more';
     text.after(btn);
     if (text.scrollHeight <= text.clientHeight + 2) {
-      // Text fits within 5 lines — hide button but keep its space
+      // Text fits — keep space but make it invisible and non-interactive
       btn.style.visibility = 'hidden';
+      btn.style.pointerEvents = 'none';
       return;
     }
     card.classList.add('expandable');
