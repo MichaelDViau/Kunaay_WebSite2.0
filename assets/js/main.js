@@ -149,12 +149,18 @@ function updateLightboxImage() {
 function initReviewExpand() {
   document.querySelectorAll('.review-card').forEach(card => {
     const text = card.querySelector('.review-text');
-    if (!text || text.scrollHeight <= text.clientHeight + 2) return;
-    card.classList.add('expandable');
+    if (!text) return;
+    // Always insert the toggle placeholder so every card reserves the same vertical space.
     const btn = document.createElement('button');
     btn.className = 'review-toggle';
-    btn.textContent = 'Read more';
     text.after(btn);
+    if (text.scrollHeight <= text.clientHeight + 2) {
+      // Text fits within 5 lines — hide button but keep its space
+      btn.style.visibility = 'hidden';
+      return;
+    }
+    card.classList.add('expandable');
+    btn.textContent = 'Read more';
     card.addEventListener('click', () => {
       const expanded = text.classList.toggle('full');
       btn.textContent = expanded ? 'Show less' : 'Read more';
