@@ -149,15 +149,38 @@ function updateLightboxImage() {
 function initReviewExpand() {
   document.querySelectorAll('.review-card').forEach(card => {
     const text = card.querySelector('.review-text');
-    if (!text || text.scrollHeight <= text.clientHeight + 2) return;
+    if (!text) return;
+    // Always insert the toggle placeholder so every card reserves the same vertical space.
     const btn = document.createElement('button');
     btn.className = 'review-toggle';
     btn.textContent = 'Read more';
     text.after(btn);
-    btn.addEventListener('click', () => {
+    if (text.scrollHeight <= text.clientHeight + 2) {
+      // Text fits — keep space but make it invisible and non-interactive
+      btn.style.visibility = 'hidden';
+      btn.style.pointerEvents = 'none';
+      return;
+    }
+    card.classList.add('expandable');
+    card.addEventListener('click', () => {
       const expanded = text.classList.toggle('full');
       btn.textContent = expanded ? 'Show less' : 'Read more';
+      card.classList.toggle('expanded', expanded);
+      // Restore frozen height on collapse; auto on expand
+      card.style.height = expanded ? 'auto' : card.dataset.baseHeight;
     });
+  });
+
+  // After the first paint, freeze each card's rendered height so that expanding
+  // one card never resizes its siblings.
+  const track = document.querySelector('.reviews-track');
+  if (!track) return;
+  requestAnimationFrame(() => {
+    track.querySelectorAll('.review-card').forEach(card => {
+      card.dataset.baseHeight = card.getBoundingClientRect().height + 'px';
+      card.style.height = card.dataset.baseHeight;
+    });
+    track.style.alignItems = 'flex-start';
   });
 }
 

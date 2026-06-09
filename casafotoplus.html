@@ -152,23 +152,6 @@ section{padding:5rem 3rem}
 .card-link{display:inline-flex;align-items:center;gap:0.5rem;color:var(--gold);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;font-weight:600;transition:var(--transition)}
 .card-link:hover{gap:0.75rem}
 
-/* ─── REVIEWS ─── */
-.reviews{background:var(--bg-card);border-top:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04)}
-.reviews-header{text-align:center;margin-bottom:4rem}
-.reviews-track{display:flex;gap:2rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:1rem;scrollbar-width:none}
-.reviews-track::-webkit-scrollbar{display:none}
-.review-card{min-width:420px;max-width:420px;scroll-snap-align:start;background:var(--bg-elevated);border-radius:var(--radius-lg);padding:2.5rem;border:1px solid rgba(255,255,255,0.04);flex-shrink:0;transition:var(--transition);display:flex;flex-direction:column}
-.review-card:hover{border-color:rgba(201,168,76,0.15)}
-.review-stars{color:var(--gold);font-size:0.85rem;letter-spacing:4px;margin-bottom:1.5rem}
-.review-text{color:var(--text-muted);font-size:0.9rem;line-height:1.8;margin-bottom:2rem;font-weight:300;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;flex:1}
-.review-text.full{-webkit-line-clamp:unset}
-.review-author{display:flex;align-items:center;gap:1rem}
-.review-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,168,76,0.3)}
-.review-name{font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--text)}
-.review-date{font-size:0.75rem;color:var(--text-dim);margin-top:2px}
-.review-toggle{background:none;border:none;color:var(--gold);font-size:0.75rem;cursor:pointer;padding:0;margin-bottom:1.5rem;font-family:inherit;letter-spacing:0.07em;text-transform:uppercase;opacity:0.8;transition:opacity 0.2s}
-.review-toggle:hover{opacity:1}
-
 /* ─── PROPERTY DETAIL PAGE ─── */
 .detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:1}
 .detail-gallery-inner{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;height:480px;overflow:hidden}
@@ -297,11 +280,6 @@ section{padding:5rem 3rem}
 .cal-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
 .cal-dot-available{background:rgba(201,168,76,0.5)}
 .cal-dot-booked{background:rgba(255,255,255,0.15)}
-.reviews-wrapper{position:relative;display:flex;align-items:center;gap:0}
-.reviews-slider-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:var(--bg-card);border:1px solid rgba(201,168,76,0.3);color:var(--gold);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.3s ease;flex-shrink:0}
-.reviews-slider-btn:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
-.reviews-slider-prev{left:-24px}
-.reviews-slider-next{right:-24px}
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:1024px){
@@ -319,7 +297,6 @@ section{padding:5rem 3rem}
   .mobile-toggle{display:block}
   .properties-grid{grid-template-columns:1fr}
   .card-gallery{height:240px}
-  .review-card{min-width:300px;max-width:300px;padding:1.75rem}
   .footer-nav{gap:2rem}
   .footer-top{flex-direction:column}
   .footer-bottom{flex-direction:column;gap:0.75rem;text-align:center}
@@ -331,7 +308,6 @@ section{padding:5rem 3rem}
   .detail-gallery-right{grid-template-columns:1fr 1fr;height:210px}
   .detail-content{padding:3rem 1.5rem}
   .detail-highlights{grid-template-columns:repeat(2,1fr)}
-  .reviews-slider-prev{left:-12px}.reviews-slider-next{right:-12px}.reviews-slider-btn{width:36px;height:36px}
   .about-section{grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem}
   .about-section.reverse{direction:ltr}
   .about-img{height:280px}
@@ -460,34 +436,6 @@ section{padding:5rem 3rem}
   </div>
 </div>
 
-<section class="reviews">
-  <div class="reviews-header">
-    <span class="section-label">Guest Experiences</span>
-    <h2 class="section-title">What Our Guests Say</h2>
-  </div>
-  <div class="reviews-wrapper" style="overflow:hidden;padding:0 2rem">
-    <button class="reviews-slider-btn reviews-slider-prev" onclick="slideReviews(this,-1)" aria-label="Previous"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg></button>
-    <div class="reviews-track">
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">An absolutely stunning villa — the photographs do not do it justice. The garden and pool area were our favourite feature; we spent every evening dining outside. The concierge was exceptionally helpful throughout our stay.</p>
-        <div class="review-author"><img class="review-avatar" src="https://i.pravatar.cc/48?img=47" alt="Sarah M."><div><div class="review-name">Sarah M.</div></div></div>
-      </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">Casa FotoPlus exceeded every expectation. The quality of the finishes, the artwork throughout the villa, and the attention to detail made our stay truly memorable. We will absolutely return.</p>
-        <div class="review-author"><img class="review-avatar" src="https://i.pravatar.cc/48?img=32" alt="James L."><div><div class="review-name">James L.</div></div></div>
-      </div>
-      <div class="review-card">
-        <div class="review-stars">★★★★★</div>
-        <p class="review-text">Perfect for a family holiday. The three bedrooms gave everyone plenty of space and privacy, and the pool was the children's highlight. The location within Playacar is ideal — quiet and safe, yet minutes from the beach.</p>
-        <div class="review-author"><img class="review-avatar" src="https://i.pravatar.cc/48?img=15" alt="Claire R."><div><div class="review-name">Claire R.</div></div></div>
-      </div>
-    </div>
-    <button class="reviews-slider-btn reviews-slider-next" onclick="slideReviews(this,1)" aria-label="Next"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg></button>
-  </div>
-</section>
-
 <section class="related">
   <span class="section-label">You May Also Like</span>
   <h2 class="section-title">Similar Properties</h2>
@@ -546,16 +494,6 @@ function renderCal() {
   }
 }
 renderCal();
-function slideReviews(btn, dir) {
-  var wrapper = btn.closest('.reviews-wrapper');
-  var track = wrapper.querySelector('.reviews-track');
-  var card = track.querySelector('.review-card');
-  if (!card) return;
-  var style = getComputedStyle(track);
-  var gap = parseInt(style.gap || style.columnGap || '32');
-  var cardWidth = card.offsetWidth + gap;
-  track.scrollBy({ left: dir * cardWidth, behavior: 'smooth' });
-}
 </script>
 <script src="assets/js/translations-data.js"></script>
 <script src="assets/js/language-toggle.js"></script>
