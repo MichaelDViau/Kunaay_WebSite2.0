@@ -162,12 +162,25 @@ function initReviewExpand() {
       return;
     }
     card.classList.add('expandable');
-    btn.textContent = 'Read more';
     card.addEventListener('click', () => {
       const expanded = text.classList.toggle('full');
       btn.textContent = expanded ? 'Show less' : 'Read more';
       card.classList.toggle('expanded', expanded);
+      // Restore frozen height on collapse; auto on expand
+      card.style.height = expanded ? 'auto' : card.dataset.baseHeight;
     });
+  });
+
+  // After the first paint, freeze each card's rendered height so that expanding
+  // one card never resizes its siblings.
+  const track = document.querySelector('.reviews-track');
+  if (!track) return;
+  requestAnimationFrame(() => {
+    track.querySelectorAll('.review-card').forEach(card => {
+      card.dataset.baseHeight = card.getBoundingClientRect().height + 'px';
+      card.style.height = card.dataset.baseHeight;
+    });
+    track.style.alignItems = 'flex-start';
   });
 }
 
