@@ -49,7 +49,8 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap"></noscript>
 <link rel="preload" as="image" href="https://i.ibb.co/xSnYTPFs/Casa-Vi6.jpg" fetchpriority="high">
 <style>
 /* ═══════════════════════════════════════════
@@ -368,9 +369,9 @@ section{padding:5rem 3rem}
 <section class="hero">
   <div class="hero-slider" id="heroSlider">
     <div class="hero-slide active" style="background-image:url('https://i.ibb.co/xSnYTPFs/Casa-Vi6.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('https://i.ibb.co/1tG1prDt/casasm6.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('https://i.ibb.co/0jMPZ4Jn/Casa-My24.jpg')"></div>
-    <div class="hero-slide" style="background-image:url('https://i.ibb.co/HTvcd7gB/Casa-Ri7.jpg')"></div>
+    <div class="hero-slide" data-bg="https://i.ibb.co/1tG1prDt/casasm6.jpg"></div>
+    <div class="hero-slide" data-bg="https://i.ibb.co/0jMPZ4Jn/Casa-My24.jpg"></div>
+    <div class="hero-slide" data-bg="https://i.ibb.co/HTvcd7gB/Casa-Ri7.jpg"></div>
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-slider-dots" id="heroSliderDots">
@@ -597,15 +598,30 @@ section{padding:5rem 3rem}
   const dots = document.querySelectorAll('#heroSliderDots .hero-slider-dot');
   let cur = 0;
   let timer;
+  // Slides 2-4 carry their image in data-bg so only the first (LCP) hero image
+  // loads up front; the rest are fetched just before they're shown.
+  function loadSlide(n){
+    const s = slides[n];
+    if (s && s.dataset.bg){
+      s.style.backgroundImage = "url('" + s.dataset.bg + "')";
+      s.removeAttribute('data-bg');
+    }
+  }
   function goTo(n){
     slides[cur].classList.remove('active');
     dots[cur].classList.remove('active');
     cur = (n + slides.length) % slides.length;
+    loadSlide(cur);
     slides[cur].classList.add('active');
     dots[cur].classList.add('active');
   }
   window.goToHeroSlide = function(n){ clearInterval(timer); goTo(n); timer = setInterval(()=>goTo(cur+1), 5000); };
   timer = setInterval(()=>goTo(cur+1), 5000);
+  // Warm the remaining slides after load + idle so transitions stay instant
+  // without stealing bandwidth from the hero LCP image during initial paint.
+  window.addEventListener('load', function(){
+    setTimeout(function(){ for (let i = 1; i < slides.length; i++) loadSlide(i); }, 1500);
+  });
 })();
 
 initGallery('g0',['https://i.ibb.co/sBNn7VP/Secreto-maya-81-1.jpg','https://i.ibb.co/60cHvKsX/Secreto-maya-74-1.jpg','https://i.ibb.co/vM6HB6g/Secreto-maya-10-1.jpg']);
@@ -615,7 +631,7 @@ initGallery('g3',['https://i.ibb.co/Lhnw7mhr/Casa-Ricardo-036.jpg','https://i.ib
 initGallery('g4',['https://img1.wsimg.com/isteam/ip/3c60e503-1c29-4ec9-b0a0-20b112f1ba44/a-32812fe.jpeg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:2560,h:1920','https://img1.wsimg.com/isteam/ip/3c60e503-1c29-4ec9-b0a0-20b112f1ba44/c-03d66e7.jpeg/:/rs=w:2560,h:1920','https://img1.wsimg.com/isteam/ip/3c60e503-1c29-4ec9-b0a0-20b112f1ba44/i-5f723af.jpeg/:/cr=t:0%25,l:0%25,w:100%25,h:100%25/rs=w:2560,h:1920']);
 initGallery('g5',['assets/img/photos/sales/casachukum/casackm12.JPG','assets/img/photos/sales/casachukum/casackm1.JPG','assets/img/photos/sales/casachukum/casackm2.JPG']);
 </script>
-<script src="assets/js/translations-data.js"></script>
-<script src="assets/js/language-toggle.js"></script>
+<script src="assets/js/translations-data.js" defer></script>
+<script src="assets/js/language-toggle.js" defer></script>
 </body>
 </html>
