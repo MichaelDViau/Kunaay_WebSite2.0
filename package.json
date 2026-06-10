@@ -1,0 +1,14 @@
+{
+  "name": "kunaay-website",
+  "version": "2.0.0",
+  "description": "Ku Náay Real Estate — static site. Sources live in assets/css and assets/js; pages load the .min builds. Run `npm run build` after editing any source file.",
+  "private": true,
+  "scripts": {
+    "build": "npm run build:css && npm run build:js",
+    "build:css": "esbuild assets/css/main.css --minify --outfile=assets/css/main.min.css",
+    "build:js": "esbuild assets/js/main.js assets/js/language-toggle.js assets/js/translations-data.js --minify --outdir=assets/js --out-extension:.js=.min.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
+  }
+}
