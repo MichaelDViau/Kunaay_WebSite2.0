@@ -7,12 +7,18 @@
   X-Frame-Options: SAMEORIGIN
   Permissions-Policy: geolocation=(), microphone=(), camera=()
 
-# Long-lived, fingerprint-free media & icons
+# Long-lived, fingerprint-free media, icons & fonts
 /assets/img/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Scripts/data change occasionally — cache a day, then revalidate
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Code changes occasionally — cache a day, then revalidate
 /assets/js/*
+  Cache-Control: public, max-age=86400, must-revalidate
+
+/assets/css/*
   Cache-Control: public, max-age=86400, must-revalidate
 
 # HTML — short cache so content updates propagate quickly

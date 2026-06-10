@@ -1,13 +1,36 @@
-/* ════════════════════════════════════════════════════════════
-   Ku Náay Real Estate — shared site behaviour
-   (navbar, mobile menu, card galleries, filters, scroll-in,
-    lightbox, reviews slider). Loaded once and cached per visit.
-   ════════════════════════════════════════════════════════════ */
-/* ═══════════════════════════════════════════
-   KU NÁAY — SHARED JAVASCRIPT
-   ═══════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════════
+   KU NÁAY REAL ESTATE — SITE BEHAVIOUR (source of truth)
+   ────────────────────────────────────────────────────────────────
+   One shared, cached script for every page. Each feature is
+   guarded by the presence of its markup, so pages only pay for
+   what they use. Pages load the minified build (main.min.js,
+   regenerate with `npm run build`) and pass page data through an
+   inline `window.KUNAAY_PAGE` object *before* this script runs:
 
-// ─── Navbar scroll effect (rAF-throttled, passive) ───
+     window.KUNAAY_PAGE = {
+       galleries:  { g0: [url, …], … },   // property-card sliders
+       lightbox:   [url, …],              // full gallery (detail pages)
+       bookedDays: [3, 4, …]              // availability calendar
+     };
+
+   CONTENTS
+     1. Navbar scroll effect
+     2. Mobile hamburger menu
+     3. Home hero slider
+     4. Property-card gallery sliders
+     5. Property type filter (All / Rentals / Sales)
+     6. Scroll fade-in animation
+     7. Lightbox (detail-page photo gallery)
+     8. Reviews: expand on click + slider arrows
+     9. Availability calendar
+    10. Contact form (validation + mailto handoff)
+   ════════════════════════════════════════════════════════════════ */
+
+'use strict';
+
+const PAGE = window.KUNAAY_PAGE || {};
+
+/* ─── 1. Navbar scroll effect (rAF-throttled, passive) ─────────── */
 const navbar = document.getElementById('navbar');
 if (navbar) {
   let navTicking = false;
@@ -21,11 +44,10 @@ if (navbar) {
       navTicking = true;
     }
   }, { passive: true });
-  // Init on load
   updateNav();
 }
 
-// ─── Mobile hamburger menu ───
+/* ─── 2. Mobile hamburger menu ─────────────────────────────────── */
 const mobileToggle = document.getElementById('mobileToggle');
 const mobileMenu = document.getElementById('mobileMenu');
 if (mobileToggle && mobileMenu) {
@@ -34,7 +56,7 @@ if (mobileToggle && mobileMenu) {
     mobileMenu.classList.toggle('open');
     document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
   });
-  // Close menu when clicking a link
+  // Close the overlay when a navigation link is chosen
   mobileMenu.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', () => {
       mobileToggle.classList.remove('open');
@@ -44,7 +66,44 @@ if (mobileToggle && mobileMenu) {
   });
 }
 
-// ─── Card gallery slider ───
+/* ─── 3. Home hero slider ──────────────────────────────────────── */
+/* Slides 2-n carry their image in data-bg so only the first (LCP)
+   hero image loads up front; the rest are fetched just before they
+   are shown, then all are warmed after window load + idle. */
+(function () {
+  const slides = document.querySelectorAll('#heroSlider .hero-slide');
+  if (!slides.length) return;
+  const dots = document.querySelectorAll('#heroSliderDots .hero-slider-dot');
+  let cur = 0;
+  let timer;
+
+  function loadSlide(n) {
+    const s = slides[n];
+    if (s && s.dataset.bg) {
+      s.style.backgroundImage = "url('" + s.dataset.bg + "')";
+      s.removeAttribute('data-bg');
+    }
+  }
+  function goTo(n) {
+    slides[cur].classList.remove('active');
+    dots[cur].classList.remove('active');
+    cur = (n + slides.length) % slides.length;
+    loadSlide(cur);
+    slides[cur].classList.add('active');
+    dots[cur].classList.add('active');
+  }
+  window.goToHeroSlide = function (n) {
+    clearInterval(timer);
+    goTo(n);
+    timer = setInterval(() => goTo(cur + 1), 5000);
+  };
+  timer = setInterval(() => goTo(cur + 1), 5000);
+  window.addEventListener('load', () => {
+    setTimeout(() => { for (let i = 1; i < slides.length; i++) loadSlide(i); }, 1500);
+  });
+})();
+
+/* ─── 4. Property-card gallery sliders ─────────────────────────── */
 const galleryData = {};
 const galleryIndexes = {};
 
@@ -66,26 +125,28 @@ function slideGallery(id, dir, event) {
     img.src = imgs[galleryIndexes[id]];
     img.style.opacity = '1';
   }, 200);
-  const dots = el.querySelectorAll('.card-dot');
-  dots.forEach((d, i) => d.classList.toggle('active', i === galleryIndexes[id]));
+  el.querySelectorAll('.card-dot').forEach((d, i) => {
+    d.classList.toggle('active', i === galleryIndexes[id]);
+  });
 }
 
-// ─── Filter properties ───
+// Register card galleries declared by the page
+if (PAGE.galleries) {
+  Object.keys(PAGE.galleries).forEach(id => initGallery(id, PAGE.galleries[id]));
+}
+
+/* ─── 5. Property type filter (All / Rentals / Sales) ──────────── */
 function filterProps(type, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.querySelectorAll('.property-card').forEach(card => {
-    if (type === 'all') {
-      card.style.display = '';
-    } else {
-      card.style.display = card.dataset.type === type ? '' : 'none';
-    }
+    card.style.display = (type === 'all' || card.dataset.type === type) ? '' : 'none';
   });
 }
 
-// ─── Scroll fade-in animation ───
+/* ─── 6. Scroll fade-in animation ──────────────────────────────── */
 function initScrollAnimations() {
-  const observer = new IntersectionObserver((entries) => {
+  const observer = new IntersectionObserver(entries => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         e.target.style.opacity = '1';
@@ -102,17 +163,19 @@ function initScrollAnimations() {
   });
 }
 
-// ─── Lightbox ───
+/* ─── 7. Lightbox (detail-page photo gallery) ──────────────────── */
+/* The full image list comes from KUNAAY_PAGE.lightbox; only the
+   visible grid images exist in the DOM (class="lb-img"), in the
+   same order as the head of the list. Images are fetched on demand
+   when shown, so opening the page never downloads the whole set. */
 let lightboxImages = [];
 let lightboxIndex = 0;
 
-function initLightbox(selector) {
-  const imgs = document.querySelectorAll(selector);
-  lightboxImages = Array.from(imgs).map(img => img.src || img.href);
-  
-  imgs.forEach((img, i) => {
-    img.style.cursor = 'pointer';
-    img.addEventListener('click', (e) => {
+function initLightbox() {
+  lightboxImages = PAGE.lightbox || [];
+  if (!lightboxImages.length) return;
+  document.querySelectorAll('.lb-img').forEach((img, i) => {
+    img.addEventListener('click', e => {
       e.preventDefault();
       lightboxIndex = i;
       openLightbox();
@@ -126,6 +189,12 @@ function openLightbox() {
   lb.classList.add('open');
   document.body.style.overflow = 'hidden';
   updateLightboxImage();
+}
+
+// Used by the “View All Photos” tile: open at a given image index
+function openGalleryLightbox(startIndex) {
+  lightboxIndex = startIndex;
+  openLightbox();
 }
 
 function closeLightbox() {
@@ -145,7 +214,7 @@ function updateLightboxImage() {
   if (img) img.src = lightboxImages[lightboxIndex];
 }
 
-// ─── Review expand on click ───
+/* ─── 8. Reviews: expand on click + slider arrows ──────────────── */
 function initReviewExpand() {
   document.querySelectorAll('.review-card').forEach(card => {
     const text = card.querySelector('.review-text');
@@ -184,7 +253,6 @@ function initReviewExpand() {
   });
 }
 
-// ─── Reviews slider ───
 function slideReviews(btn, dir) {
   const wrapper = btn.closest('.reviews-wrapper');
   const track = wrapper.querySelector('.reviews-track');
@@ -194,21 +262,121 @@ function slideReviews(btn, dir) {
   track.scrollBy({ left: dir * cardWidth, behavior: 'smooth' });
 }
 
-// ─── Init on DOM ready ───
+/* ─── 9. Availability calendar ─────────────────────────────────── */
+/* Renders the month grid into #calDays. Booked days come from
+   KUNAAY_PAGE.bookedDays. renderCal is exposed globally so the
+   language toggle can re-render month names after switching. */
+(function () {
+  if (!document.getElementById('calDays')) return;
+
+  const bookedDays = PAGE.bookedDays || [];
+  const today = new Date();
+  let calYear = today.getFullYear();
+  let calMonth = today.getMonth();
+
+  const MONTHS_EN = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'];
+  const MONTHS_ES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+  window.calNav = function (dir) {
+    calMonth += dir;
+    if (calMonth > 11) { calMonth = 0; calYear++; }
+    if (calMonth < 0) { calMonth = 11; calYear--; }
+    window.renderCal();
+  };
+
+  window.renderCal = function () {
+    const months = (window.KUNAAY_LANG === 'es') ? MONTHS_ES : MONTHS_EN;
+    document.getElementById('calMonthLabel').textContent = months[calMonth] + ' ' + calYear;
+
+    const firstDay = new Date(calYear, calMonth, 1).getDay();
+    const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+    const now = new Date();
+    const container = document.getElementById('calDays');
+    container.innerHTML = '';
+
+    for (let i = 0; i < firstDay; i++) {
+      const empty = document.createElement('div');
+      empty.className = 'cal-day empty';
+      container.appendChild(empty);
+    }
+    for (let d = 1; d <= daysInMonth; d++) {
+      const cell = document.createElement('div');
+      const isPast = (calYear < now.getFullYear())
+        || (calYear === now.getFullYear() && calMonth < now.getMonth())
+        || (calYear === now.getFullYear() && calMonth === now.getMonth() && d < now.getDate());
+      const isToday = calYear === now.getFullYear() && calMonth === now.getMonth() && d === now.getDate();
+      const isBooked = bookedDays.indexOf(d) !== -1;
+      cell.textContent = d;
+      if (isPast) cell.className = 'cal-day past';
+      else if (isToday) cell.className = 'cal-day today';
+      else if (isBooked) cell.className = 'cal-day booked';
+      else cell.className = 'cal-day available';
+      container.appendChild(cell);
+    }
+  };
+
+  window.renderCal();
+})();
+
+/* ─── 10. Contact form (validation + mailto handoff) ───────────── */
+(function () {
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+  const status = document.getElementById('formStatus');
+  const es = () => (window.KUNAAY_LANG === 'es');
+
+  function show(msg, isError) {
+    status.hidden = false;
+    status.textContent = msg;
+    status.style.color = isError ? '#e06a5a' : 'var(--gold)';
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const subject = form.subject.value.trim() || 'Website enquiry';
+    const message = form.message.value.trim();
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!name || !emailOk || !message) {
+      show(es()
+        ? 'Por favor complete su nombre, un correo electrónico válido y un mensaje.'
+        : 'Please enter your name, a valid email address, and a message.', true);
+      return;
+    }
+
+    const body = 'Name: ' + name + '\nEmail: ' + email + '\n\n' + message;
+    const href = 'mailto:jessy@kunaay.com?cc=carolina@kunaay.com'
+      + '&subject=' + encodeURIComponent('[' + subject + '] ' + name)
+      + '&body=' + encodeURIComponent(body);
+
+    show(es()
+      ? '¡Gracias! Se abrirá su aplicación de correo para enviar el mensaje.'
+      : 'Thank you! Your email app will open to send the message.', false);
+    window.location.href = href;
+    form.reset();
+  });
+})();
+
+/* ─── Init on DOM ready ────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initReviewExpand();
+  initLightbox();
 
   // Close lightbox on background click
   const lb = document.getElementById('lightbox');
   if (lb) {
-    lb.addEventListener('click', (e) => {
+    lb.addEventListener('click', e => {
       if (e.target === lb) closeLightbox();
     });
   }
 
-  // Keyboard nav for lightbox
-  document.addEventListener('keydown', (e) => {
+  // Keyboard navigation for the lightbox
+  document.addEventListener('keydown', e => {
     if (!document.getElementById('lightbox')?.classList.contains('open')) return;
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') lightboxNav(-1);

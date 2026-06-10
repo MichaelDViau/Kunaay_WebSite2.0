@@ -24,349 +24,69 @@
 <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="assets/img/logo.png" sizes="any">
 <link rel="apple-touch-icon" href="assets/img/logo.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Manrope:wght@300;400;500;600&display=swap">
-<link rel="preload" as="image" href="assets/img/photos/rentas/casavioleta/CasaViolettaTop.JPG" fetchpriority="high">
-<style>
-/* ═══════════════════════════════════════════
-   KU NÁAY REAL ESTATE — DESIGN SYSTEM
-   ═══════════════════════════════════════════ */
-
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-:root{
-  --gold:#C9A84C;
-  --gold-light:#E0C97F;
-  --gold-dark:#A0822A;
-  --bg:#0C0C0C;
-  --bg-card:#161616;
-  --bg-elevated:#1C1C1C;
-  --text:#F5F0E8;
-  --text-muted:#9A9589;
-  --text-dim:#938C7E;
-  --serif:'Cormorant Garamond',Georgia,serif;
-  --sans:'Manrope',system-ui,sans-serif;
-  --radius:12px;
-  --radius-lg:20px;
-  --transition:0.4s cubic-bezier(0.25,0.46,0.45,0.94);
-}
-html{scroll-behavior:smooth;font-size:16px}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
-
-/* ─── NAVBAR ─── */
-.navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.25rem 3rem;display:flex;align-items:center;justify-content:space-between;transition:var(--transition);backdrop-filter:blur(0px);background:rgba(0,0,0,0.094)}
-.navbar.scrolled{background:rgba(12,12,12,0.92);backdrop-filter:blur(20px);padding:0.8rem 3rem;box-shadow:0 1px 0 rgba(201,168,76,0.1)}
-.nav-logo img{height:44px;width:auto;transition:var(--transition)}
-.navbar.scrolled .nav-logo img{height:36px}
-.nav-links{display:flex;gap:2.5rem;align-items:center;list-style:none}
-.nav-links a{color:var(--text-muted);text-decoration:none;font-size:0.75rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;transition:var(--transition);position:relative}
-.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:var(--transition)}
-.nav-links a:hover, .nav-links a.active{color:var(--gold)}
-.nav-links a:hover::after, .nav-links a.active::after{width:100%}
-.nav-cta{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:0.5rem 1.4rem;border-radius:100px;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;cursor:pointer;font-family:var(--sans);transition:var(--transition);text-decoration:none;display:inline-block}
-.nav-cta:hover{background:var(--gold);color:var(--bg)}
-
-/* Hamburger */
-.mobile-toggle{display:none;background:none;border:none;cursor:pointer;padding:8px;z-index:1001}
-.mobile-toggle span{display:block;width:24px;height:2px;background:var(--text);margin:6px 0;transition:var(--transition);transform-origin:center}
-.mobile-toggle.open span:nth-child(1){transform:rotate(45deg) translate(5px,6px)}
-.mobile-toggle.open span:nth-child(2){opacity:0}
-.mobile-toggle.open span:nth-child(3){transform:rotate(-45deg) translate(5px,-6px)}
-
-/* Mobile menu overlay */
-.mobile-menu{position:fixed;inset:0;background:rgba(12,12,12,0.97);backdrop-filter:blur(30px);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;opacity:0;pointer-events:none;transition:var(--transition)}
-.mobile-menu.open{opacity:1;pointer-events:all}
-.mobile-menu a{color:var(--text);font-family:var(--serif);font-size:2rem;font-weight:300;letter-spacing:0.05em;transition:var(--transition);text-decoration:none}
-.mobile-menu a:hover{color:var(--gold)}
-.mobile-menu .mob-cta{font-family:var(--sans);font-size:0.8rem;border:1px solid var(--gold);color:var(--gold);padding:0.6rem 2rem;border-radius:100px;letter-spacing:0.12em;text-transform:uppercase;margin-top:1rem}
-
-/* ─── PAGE HERO (subpages) ─── */
-.page-hero{position:relative;height:50vh;min-height:350px;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;padding-bottom:4rem}
-.page-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center}
-.page-hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,12,12,0.2) 0%,rgba(12,12,12,0.7) 70%,rgba(12,12,12,1) 100%)}
-.page-hero-content{position:relative;z-index:2;text-align:center}
-.page-hero-content .section-label{margin-bottom:0.75rem}
-.page-hero-content h1{font-family:var(--serif);font-size:clamp(2.5rem,5vw,4rem);font-weight:300;line-height:1.15}
-
-/* ─── SECTION COMMON ─── */
-section{padding:5rem 3rem}
-.section-label{font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:1rem;display:block}
-.section-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3.2rem);font-weight:300;line-height:1.2;margin-bottom:1rem}
-.section-desc{color:var(--text-muted);max-width:600px;font-weight:300;line-height:1.8;font-size:0.95rem}
-.container{max-width:1200px;margin:0 auto}
-
-/* ─── HOME HERO ─── */
-.hero{position:relative;height:100vh;min-height:700px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:url('https://i.ibb.co/sBNn7VP/Secreto-maya-81-1.jpg') center/cover no-repeat}
-.hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,12,12,0.3) 0%,rgba(12,12,12,0.15) 40%,rgba(12,12,12,0.6) 80%,rgba(12,12,12,1) 100%)}
-.hero-content{position:relative;z-index:2;text-align:center;max-width:800px;padding:0 2rem;animation:fadeUp 1.2s ease-out}
-.hero-badge{display:inline-block;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(201,168,76,0.3);padding:0.5rem 1.5rem;border-radius:100px;margin-bottom:2rem;font-weight:500}
-.hero h1{font-family:var(--serif);font-size:clamp(3rem,7vw,5.5rem);font-weight:300;line-height:1.1;margin-bottom:1.5rem}
-.hero h1 em{font-style:italic;color:var(--gold)}
-.hero-sub{font-size:1.05rem;color:var(--text-muted);max-width:520px;margin:0 auto 2.5rem;font-weight:300;line-height:1.8}
-.btn-primary{display:inline-flex;align-items:center;gap:0.75rem;background:var(--gold);color:var(--bg);padding:1rem 2.5rem;border-radius:100px;text-decoration:none;font-size:0.75rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;transition:var(--transition);border:none;cursor:pointer;font-family:var(--sans)}
-.btn-primary:hover{background:var(--gold-light);transform:translateY(-2px);box-shadow:0 12px 40px rgba(201,168,76,0.25)}
-.btn-outline{display:inline-flex;align-items:center;gap:0.75rem;background:transparent;color:var(--gold);padding:1rem 2.5rem;border-radius:100px;text-decoration:none;font-size:0.75rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;transition:var(--transition);border:1px solid var(--gold);cursor:pointer;font-family:var(--sans)}
-.btn-outline:hover{background:var(--gold);color:var(--bg)}
-.hero-scroll{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.5rem;color:var(--text-dim);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;animation:pulse 2s infinite}
-.hero-scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--gold),transparent)}
-@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{opacity:0.5}50%{opacity:1}}
-
-/* ─── INTRO ─── */
-.intro{text-align:center;display:flex;flex-direction:column;align-items:center;padding-bottom:2rem}
-.intro-divider{width:60px;height:1px;background:var(--gold);margin:2rem auto 0;opacity:0.4}
-
-/* ─── PROPERTIES GRID ─── */
-.properties-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:3rem;flex-wrap:wrap;gap:1rem}
-.property-filters{display:flex;gap:0.5rem}
-.filter-btn{background:transparent;border:1px solid rgba(201,168,76,0.2);color:var(--text-muted);padding:0.5rem 1.25rem;border-radius:100px;font-size:0.7rem;letter-spacing:0.1em;text-transform:uppercase;font-family:var(--sans);cursor:pointer;transition:var(--transition);font-weight:500}
-.filter-btn.active,.filter-btn:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
-.properties-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(380px,1fr));gap:2rem}
-
-/* ─── PROPERTY CARD ─── */
-.property-card{background:var(--bg-card);border-radius:var(--radius-lg);overflow:hidden;transition:var(--transition);cursor:pointer;border:1px solid rgba(255,255,255,0.04);text-decoration:none;display:block}
-.property-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.4);border-color:rgba(201,168,76,0.15)}
-.card-gallery{position:relative;height:280px;overflow:hidden}
-.card-gallery img{width:100%;height:100%;object-fit:cover;transition:0.6s ease}
-.property-card:hover .card-gallery img{transform:scale(1.05)}
-.card-badge{position:absolute;top:1rem;left:1rem;background:rgba(12,12,12,0.7);backdrop-filter:blur(10px);color:var(--gold);font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.4rem 1rem;border-radius:100px;font-weight:600;border:1px solid rgba(201,168,76,0.2)}
-.card-badge.sale{background:rgba(201,168,76,0.85);color:var(--bg);border-color:transparent}
-.card-dots{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);display:flex;gap:6px}
-.card-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:var(--transition)}
-.card-dot.active{background:var(--gold);width:18px;border-radius:3px}
-.card-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(12,12,12,0.5);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.1);color:white;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:var(--transition);font-size:14px}
-.property-card:hover .card-nav{opacity:1}
-.card-nav.prev{left:0.75rem}
-.card-nav.next{right:0.75rem}
-.card-nav:hover{background:rgba(201,168,76,0.8);border-color:var(--gold)}
-.card-info{padding:1.5rem 1.75rem}
-.card-title{font-family:var(--serif);font-size:1.4rem;font-weight:400;margin-bottom:0.5rem;color:var(--text)}
-.card-location{display:flex;align-items:center;gap:0.4rem;color:var(--text-dim);font-size:0.8rem;font-weight:400;margin-bottom:1.25rem}
-.card-location svg{color:var(--gold);flex-shrink:0}
-.card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,0.06)}
-.card-link{display:inline-flex;align-items:center;gap:0.5rem;color:var(--gold);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;text-decoration:none;font-weight:600;transition:var(--transition)}
-.card-link:hover{gap:0.75rem}
-
-/* ─── REVIEWS ─── */
-.reviews{background:var(--bg-card);border-top:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04)}
-.reviews-header{text-align:center;margin-bottom:4rem}
-.reviews-track{display:flex;gap:2rem;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;padding-bottom:1rem;scrollbar-width:none}
-.reviews-track::-webkit-scrollbar{display:none}
-.review-card{min-width:420px;max-width:420px;scroll-snap-align:start;background:var(--bg-elevated);border-radius:var(--radius-lg);padding:2.5rem;border:1px solid rgba(255,255,255,0.04);flex-shrink:0;transition:var(--transition)}
-.review-card:hover{border-color:rgba(201,168,76,0.15)}
-.review-stars{color:var(--gold);font-size:0.85rem;letter-spacing:4px;margin-bottom:1.5rem}
-.review-text{color:var(--text-muted);font-size:0.9rem;line-height:1.8;margin-bottom:2rem;font-weight:300;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden}
-.review-text.full{-webkit-line-clamp:unset}
-.review-author{display:flex;align-items:center;gap:1rem}
-.review-avatar{width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid rgba(201,168,76,0.3)}
-.review-name{font-family:var(--serif);font-size:1.1rem;font-weight:400;color:var(--text)}
-.review-date{font-size:0.75rem;color:var(--text-dim);margin-top:2px}
-
-/* ─── PROPERTY DETAIL PAGE ─── */
-.detail-gallery{padding:0 3rem;margin-top:-2rem;position:relative;z-index:1}
-.detail-gallery-inner{display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;height:480px;overflow:hidden}
-.detail-gallery-left{border-radius:var(--radius);overflow:hidden;position:relative;min-height:0}
-.detail-gallery-left img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
-.detail-gallery-left img:hover{opacity:0.88}
-.detail-gallery-right{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:0.5rem;height:100%;min-height:0}
-.gallery-thumb{border-radius:var(--radius);overflow:hidden;position:relative;min-height:0}
-.gallery-thumb img{width:100%;height:100%;object-fit:cover;cursor:pointer;transition:var(--transition)}
-.gallery-thumb img:hover{opacity:0.88}
-.gallery-more{border-radius:var(--radius);overflow:hidden;position:relative;cursor:pointer}
-.gallery-more img{width:100%;height:100%;object-fit:cover;display:block;transition:var(--transition)}
-.gallery-more-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.52);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:var(--transition)}
-.gallery-more:hover .gallery-more-overlay{background:rgba(0,0,0,0.38)}
-.gallery-more-label{font-family:var(--serif);font-size:1.6rem;font-weight:300;color:#fff;letter-spacing:0.05em}
-.gallery-more-sub{font-family:var(--sans);font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-top:0.3rem}
-
-.detail-content{padding:4rem 3rem;position:relative;z-index:2}
-.detail-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:4rem;max-width:1200px;margin:0 auto;align-items:start}
-.detail-title{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:300;margin-bottom:0.5rem}
-.detail-subtitle{color:var(--text-dim);font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:2rem}
-.detail-desc{color:var(--text-muted);line-height:1.9;font-weight:300;font-size:0.95rem;margin-bottom:2.5rem}
-
-.detail-highlights{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.5rem}
-.highlight-item{background:var(--bg-card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius);padding:1.25rem;text-align:center}
-.highlight-icon{color:var(--gold);font-size:1.5rem;margin-bottom:0.5rem}
-.highlight-label{font-size:0.75rem;color:var(--text-muted);font-weight:400}
-
-.detail-features h3{font-family:var(--serif);font-size:1.5rem;font-weight:400;margin-bottom:1.5rem;color:var(--text)}
-.features-list{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem 1.5rem}
-.feature-item{display:flex;align-items:center;gap:0.6rem;color:var(--text-muted);font-size:0.85rem;font-weight:300}
-.feature-item::before{content:'✦';color:var(--gold);font-size:0.6rem}
-
-.detail-sidebar{position:sticky;top:100px}
-.sidebar-card{background:var(--bg-card);border:1px solid rgba(201,168,76,0.15);border-radius:var(--radius-lg);padding:2.5rem;text-align:center}
-.sidebar-card h3{font-family:var(--serif);font-size:1.6rem;font-weight:400;margin-bottom:0.75rem}
-.sidebar-card p{color:var(--text-muted);font-size:0.85rem;margin-bottom:2rem;line-height:1.7}
-.sidebar-card .btn-primary{width:100%;justify-content:center;margin-bottom:1rem}
-.sidebar-card .btn-outline{width:100%;justify-content:center}
-
-/* Related properties */
-.related{padding:4rem 3rem;border-top:1px solid rgba(255,255,255,0.04)}
-.related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem}
-.related-item{border-radius:var(--radius-lg);overflow:hidden;position:relative;height:280px;display:block}
-.related-item img{width:100%;height:100%;object-fit:cover;transition:var(--transition)}
-.related-item:hover img{transform:scale(1.05)}
-.related-item-info{position:absolute;bottom:0;left:0;right:0;padding:1.5rem;background:linear-gradient(transparent,rgba(0,0,0,0.8))}
-.related-item-info h3{font-family:var(--serif);font-size:1.2rem;font-weight:400}
-.related-item-info span{font-size:0.75rem;color:var(--text-dim)}
-
-/* ─── ABOUT PAGE ─── */
-.about-section{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;padding:5rem 3rem}
-.about-section.reverse{direction:rtl}
-.about-section.reverse>*{direction:ltr}
-.about-text h2{font-family:var(--serif);font-size:clamp(1.8rem,3vw,2.5rem);font-weight:300;margin-bottom:0.75rem}
-.about-text .section-label{margin-bottom:0.5rem}
-.about-text p{color:var(--text-muted);line-height:1.9;font-weight:300;font-size:0.95rem;margin-bottom:1rem}
-.about-img{border-radius:var(--radius-lg);overflow:hidden;height:420px}
-.about-img img{width:100%;height:100%;object-fit:cover}
-
-.about-values{text-align:center;padding:5rem 3rem;background:var(--bg-card);border-top:1px solid rgba(255,255,255,0.04);border-bottom:1px solid rgba(255,255,255,0.04)}
-.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.5rem;max-width:1000px;margin:3rem auto 0}
-.value-card{padding:2.5rem 2rem;border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius-lg);transition:var(--transition)}
-.value-card:hover{border-color:rgba(201,168,76,0.2)}
-.value-icon{font-size:2rem;margin-bottom:1rem}
-.value-card h3{font-family:var(--serif);font-size:1.3rem;margin-bottom:0.75rem;font-weight:400}
-.value-card p{color:var(--text-muted);font-size:0.85rem;line-height:1.7;font-weight:300}
-
-/* ─── CONTACT PAGE ─── */
-.contact-grid{display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;max-width:1100px;margin:0 auto}
-.contact-cards{display:flex;flex-direction:column;gap:1.5rem}
-.contact-card{background:var(--bg-card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius-lg);padding:2rem;transition:var(--transition)}
-.contact-card:hover{border-color:rgba(201,168,76,0.15)}
-.contact-card h4{font-family:var(--serif);font-size:1.3rem;font-weight:400;margin-bottom:0.5rem}
-.contact-card a{color:var(--text-muted);font-size:0.9rem;display:flex;align-items:center;gap:0.5rem;margin-top:0.5rem;transition:var(--transition);text-decoration:none}
-.contact-card a:hover{color:var(--gold)}
-.contact-card .whatsapp-link{color:var(--gold);font-weight:500}
-
-.contact-form{background:var(--bg-card);border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius-lg);padding:2.5rem}
-.contact-form h3{font-family:var(--serif);font-size:1.6rem;font-weight:400;margin-bottom:2rem}
-.form-group{margin-bottom:1.25rem}
-.form-group label{display:block;font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.5rem;font-weight:500}
-.form-group input,.form-group textarea{width:100%;background:var(--bg);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius);padding:0.9rem 1.2rem;color:var(--text);font-family:var(--sans);font-size:0.9rem;transition:var(--transition);outline:none}
-.form-group input:focus,.form-group textarea:focus{border-color:var(--gold)}
-.form-group textarea{height:140px;resize:vertical}
-.form-submit{margin-top:0.5rem}
-
-/* ─── FOOTER ─── */
-.footer{padding:4rem 3rem 2rem;border-top:1px solid rgba(255,255,255,0.04)}
-.footer-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:3rem;margin-bottom:3rem}
-.footer-brand img{height:40px;width:auto;margin-bottom:1rem}
-.footer-tagline{color:var(--text-dim);font-size:0.85rem;max-width:300px;line-height:1.7;font-weight:300}
-.footer-nav{display:flex;gap:4rem}
-.footer-col h3{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;font-weight:600}
-.footer-col a{display:block;color:var(--text-muted);text-decoration:none;font-size:0.85rem;margin-bottom:0.6rem;transition:var(--transition);font-weight:300}
-.footer-col a:hover{color:var(--gold)}
-.footer-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.04);font-size:0.75rem;color:var(--text-dim)}
-
-/* ─── LIGHTBOX ─── */
-.lightbox{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:var(--transition)}
-.lightbox.open{opacity:1;pointer-events:all}
-.lightbox img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:var(--radius)}
-.lightbox-close{position:absolute;top:2rem;right:2rem;background:none;border:none;color:white;font-size:2rem;cursor:pointer}
-.lightbox-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(201,168,76,0.2);border:1px solid rgba(201,168,76,0.3);color:white;width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.2rem;transition:var(--transition)}
-.lightbox-nav:hover{background:rgba(201,168,76,0.5)}
-.lightbox-prev{left:2rem}
-.lightbox-next{right:2rem}
-
-/* ─── RESPONSIVE ─── */
-@media(max-width:1024px){
-  .properties-grid{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
-  .detail-grid{grid-template-columns:1fr}
-  .detail-gallery-inner{height:360px}
-  .related-grid{grid-template-columns:repeat(2,1fr)}
-  .values-grid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:768px){
-  section{padding:4rem 1.5rem}
-  .navbar{padding:1rem 1.5rem}
-  .navbar.scrolled{padding:0.75rem 1.5rem}
-  .nav-links{display:none}
-  .mobile-toggle{display:block}
-  .properties-grid{grid-template-columns:1fr}
-  .card-gallery{height:240px}
-  .review-card{min-width:300px;max-width:300px;padding:1.75rem}
-  .footer-nav{gap:2rem}
-  .footer-top{flex-direction:column}
-  .footer-bottom{flex-direction:column;gap:0.75rem;text-align:center}
-  .hero h1{font-size:clamp(2.4rem,6vw,4rem)}
-  .properties-header{flex-direction:column;align-items:flex-start}
-  .detail-gallery{padding:0 1.5rem}
-  .detail-gallery-inner{height:auto;grid-template-columns:1fr}
-  .detail-gallery-left{height:300px}
-  .detail-gallery-right{grid-template-columns:1fr 1fr;height:210px}
-  .detail-content{padding:3rem 1.5rem}
-  .detail-highlights{grid-template-columns:repeat(2,1fr)}
-  .about-section{grid-template-columns:1fr;gap:2rem;padding:3rem 1.5rem}
-  .about-section.reverse{direction:ltr}
-  .about-img{height:280px}
-  .contact-grid{grid-template-columns:1fr}
-  .values-grid{grid-template-columns:1fr}
-  .related-grid{grid-template-columns:1fr}
-  .related{padding:3rem 1.5rem}
-  .footer{padding:3rem 1.5rem 1.5rem}
-}
-
-.availability-card .cal-widget{background:var(--bg);border-radius:var(--radius);padding:1rem;border:1px solid rgba(201,168,76,0.1)}
-.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
-.cal-month-label{font-family:var(--serif);font-size:1.05rem;font-weight:500;color:var(--gold);letter-spacing:0.05em}
-.cal-nav{background:none;border:1px solid rgba(201,168,76,0.25);color:var(--gold);width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.3s}
-.cal-nav:hover{background:var(--gold);color:var(--bg)}
-.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
-.cal-weekdays span{text-align:center;font-size:0.65rem;color:var(--text-dim);font-weight:600;letter-spacing:0.08em;text-transform:uppercase;padding:4px 0}
-.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.cal-day{text-align:center;padding:6px 2px;font-size:0.78rem;border-radius:6px;cursor:default;transition:0.2s}
-.cal-day.empty{background:transparent}
-.cal-day.available{color:var(--text);background:rgba(201,168,76,0.08)}
-.cal-day.available:hover{background:rgba(201,168,76,0.2)}
-.cal-day.booked{color:var(--text-dim);background:rgba(255,255,255,0.03);text-decoration:line-through}
-.cal-day.past{color:var(--text-dim);opacity:0.4}
-.cal-day.today{border:1px solid var(--gold);color:var(--gold);font-weight:600}
-.cal-legend{display:flex;gap:1rem;justify-content:center;margin-top:0.75rem;flex-wrap:wrap}
-.cal-legend-item{display:flex;align-items:center;gap:0.35rem;font-size:0.7rem;color:var(--text-muted)}
-.cal-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
-.cal-dot-available{background:rgba(201,168,76,0.5)}
-.cal-dot-booked{background:rgba(255,255,255,0.15)}
-.reviews-wrapper{position:relative;display:flex;align-items:center;gap:0}
-.reviews-slider-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:10;background:var(--bg-card);border:1px solid rgba(201,168,76,0.3);color:var(--gold);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:0.3s ease;flex-shrink:0}
-.reviews-slider-btn:hover{background:var(--gold);color:var(--bg);border-color:var(--gold)}
-.reviews-slider-prev{left:-24px}
-.reviews-slider-next{right:-24px}
-@media(max-width:768px){.reviews-slider-prev{left:-12px}.reviews-slider-next{right:-12px}.reviews-slider-btn{width:36px;height:36px}}
-
-</style>
+<link rel="preload" href="assets/fonts/cormorant-garamond-300.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/manrope-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/main.min.css">
+<link rel="preload" as="image" href="assets/img/photos/rentals/casavioleta/full/casaviolettatop.webp" fetchpriority="high">
 </head>
 <body>
+<!-- ═══ ICON SPRITE — shared symbols, referenced below via <use href="#i-…"> ═══ -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none" aria-hidden="true">
+  <symbol id="i-bed" viewBox="0 0 24 24"><path d="M2 17V9.5a2 2 0 012-2h5a2 2 0 012 2v2h2v-2a2 2 0 012-2h5a2 2 0 012 2V17"/><path d="M2 17h20"/><path d="M2 17v2M22 17v2"/></symbol>
+  <symbol id="i-bath" viewBox="0 0 24 24"><path d="M4 12h16"/><path d="M4 12V6a2 2 0 012-2h3a2 2 0 012 2v1"/><path d="M4 12v4a2 2 0 002 2h12a2 2 0 002-2v-4"/><path d="M8 20v1M16 20v1"/></symbol>
+  <symbol id="i-waves" viewBox="0 0 24 24"><path d="M2 8c1 1 2 1.5 4 1.5S8 8 10 8s2 1.5 4 1.5S16 8 18 8s2 1.5 4 1.5"/><path d="M2 14c1 1 2 1.5 4 1.5S8 13 10 13s2 1.5 4 1.5S16 13 18 13s2 1.5 4 1.5"/></symbol>
+  <symbol id="i-pool" viewBox="0 0 24 24"><path d="M2 18c1 1 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><circle cx="17" cy="7" r="2"/><path d="M6 13l2-4 3 2.5 2-3 3 3.5"/></symbol>
+  <symbol id="i-kitchen" viewBox="0 0 24 24"><path d="M3 3h2l1 5M7 13l-2-8h16l-2 8H7z"/><path d="M7 13a5 5 0 0010 0"/></symbol>
+  <symbol id="i-parking" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 010 6H9"/></symbol>
+  <symbol id="i-caret-left" viewBox="0 0 24 24"><polyline points="15,18 9,12 15,6"/></symbol>
+  <symbol id="i-caret-right" viewBox="0 0 24 24"><polyline points="9,18 15,12 9,6"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></symbol>
+</svg>
+<!-- ═══ HEADER / NAVIGATION (fixed; gains .scrolled styling on scroll) ═══ -->
 <nav class="navbar scrolled" id="navbar">
-  <a href="index.html" class="nav-logo"><img src="assets/img/logo-light.png" alt="Ku Náay" width="348" height="90"></a>
-  <ul class="nav-links"><li><a href="index.html">Home</a></li><li><a href="rentals.html" class="active">Rentals</a></li><li><a href="sales.html">Sales</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul>
+  <a href="index.html" class="nav-logo"><img src="assets/img/logo.png" alt="Ku Náay" width="348" height="90"></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="rentals.html" class="active">Rentals</a></li>
+    <li><a href="sales.html">Sales</a></li>
+    <li><a href="about.html">About Us</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
   <a href="#" class="nav-cta" data-language-toggle>Español</a>
   <button class="mobile-toggle" id="mobileToggle" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
-<div class="mobile-menu" id="mobileMenu"><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="#" class="mob-cta" data-language-toggle>Español</a></div>
+<!-- Mobile navigation overlay (toggled by the hamburger button) -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="rentals.html">Rentals</a>
+  <a href="sales.html">Sales</a>
+  <a href="about.html">About Us</a>
+  <a href="contact.html">Contact</a>
+  <a href="#" class="mob-cta" data-language-toggle>Español</a>
+</div>
 <main>
 
+<!-- ═══ PAGE HERO ═══ -->
 <div class="page-hero" style="height:55vh">
-  <div class="page-hero-bg" style="background-image:url('assets/img/photos/rentas/casavioleta/CasaViolettaTop.JPG')"></div>
+  <div class="page-hero-bg" style="background-image:url('assets/img/photos/rentals/casavioleta/full/casaviolettatop.webp')"></div>
   <div class="page-hero-overlay"></div>
   <div class="page-hero-content"><span class="section-label">Rental · Playacar Phase 1</span><h1>Casa Violetta</h1></div>
 </div>
 
+<!-- ═══ PHOTO GALLERY — visible grid; full set opens in the lightbox ═══ -->
 <div class="detail-gallery" id="galleryGrid">
   <div class="detail-gallery-inner">
     <div class="detail-gallery-left">
-      <img class="lb-img" src="assets/img/photos/rentas/casavioleta/CasaViolettaTop.JPG" alt="Casa Violeta" fetchpriority="high" decoding="async">
+      <img class="lb-img" src="assets/img/photos/rentals/casavioleta/full/casaviolettatop.webp" alt="Casa Violeta" fetchpriority="high" decoding="async">
     </div>
     <div class="detail-gallery-right">
-      <div class="gallery-thumb"><img class="lb-img" src="assets/img/photos/rentas/casavioleta/CasaVi1.JPG" alt="Casa Violeta" decoding="async"></div>
-      <div class="gallery-thumb"><img class="lb-img" src="assets/img/photos/rentas/casavioleta/CasaVi2.JPG" alt="Casa Violeta" decoding="async"></div>
-      <div class="gallery-thumb"><img class="lb-img" src="assets/img/photos/rentas/casavioleta/CasaVi3.JPG" alt="Casa Violeta" decoding="async"></div>
+      <div class="gallery-thumb"><img class="lb-img" src="assets/img/photos/rentals/casavioleta/thumb/casavi1.webp" alt="Casa Violeta" decoding="async"></div>
+      <div class="gallery-thumb"><img class="lb-img" src="assets/img/photos/rentals/casavioleta/thumb/casavi2.webp" alt="Casa Violeta" decoding="async"></div>
+      <div class="gallery-thumb"><img class="lb-img" src="assets/img/photos/rentals/casavioleta/thumb/casavi3.webp" alt="Casa Violeta" decoding="async"></div>
       <div class="gallery-more" onclick="openGalleryLightbox(3)">
-        <img src="assets/img/photos/rentas/casavioleta/CasaVi4.JPG" alt="Casa Violeta" loading="lazy">
+        <img src="assets/img/photos/rentals/casavioleta/thumb/casavi4.webp" alt="Casa Violeta" loading="lazy">
         <div class="gallery-more-overlay">
           <span class="gallery-more-label">+32</span>
           <span class="gallery-more-sub">View All Photos</span>
@@ -374,52 +94,21 @@ section{padding:5rem 3rem}
       </div>
     </div>
   </div>
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi4.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi5.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi6.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi7.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi8.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi9.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi10.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi11.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi12.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi13.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi14.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi15.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi16.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi17.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi18.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi19.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi20.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi21.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi22.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi23.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi24.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi25.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi26.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi27.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi28.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi29.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi30.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi31.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi32.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi33.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi34.JPG" alt="Casa Violeta" loading="lazy">
-  <img class="lb-img" style="display:none" src="assets/img/photos/rentas/casavioleta/CasaVi35.JPG" alt="Casa Violeta" loading="lazy">
 </div>
 
+<!-- ═══ PROPERTY DETAILS — description, highlights, features & booking sidebar ═══ -->
 <div class="detail-content">
   <div class="detail-grid">
     <div>
       <h2 class="detail-title">Casa Violeta</h2>
       <div class="detail-subtitle">Ocean Front, Playacar Phase 1</div>
       <div class="detail-highlights">
-        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17V9.5a2 2 0 012-2h5a2 2 0 012 2v2h2v-2a2 2 0 012-2h5a2 2 0 012 2V17"/><path d="M2 17h20"/><path d="M2 17v2M22 17v2"/></svg></div><div class="highlight-label">5 Bedrooms</div></div>
-        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 12V6a2 2 0 012-2h3a2 2 0 012 2v1"/><path d="M4 12v4a2 2 0 002 2h12a2 2 0 002-2v-4"/><path d="M8 20v1M16 20v1"/></svg></div><div class="highlight-label">5 Bathrooms</div></div>
-        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8c1 1 2 1.5 4 1.5S8 8 10 8s2 1.5 4 1.5S16 8 18 8s2 1.5 4 1.5"/><path d="M2 14c1 1 2 1.5 4 1.5S8 13 10 13s2 1.5 4 1.5S16 13 18 13s2 1.5 4 1.5"/></svg></div><div class="highlight-label">Beach Front</div></div>
-        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c1 1 2 1.5 4 1.5S8 17 10 17s2 1.5 4 1.5S16 17 18 17s2 1.5 4 1.5"/><circle cx="17" cy="7" r="2"/><path d="M6 13l2-4 3 2.5 2-3 3 3.5"/></svg></div><div class="highlight-label">Private Pool</div></div>
-        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h2l1 5M7 13l-2-8h16l-2 8H7z"/><path d="M7 13a5 5 0 0010 0"/></svg></div><div class="highlight-label">Full Kitchen</div></div>
-        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M9 17V7h4a3 3 0 010 6H9"/></svg></div><div class="highlight-label">Parking</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-bed"/></svg></div><div class="highlight-label">5 Bedrooms</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-bath"/></svg></div><div class="highlight-label">5 Bathrooms</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-waves"/></svg></div><div class="highlight-label">Beach Front</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-pool"/></svg></div><div class="highlight-label">Private Pool</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-kitchen"/></svg></div><div class="highlight-label">Full Kitchen</div></div>
+        <div class="highlight-item"><div class="highlight-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-parking"/></svg></div><div class="highlight-label">Parking</div></div>
       </div>
       <p class="detail-desc">Casa Violetta is an extraordinary beachfront estate that embodies the essence of luxury coastal living in the Riviera Maya. Positioned directly along the pristine shores of the Caribbean Sea, this remarkable five-bedroom, five-bathroom residence captures breathtaking ocean views from nearly every space, creating an atmosphere of effortless elegance and tranquility.</p>
       <p class="detail-desc">The architecture masterfully blends authentic Mexican craftsmanship with contemporary sophistication. Hand-finished stonework, warm terracotta accents, and soaring palapa ceilings reflect the region&#8217;s rich heritage, while designer furnishings, premium finishes, and modern amenities deliver the highest standard of comfort and style.</p>
@@ -467,9 +156,9 @@ section{padding:5rem 3rem}
         <p style="text-align:center;color:var(--text-muted);font-size:0.82rem;margin-bottom:1.5rem">Check open dates for your stay</p>
         <div class="cal-widget">
           <div class="cal-header">
-            <button class="cal-nav" onclick="calNav(-1)" aria-label="Previous month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg></button>
+            <button class="cal-nav" onclick="calNav(-1)" aria-label="Previous month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-caret-left"/></svg></button>
             <span class="cal-month-label" id="calMonthLabel"></span>
-            <button class="cal-nav" onclick="calNav(1)" aria-label="Next month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9,18 15,12 9,6"/></svg></button>
+            <button class="cal-nav" onclick="calNav(1)" aria-label="Next month"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-caret-right"/></svg></button>
           </div>
           <div class="cal-weekdays">
             <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
@@ -485,78 +174,79 @@ section{padding:5rem 3rem}
   </div>
 </div>
 
+<!-- ═══ RELATED PROPERTIES ═══ -->
 <section class="related">
   <span class="section-label">You May Also Like</span>
   <h2 class="section-title">Similar Properties</h2>
   <div class="related-grid">
-    <a href="casasecretomaya.html" class="related-item"><img src="assets/img/photos/rentas/casasecretomaya/Secretomayatop.JPG" alt="Casa Secreto Maya" loading="lazy" decoding="async"><div class="related-item-info"><h3>Casa Secreto Maya</h3><span>Playa Del Carmen</span></div></a>
-    <a href="casamayette.html" class="related-item"><img src="assets/img/photos/rentas/casamayette/CasaMayetteTop.JPG" alt="Casa Mayette" loading="lazy" decoding="async"><div class="related-item-info"><h3>Casa Mayette</h3><span>Playa Del Carmen</span></div></a>
-    <a href="casaricardo.html" class="related-item"><img src="assets/img/photos/rentas/casaricardo/CasaRicardoTop.JPG" alt="Casa Ricardo" loading="lazy" decoding="async"><div class="related-item-info"><h3>Casa Ricardo</h3><span>Playa Del Carmen</span></div></a>
+    <a href="casasecretomaya.html" class="related-item"><img src="assets/img/photos/rentals/casasecretomaya/thumb/secretomayatop.webp" alt="Casa Secreto Maya" loading="lazy" decoding="async"><div class="related-item-info"><h3>Casa Secreto Maya</h3><span>Playa Del Carmen</span></div></a>
+    <a href="casamayette.html" class="related-item"><img src="assets/img/photos/rentals/casamayette/thumb/casamayettetop.webp" alt="Casa Mayette" loading="lazy" decoding="async"><div class="related-item-info"><h3>Casa Mayette</h3><span>Playa Del Carmen</span></div></a>
+    <a href="casaricardo.html" class="related-item"><img src="assets/img/photos/rentals/casaricardo/thumb/casaricardotop.webp" alt="Casa Ricardo" loading="lazy" decoding="async"><div class="related-item-info"><h3>Casa Ricardo</h3><span>Playa Del Carmen</span></div></a>
   </div>
 </section>
 
-<div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="closeLightbox()" aria-label="Close gallery"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)" aria-label="Previous image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button><img id="lightboxImg" src="" alt="Gallery"><button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)" aria-label="Next image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button></div>
+<!-- ═══ LIGHTBOX — full-screen gallery viewer (keyboard: ← → Esc) ═══ -->
+<div class="lightbox" id="lightbox"><button class="lightbox-close" onclick="closeLightbox()" aria-label="Close gallery"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-close"/></svg></button><button class="lightbox-nav lightbox-prev" onclick="lightboxNav(-1)" aria-label="Previous image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chevron-left"/></svg></button><img id="lightboxImg" src="" alt="Gallery"><button class="lightbox-nav lightbox-next" onclick="lightboxNav(1)" aria-label="Next image"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chevron-right"/></svg></button></div>
 
 </main>
-<footer class="footer"><div class="footer-top"><div class="footer-brand"><img src="assets/img/logo-light.png" alt="Ku Náay" width="348" height="90"><p class="footer-tagline">Where Coastal Beauty Meets Timeless Luxury</p></div><div class="footer-nav"><div class="footer-col"><h3>Navigation</h3><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div><div class="footer-col"><h3>Company</h3><a href="about.html">About Us</a><a href="contact.html">Contact</a></div></div></div><div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div></footer>
+<!-- ═══ FOOTER ═══ -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-brand"><img src="assets/img/logo.png" alt="Ku Náay" width="348" height="90"><p class="footer-tagline">Where Coastal Beauty Meets Timeless Luxury</p></div>
+    <div class="footer-nav">
+      <div class="footer-col"><h3>Navigation</h3><a href="index.html">Home</a><a href="rentals.html">Rentals</a><a href="sales.html">Sales</a><a href="about.html">About Us</a></div>
+      <div class="footer-col"><h3>Company</h3><a href="about.html">About Us</a><a href="contact.html">Contact</a></div>
+    </div>
+  </div>
+  <div class="footer-bottom"><span>© 2026 Ku Náay Real Estate.</span><span>Designed with care in the Riviera Maya</span></div>
+</footer>
 
-<script src="assets/js/main.js"></script>
+<!-- ═══ SCRIPTS ═══ -->
+<!-- Page data consumed by main.js (card sliders / lightbox gallery / calendar) -->
 <script>
-document.addEventListener('DOMContentLoaded',()=>{initLightbox('.lb-img');});
-function openGalleryLightbox(startIndex){lightboxIndex=startIndex;openLightbox();}
-// Availability Calendar
-var calCurrentDate = new Date();
-var calYear = calCurrentDate.getFullYear();
-var calMonth = calCurrentDate.getMonth();
-// Simulated booked dates (day numbers for current month display)
-var bookedDays = [3,4,5,12,13,14,20,21,22];
-function calNav(dir) {
-  calMonth += dir;
-  if (calMonth > 11) { calMonth = 0; calYear++; }
-  if (calMonth < 0) { calMonth = 11; calYear--; }
-  renderCal();
-}
-function renderCal() {
-  var monthNamesEN = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  var monthNamesES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  var monthNames = (window.KUNAAY_LANG === 'es') ? monthNamesES : monthNamesEN;
-  document.getElementById('calMonthLabel').textContent = monthNames[calMonth] + ' ' + calYear;
-  var firstDay = new Date(calYear, calMonth, 1).getDay();
-  var daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
-  var today = new Date();
-  var container = document.getElementById('calDays');
-  container.innerHTML = '';
-  for (var i = 0; i < firstDay; i++) {
-    var empty = document.createElement('div');
-    empty.className = 'cal-day empty';
-    container.appendChild(empty);
-  }
-  for (var d = 1; d <= daysInMonth; d++) {
-    var cell = document.createElement('div');
-    var isPast = (calYear < today.getFullYear()) || (calYear === today.getFullYear() && calMonth < today.getMonth()) || (calYear === today.getFullYear() && calMonth === today.getMonth() && d < today.getDate());
-    var isToday = calYear === today.getFullYear() && calMonth === today.getMonth() && d === today.getDate();
-    var isBooked = bookedDays.indexOf(d) !== -1;
-    cell.textContent = d;
-    if (isPast) cell.className = 'cal-day past';
-    else if (isToday) cell.className = 'cal-day today';
-    else if (isBooked) cell.className = 'cal-day booked';
-    else cell.className = 'cal-day available';
-    container.appendChild(cell);
-  }
-}
-renderCal();
-function slideReviews(btn, dir) {
-  var wrapper = btn.closest('.reviews-wrapper');
-  var track = wrapper.querySelector('.reviews-track');
-  var card = track.querySelector('.review-card');
-  if (!card) return;
-  var style = getComputedStyle(track);
-  var gap = parseInt(style.gap || style.columnGap || '32');
-  var cardWidth = card.offsetWidth + gap;
-  track.scrollBy({ left: dir * cardWidth, behavior: 'smooth' });
-}
+window.KUNAAY_PAGE = {
+  lightbox: [
+    "assets/img/photos/rentals/casavioleta/full/casaviolettatop.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi1.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi2.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi3.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi4.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi5.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi6.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi7.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi8.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi9.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi10.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi11.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi12.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi13.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi14.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi15.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi16.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi17.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi18.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi19.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi20.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi21.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi22.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi23.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi24.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi25.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi26.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi27.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi28.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi29.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi30.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi31.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi32.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi33.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi34.webp",
+    "assets/img/photos/rentals/casavioleta/full/casavi35.webp"
+  ],
+  bookedDays: [3, 4, 5, 12, 13, 14, 20, 21, 22]
+};
 </script>
-<script src="assets/js/translations-data.js"></script>
-<script src="assets/js/language-toggle.js"></script>
+<script src="assets/js/main.min.js" defer></script>
+<script src="assets/js/language-toggle.min.js" defer></script>
 </body>
 </html>
