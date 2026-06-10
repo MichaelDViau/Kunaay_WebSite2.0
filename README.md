@@ -99,18 +99,4 @@ touching the script.
 - Repeated SVG icons live in one **per-page sprite** right after `<body>`
   and are referenced with `<use href="#i-…">`.
 
-## Known external dependencies (flagged during the 2026-06 audit)
 
-These third-party image URLs are still referenced and are outside our
-control. They work today but should eventually be replaced with self-hosted
-copies (the hosting environment used for the audit could not download them):
-
-| Host | Used for |
-|------|----------|
-| `i.ibb.co` (imgbb) | Home hero slider, home/sales card images, about-page image, sale-page hero, `og:image` tags |
-| `img1.wsimg.com` (GoDaddy CDN) | All Casa FotoPlus photos |
-| `expertvagabond.com` | About-page hero & one section image (hotlinked from a travel blog — also review usage rights) |
-| `a0.muscache.com` (Airbnb) | Reviewer avatars on the home page |
-
-To migrate one: download the file, drop it under `assets/img/photos/…`,
-run the image pipeline, and update the reference(s).
