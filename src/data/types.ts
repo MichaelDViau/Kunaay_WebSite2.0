@@ -41,7 +41,8 @@ export interface Property {
   longDescriptions: string[];
   features: string[];
   gallery: GalleryImages;
-  bookedDays: number[];
+  bookedDays?: number[];
+  bookedDates?: string[]; // ISO "YYYY-MM-DD" strings (DB-backed)
   relatedProperties: RelatedProperty[];
   whatsappUrl: string;
   seo: {

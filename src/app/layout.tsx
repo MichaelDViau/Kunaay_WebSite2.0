@@ -1,9 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import { LanguageProvider } from '@/context/LanguageContext';
 import IconSprite from '@/components/ui/IconSprite';
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.kunaay.com'),
@@ -36,30 +33,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <meta name="theme-color" content="#0C0C0C" />
-        <link rel="preconnect" href="https://i.ibb.co" />
-        <link
-          rel="preload"
-          href="/assets/fonts/cormorant-garamond-300.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/assets/fonts/manrope-400.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link rel="stylesheet" href="/assets/css/main.min.css" />
       </head>
       <body>
         <IconSprite />
-        <LanguageProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
-        </LanguageProvider>
+        {children}
       </body>
     </html>
   );

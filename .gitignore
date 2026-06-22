@@ -2,3 +2,9 @@ node_modules/
 .DS_Store
 .next/
 out/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+.env.local
+public/uploads/
