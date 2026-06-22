@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import HeroSlider from '@/components/home/HeroSlider';
 import PropertyGrid from '@/components/properties/PropertyGrid';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
+import AiAssistant from '@/components/ai/AiAssistant';
 import { getAllProperties } from '@/lib/property-service';
 
 export const dynamic = 'force-dynamic';
@@ -25,6 +26,8 @@ export default async function HomePage() {
   return (
     <>
       <HeroSlider />
+
+      <AiAssistant />
 
       <section className="intro">
         <span className="section-label">Our Collection</span>

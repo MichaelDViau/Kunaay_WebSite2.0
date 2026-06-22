@@ -6,6 +6,7 @@ import PropertyGallery from '@/components/properties/PropertyGallery';
 import BookingSidebar from '@/components/properties/BookingSidebar';
 import AvailabilityCalendar from '@/components/properties/AvailabilityCalendar';
 import RelatedProperties from '@/components/properties/RelatedProperties';
+import AiAssistant from '@/components/ai/AiAssistant';
 
 export const dynamic = 'force-dynamic';
 
@@ -109,6 +110,8 @@ export default async function PropertyDetailPage({ params }: Props) {
           </div>
         </div>
       </div>
+
+      <AiAssistant />
 
       <RelatedProperties properties={property.relatedProperties} />
     </>

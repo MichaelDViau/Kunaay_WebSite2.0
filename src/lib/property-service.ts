@@ -37,6 +37,8 @@ function mapProperty(p: DbPropertyFull): Property {
     heroLabel: p.heroLabel,
     bedrooms: p.bedrooms,
     bathrooms: p.bathrooms,
+    guests: p.guests ?? null,
+    price: p.price || undefined,
     highlights: p.highlights.map((h) => ({ icon: h.icon, label: h.label })),
     shortDescription: p.shortDescription,
     longDescriptions: p.descriptions.map((d) => d.text),

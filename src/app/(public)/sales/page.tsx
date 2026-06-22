@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import PageHero from '@/components/ui/PageHero';
 import PropertyGrid from '@/components/properties/PropertyGrid';
+import AiAssistant from '@/components/ai/AiAssistant';
 import { getSalePropertiesDB } from '@/lib/property-service';
 
 export const dynamic = 'force-dynamic';
@@ -26,6 +27,7 @@ export default async function SalesPage() {
         title="Invest in the Riviera Maya"
         backgroundImage="/assets/img/photos/sales/casachukum/full/casachukumtop.webp"
       />
+      <AiAssistant />
       <PropertyGrid properties={sales} />
     </>
   );

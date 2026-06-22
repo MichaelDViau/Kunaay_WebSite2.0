@@ -36,6 +36,8 @@ export interface Property {
   heroLabel: string; // e.g. "Rental · Playacar Phase 1"
   bedrooms: number;
   bathrooms: number;
+  guests?: number | null;
+  price?: string;
   highlights: HighlightItem[];
   shortDescription: string;
   longDescriptions: string[];

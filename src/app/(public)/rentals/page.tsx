@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import PageHero from '@/components/ui/PageHero';
 import PropertyGrid from '@/components/properties/PropertyGrid';
+import AiAssistant from '@/components/ai/AiAssistant';
 import { getRentalPropertiesDB } from '@/lib/property-service';
 
 export const dynamic = 'force-dynamic';
@@ -27,6 +28,7 @@ export default async function RentalsPage() {
         title="Exceptional Stays in the Riviera Maya"
         backgroundImage="/assets/img/photos/rentals/casasecretomaya/full/casasm6.webp"
       />
+      <AiAssistant />
       <PropertyGrid properties={rentals} />
     </>
   );
