@@ -165,7 +165,7 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
 
       {/* Tab 0 — Basic Info */}
       {tab === 0 && (
-        <div className="a-tab-panel">
+        <div className="a-tab-content">
           <div className="a-form-row">
             <div className="a-form-group">
               <label className="a-label">Property Name *</label>
@@ -258,7 +258,7 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
 
       {/* Tab 1 — Descriptions */}
       {tab === 1 && (
-        <div className="a-tab-panel">
+        <div className="a-tab-content">
           <div className="a-form-group">
             <label className="a-label">Short Description *</label>
             <textarea className="a-textarea" rows={3} value={shortDesc} onChange={(e) => setShortDesc(e.target.value)} placeholder="One or two sentences shown on listing cards…" />
@@ -290,7 +290,7 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
 
       {/* Tab 2 — Details */}
       {tab === 2 && (
-        <div className="a-tab-panel">
+        <div className="a-tab-content">
           <div className="a-form-group">
             <label className="a-label">Highlights (icon + label)</label>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
@@ -332,7 +332,7 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
 
       {/* Tab 3 — Amenities */}
       {tab === 3 && (
-        <div className="a-tab-panel">
+        <div className="a-tab-content">
           <div className="a-amenities-grid">
             {localAmenities.map((a) => (
               <label key={a.id} className={`a-amenity-chip${selectedAmenities.has(a.id) ? ' selected' : ''}`}>
@@ -368,7 +368,7 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
 
       {/* Tab 4 — Related Properties */}
       {tab === 4 && (
-        <div className="a-tab-panel">
+        <div className="a-tab-content">
           <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
             {related.map((r, i) => (
               <div key={i} className="a-related-row">
@@ -394,7 +394,7 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
 
       {/* Tab 5 — SEO */}
       {tab === 5 && (
-        <div className="a-tab-panel">
+        <div className="a-tab-content">
           <div className="a-form-group">
             <label className="a-label">SEO Title</label>
             <input className="a-input" value={seoTitle} onChange={(e) => setSeoTitle(e.target.value)} placeholder="Casa X — Ku Náay Real Estate" />
