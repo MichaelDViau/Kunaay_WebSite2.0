@@ -4,6 +4,11 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
+  // Preflight: the seed needs a database connection string.
+  if (!process.env.DATABASE_URL) {
+    throw new Error('Environment variable not found: DATABASE_URL');
+  }
+
   // Admin user — configurable via ADMIN_EMAIL / ADMIN_PASSWORD in .env
   const adminEmail = (process.env.ADMIN_EMAIL ?? 'admin@kunaay.com').trim().toLowerCase();
   const adminPassword = process.env.ADMIN_PASSWORD ?? 'kunaay2026';
@@ -269,5 +274,29 @@ async function main() {
 }
 
 main()
-  .catch((e) => { console.error(e); process.exit(1); })
+  .catch((e: unknown) => {
+    const msg = e instanceof Error ? e.message : String(e);
+    const code = (e as { code?: string })?.code;
+    const line = '\n──────────────────────────────────────────────\n';
+
+    if (msg.includes('Environment variable not found: DATABASE_URL') || !process.env.DATABASE_URL) {
+      console.error(`${line}[seed] DATABASE_URL is not set.${line}` +
+        'Create your local env file, then re-run:\n\n' +
+        '  cp .env.example .env\n' +
+        '  npx prisma migrate deploy\n' +
+        '  npx prisma db seed\n\n' +
+        '(.env must contain DATABASE_URL, e.g. DATABASE_URL="file:./dev.db")\n');
+    } else if (code === 'P2021' || code === 'P1014' || /does not exist|no such table/i.test(msg)) {
+      console.error(`${line}[seed] The database tables do not exist yet.${line}` +
+        'Create them first, then re-run the seed:\n\n' +
+        '  npx prisma migrate deploy\n' +
+        '  npx prisma db seed\n');
+    } else if (code === 'P1001' || /can't reach database server/i.test(msg)) {
+      console.error(`${line}[seed] Cannot reach the database.${line}` +
+        'Check that DATABASE_URL in .env is correct and the database is running.\n');
+    } else {
+      console.error(e);
+    }
+    process.exit(1);
+  })
   .finally(() => prisma.$disconnect());
