@@ -1,23 +1,21 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { getPropertyBySlug, properties } from '@/data/properties';
+import { getPropertyBySlugDB } from '@/lib/property-service';
 import PageHero from '@/components/ui/PageHero';
 import PropertyGallery from '@/components/properties/PropertyGallery';
 import BookingSidebar from '@/components/properties/BookingSidebar';
 import AvailabilityCalendar from '@/components/properties/AvailabilityCalendar';
 import RelatedProperties from '@/components/properties/RelatedProperties';
 
+export const dynamic = 'force-dynamic';
+
 interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  return properties.map((p) => ({ slug: p.slug }));
-}
-
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const property = getPropertyBySlug(slug);
+  const property = await getPropertyBySlugDB(slug);
   if (!property) return {};
   return {
     title: property.seo.title,
@@ -51,7 +49,7 @@ const iconMap: Record<string, string> = {
 
 export default async function PropertyDetailPage({ params }: Props) {
   const { slug } = await params;
-  const property = getPropertyBySlug(slug);
+  const property = await getPropertyBySlugDB(slug);
   if (!property) notFound();
 
   return (
@@ -106,7 +104,7 @@ export default async function PropertyDetailPage({ params }: Props) {
           <div className="detail-sidebar">
             <BookingSidebar whatsappUrl={property.whatsappUrl} type={property.type} />
             {property.type === 'rental' && (
-              <AvailabilityCalendar bookedDays={property.bookedDays ?? []} />
+              <AvailabilityCalendar bookedDates={property.bookedDates ?? []} />
             )}
           </div>
         </div>

@@ -23,6 +23,7 @@ export default function ImageManager({ propertyId, initialImages }: ImageManager
   );
   const [uploading, setUploading] = useState(false);
   const [dragOver, setDragOver] = useState(false);
+  const [uploadError, setUploadError] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   const api = (path: string, opts: RequestInit) =>
@@ -31,12 +32,16 @@ export default function ImageManager({ propertyId, initialImages }: ImageManager
   const upload = async (files: FileList | null) => {
     if (!files || !files.length) return;
     setUploading(true);
+    setUploadError('');
     const fd = new FormData();
     Array.from(files).forEach((f) => fd.append('files', f));
     const res = await api('', { method: 'POST', body: fd });
     if (res.ok) {
       const created: DbImage[] = await res.json();
       setImages((prev) => [...prev, ...created].sort((a, b) => a.sortOrder - b.sortOrder));
+    } else {
+      const body = await res.json().catch(() => ({}));
+      setUploadError(body.error ?? 'Upload failed. Please try again.');
     }
     setUploading(false);
   };
@@ -81,6 +86,9 @@ export default function ImageManager({ propertyId, initialImages }: ImageManager
 
   return (
     <div>
+      {uploadError && (
+        <div className="a-alert-error" style={{ marginBottom: 16 }}>{uploadError}</div>
+      )}
       <div
         className={`a-img-upload-zone${dragOver ? ' drag-over' : ''}`}
         onClick={() => inputRef.current?.click()}

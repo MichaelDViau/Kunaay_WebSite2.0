@@ -6,7 +6,7 @@ export const properties: Property[] = [
     slug: 'casasecretomaya',
     name: 'Casa Secreto Maya',
     type: 'rental',
-    status: 'available',
+    status: 'published',
     badge: 'Rental',
     location: 'Playacar Phase 1, Playa Del Carmen',
     subtitle: 'Ocean Front, Playacar Phase 1',
@@ -56,7 +56,6 @@ export const properties: Property[] = [
           : `/assets/img/photos/rentals/casasecretomaya/full/casasm${i}.webp`
       ),
     },
-    bookedDays: [3, 4, 5, 12, 13, 14, 20, 21, 22],
     relatedProperties: [
       {
         slug: 'casavioleta',
@@ -91,7 +90,7 @@ export const properties: Property[] = [
     slug: 'casavioleta',
     name: 'Casa Violetta',
     type: 'rental',
-    status: 'available',
+    status: 'published',
     badge: 'Rental',
     location: 'Playacar Phase 1, Playa Del Carmen',
     subtitle: 'Ocean Front, Playacar Phase 1',
@@ -141,7 +140,6 @@ export const properties: Property[] = [
         ...Array.from({ length: 35 }, (_, i) => `/assets/img/photos/rentals/casavioleta/full/casavi${i + 1}.webp`),
       ],
     },
-    bookedDays: [3, 4, 5, 12, 13, 14, 20, 21, 22],
     relatedProperties: [
       {
         slug: 'casasecretomaya',
@@ -176,7 +174,7 @@ export const properties: Property[] = [
     slug: 'casamayette',
     name: 'Casa Mayette',
     type: 'rental',
-    status: 'available',
+    status: 'published',
     badge: 'Rental',
     location: 'Playacar Phase 1, Playa Del Carmen',
     subtitle: 'Ocean Front, Playacar Phase 1',
@@ -225,7 +223,6 @@ export const properties: Property[] = [
         ...Array.from({ length: 36 }, (_, i) => `/assets/img/photos/rentals/casamayette/full/casamy${i + 1}.webp`),
       ],
     },
-    bookedDays: [3, 4, 5, 12, 13, 14, 20, 21, 22],
     relatedProperties: [
       {
         slug: 'casasecretomaya',
@@ -260,7 +257,7 @@ export const properties: Property[] = [
     slug: 'casaricardo',
     name: 'Casa Ricardo',
     type: 'rental',
-    status: 'available',
+    status: 'published',
     badge: 'Rental',
     location: 'Playacar Phase 1, Playa Del Carmen',
     subtitle: 'Ocean Front, Playacar Phase 1',
@@ -310,7 +307,6 @@ export const properties: Property[] = [
         ...Array.from({ length: 35 }, (_, i) => `/assets/img/photos/rentals/casaricardo/full/casari${i + 1}.webp`),
       ],
     },
-    bookedDays: [3, 4, 5, 12, 13, 14, 20, 21, 22],
     relatedProperties: [
       {
         slug: 'casasecretomaya',
@@ -345,7 +341,7 @@ export const properties: Property[] = [
     slug: 'casafotoplus',
     name: 'Casa FotoPlus',
     type: 'rental',
-    status: 'available',
+    status: 'published',
     badge: 'Rental',
     location: 'Playacar Phase 1, Playa Del Carmen',
     subtitle: 'Residence Side, Playacar Phase 1',
@@ -393,7 +389,6 @@ export const properties: Property[] = [
       ],
       lightbox: Array.from({ length: 20 }, (_, i) => `/assets/img/photos/rentals/casafotoplus/casafp${i + 1}.webp`),
     },
-    bookedDays: [3, 4, 5, 12, 13, 14, 20, 21, 22],
     relatedProperties: [
       {
         slug: 'casasecretomaya',
@@ -428,7 +423,7 @@ export const properties: Property[] = [
     slug: 'casachukum',
     name: 'Casa Chukum',
     type: 'sale',
-    status: 'available',
+    status: 'published',
     badge: 'For Sale',
     location: 'Aldea Zama, Tulum',
     subtitle: 'Aldea Zama, Tulum',
@@ -474,7 +469,6 @@ export const properties: Property[] = [
         ...Array.from({ length: 19 }, (_, i) => `/assets/img/photos/sales/casachukum/full/casackm${i + 13}.webp`),
       ],
     },
-    bookedDays: [],
     relatedProperties: [
       {
         slug: 'casasecretomaya',

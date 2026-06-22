@@ -27,7 +27,12 @@ interface PropertyFormProps {
 const TABS = ['Basic Info', 'Descriptions', 'Details', 'Amenities', 'Related', 'SEO'];
 
 function slugify(s: string) {
-  return s.toLowerCase().replace(/[^a-z0-9]+/g, '').replace(/^-+|-+$/g, '');
+  return s
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '') // strip accents
+    .replace(/[^a-z0-9]+/g, '-')     // non-alphanumeric → hyphen
+    .replace(/^-+|-+$/g, '');        // trim leading/trailing hyphens
 }
 
 export default function PropertyForm({ propertyId, amenities, initialData }: PropertyFormProps) {
@@ -36,6 +41,7 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
   const [tab, setTab] = useState(0);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   // Basic Info
   const [name, setName] = useState(initialData?.name ?? '');
@@ -136,6 +142,8 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
         setError(body.error ?? 'Save failed.');
       } else {
         const saved = await res.json();
+        setSuccess(isEdit ? 'Changes saved successfully.' : 'Property created successfully.');
+        setTimeout(() => setSuccess(''), 4000);
         router.push(`/admin/properties/${saved.id}/edit`);
         router.refresh();
       }
@@ -149,6 +157,7 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
   return (
     <div className="a-form">
       {error && <div className="a-alert-error">{error}</div>}
+      {success && <div className="a-alert-success">{success}</div>}
 
       <div className="a-tabs">
         {TABS.map((t, i) => (

@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import PageHero from '@/components/ui/PageHero';
 import PropertyGrid from '@/components/properties/PropertyGrid';
-import { getRentalProperties } from '@/data/properties';
+import { getRentalPropertiesDB } from '@/lib/property-service';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Vacation Rentals',
@@ -16,8 +18,8 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RentalsPage() {
-  const rentals = getRentalProperties();
+export default async function RentalsPage() {
+  const rentals = await getRentalPropertiesDB();
   return (
     <>
       <PageHero

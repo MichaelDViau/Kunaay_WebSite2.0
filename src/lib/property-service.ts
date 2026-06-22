@@ -47,7 +47,6 @@ function mapProperty(p: DbPropertyFull): Property {
       gridThumbs: sorted.slice(0, 4).map((i) => i.url),
       lightbox: sorted.map((i) => i.url),
     },
-    bookedDays: [],
     bookedDates: p.bookedDates.map((d) => d.date),
     relatedProperties: p.relatedTo.map((r) => ({
       slug: r.slug,

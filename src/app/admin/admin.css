@@ -755,6 +755,10 @@ html, body { height: 100%; background: var(--a-bg); color: var(--a-text); }
   background: var(--a-red-bg); border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius-sm);
   padding: 10px 14px; font-size: 0.85rem; color: var(--a-red); margin-bottom: 16px;
 }
+.a-alert-success {
+  background: var(--a-green-bg); border: 1px solid rgba(34,197,94,0.3); border-radius: var(--radius-sm);
+  padding: 10px 14px; font-size: 0.85rem; color: var(--a-green); margin-bottom: 16px;
+}
 
 /* ── Amenity chip ── */
 .a-amenity-chip {
@@ -793,7 +797,7 @@ html, body { height: 100%; background: var(--a-bg); color: var(--a-text); }
 
 /* ── Mobile responsiveness ── */
 @media (max-width: 900px) {
-  .a-shell { grid-template-columns: 1fr; grid-template-rows: var(--header-h) 1fr; }
+  .a-shell { grid-template-columns: 1fr; }
   .a-sidebar { display: none; }
   .a-page { padding: 20px 16px; }
   .a-form-grid, .a-form-grid-3 { grid-template-columns: 1fr; }

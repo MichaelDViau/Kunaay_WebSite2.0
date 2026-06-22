@@ -4,12 +4,12 @@ import { useState } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 
 interface AvailabilityCalendarProps {
-  bookedDays: number[];
+  bookedDates: string[]; // ISO date strings: "YYYY-MM-DD"
 }
 
 const WEEKDAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
-export default function AvailabilityCalendar({ bookedDays }: AvailabilityCalendarProps) {
+export default function AvailabilityCalendar({ bookedDates }: AvailabilityCalendarProps) {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());
@@ -24,6 +24,9 @@ export default function AvailabilityCalendar({ bookedDays }: AvailabilityCalenda
     setYear(y);
   };
 
+  const toISO = (d: number) =>
+    `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
   const monthName = new Date(year, month, 1).toLocaleString('en-US', { month: 'long', year: 'numeric' });
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -34,6 +37,8 @@ export default function AvailabilityCalendar({ bookedDays }: AvailabilityCalenda
     ...Array(firstDay).fill(null),
     ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
   ];
+
+  const bookedSet = new Set(bookedDates);
 
   return (
     <div className="sidebar-card availability-card" style={{ marginTop: '1.5rem', textAlign: 'left' }}>
@@ -62,7 +67,7 @@ export default function AvailabilityCalendar({ bookedDays }: AvailabilityCalenda
           {cells.map((day, i) => {
             if (!day) return <span key={`e-${i}`} />;
             const isPast = isCurrentMonth && day < today;
-            const isBooked = bookedDays.includes(day);
+            const isBooked = bookedSet.has(toISO(day));
             let cls = 'cal-day';
             if (isPast) cls += ' past';
             else if (isBooked) cls += ' booked';

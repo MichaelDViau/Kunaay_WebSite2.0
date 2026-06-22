@@ -31,14 +31,24 @@ export async function POST(req: NextRequest) {
       relatedProperties,
     } = body;
 
+    if (!slug?.trim() || !name?.trim()) {
+      return NextResponse.json({ error: 'Name and slug are required.' }, { status: 400 });
+    }
+
+    // Ensure slug is unique
+    const existing = await prisma.property.findUnique({ where: { slug: slug.trim() } });
+    if (existing) {
+      return NextResponse.json({ error: 'A property with this slug already exists.' }, { status: 409 });
+    }
+
     const property = await prisma.property.create({
       data: {
-        slug,
-        name,
+        slug: slug.trim(),
+        name: name.trim(),
         type,
-        status: status || 'published',
+        status: status || 'draft',
         badge: badge || (type === 'rental' ? 'Rental' : 'For Sale'),
-        location,
+        location: location || '',
         subtitle: subtitle || '',
         heroLabel: heroLabel || '',
         bedrooms: Number(bedrooms) || 0,
@@ -46,12 +56,12 @@ export async function POST(req: NextRequest) {
         guests: guests ? Number(guests) : null,
         squareFeet: squareFeet ? Number(squareFeet) : null,
         price: price || '',
-        shortDescription,
+        shortDescription: shortDescription || '',
         whatsappUrl: whatsappUrl || '',
-        seoTitle: seoTitle || name,
-        seoDescription: seoDescription || shortDescription,
+        seoTitle: seoTitle || name.trim(),
+        seoDescription: seoDescription || shortDescription || '',
         seoOgImage: seoOgImage || '',
-        seoCanonical: seoCanonical || `https://www.kunaay.com/properties/${slug}`,
+        seoCanonical: seoCanonical || `https://www.kunaay.com/properties/${slug.trim()}`,
         displayOrder: Number(displayOrder) || 0,
         descriptions: {
           create: (descriptions || []).map((d: { text: string }, i: number) => ({
@@ -91,7 +101,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json(property, { status: 201 });
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: 'Failed to create property' }, { status: 500 });
+    console.error('[POST /api/admin/properties]', err);
+    return NextResponse.json({ error: 'Failed to create property.' }, { status: 500 });
   }
 }

@@ -42,78 +42,90 @@ export async function PUT(req: NextRequest, { params }: Params) {
       relatedProperties,
     } = body;
 
-    // Delete and recreate nested relations
-    await prisma.$transaction([
-      prisma.propertyDescription.deleteMany({ where: { propertyId: id } }),
-      prisma.propertyHighlight.deleteMany({ where: { propertyId: id } }),
-      prisma.propertyFeature.deleteMany({ where: { propertyId: id } }),
-      prisma.propertyAmenity.deleteMany({ where: { propertyId: id } }),
-      prisma.relatedProperty.deleteMany({ where: { propertyId: id } }),
-    ]);
+    if (!slug?.trim() || !name?.trim()) {
+      return NextResponse.json({ error: 'Name and slug are required.' }, { status: 400 });
+    }
 
-    const property = await prisma.property.update({
-      where: { id },
-      data: {
-        slug,
-        name,
-        type,
-        status,
-        badge,
-        location,
-        subtitle: subtitle || '',
-        heroLabel: heroLabel || '',
-        bedrooms: Number(bedrooms) || 0,
-        bathrooms: Number(bathrooms) || 0,
-        guests: guests ? Number(guests) : null,
-        squareFeet: squareFeet ? Number(squareFeet) : null,
-        price: price || '',
-        shortDescription,
-        whatsappUrl: whatsappUrl || '',
-        seoTitle: seoTitle || name,
-        seoDescription: seoDescription || shortDescription,
-        seoOgImage: seoOgImage || '',
-        seoCanonical: seoCanonical || `https://www.kunaay.com/properties/${slug}`,
-        displayOrder: Number(displayOrder) || 0,
-        descriptions: {
-          create: (descriptions || []).map((d: { text: string }, i: number) => ({
-            text: d.text,
-            sortOrder: i,
-          })),
-        },
-        highlights: {
-          create: (highlights || []).map((h: { icon: string; label: string }, i: number) => ({
-            icon: h.icon,
-            label: h.label,
-            sortOrder: i,
-          })),
-        },
-        features: {
-          create: (features || []).map((f: string, i: number) => ({
-            text: f,
-            sortOrder: i,
-          })),
-        },
-        amenities: {
-          create: (amenityIds || []).map((amenityId: string) => ({ amenityId })),
-        },
-        relatedTo: {
-          create: (relatedProperties || []).map(
-            (r: { slug: string; name: string; location: string; image: string }, i: number) => ({
-              slug: r.slug,
-              name: r.name,
-              location: r.location,
-              image: r.image,
+    // Check slug uniqueness (excluding this property)
+    const slugConflict = await prisma.property.findFirst({
+      where: { slug: slug.trim(), NOT: { id } },
+    });
+    if (slugConflict) {
+      return NextResponse.json({ error: 'A property with this slug already exists.' }, { status: 409 });
+    }
+
+    // Delete relations and recreate in a single transaction
+    const property = await prisma.$transaction(async (tx) => {
+      await tx.propertyDescription.deleteMany({ where: { propertyId: id } });
+      await tx.propertyHighlight.deleteMany({ where: { propertyId: id } });
+      await tx.propertyFeature.deleteMany({ where: { propertyId: id } });
+      await tx.propertyAmenity.deleteMany({ where: { propertyId: id } });
+      await tx.relatedProperty.deleteMany({ where: { propertyId: id } });
+
+      return tx.property.update({
+        where: { id },
+        data: {
+          slug: slug.trim(),
+          name: name.trim(),
+          type,
+          status,
+          badge: badge || (type === 'rental' ? 'Rental' : 'For Sale'),
+          location: location || '',
+          subtitle: subtitle || '',
+          heroLabel: heroLabel || '',
+          bedrooms: Number(bedrooms) || 0,
+          bathrooms: Number(bathrooms) || 0,
+          guests: guests ? Number(guests) : null,
+          squareFeet: squareFeet ? Number(squareFeet) : null,
+          price: price || '',
+          shortDescription: shortDescription || '',
+          whatsappUrl: whatsappUrl || '',
+          seoTitle: seoTitle || name.trim(),
+          seoDescription: seoDescription || shortDescription || '',
+          seoOgImage: seoOgImage || '',
+          seoCanonical: seoCanonical || `https://www.kunaay.com/properties/${slug.trim()}`,
+          displayOrder: Number(displayOrder) || 0,
+          descriptions: {
+            create: (descriptions || []).map((d: { text: string }, i: number) => ({
+              text: d.text,
               sortOrder: i,
-            })
-          ),
+            })),
+          },
+          highlights: {
+            create: (highlights || []).map((h: { icon: string; label: string }, i: number) => ({
+              icon: h.icon,
+              label: h.label,
+              sortOrder: i,
+            })),
+          },
+          features: {
+            create: (features || []).map((f: string, i: number) => ({
+              text: f,
+              sortOrder: i,
+            })),
+          },
+          amenities: {
+            create: (amenityIds || []).map((amenityId: string) => ({ amenityId })),
+          },
+          relatedTo: {
+            create: (relatedProperties || []).map(
+              (r: { slug: string; name: string; location: string; image: string }, i: number) => ({
+                slug: r.slug,
+                name: r.name,
+                location: r.location,
+                image: r.image,
+                sortOrder: i,
+              })
+            ),
+          },
         },
-      },
+      });
     });
 
     return NextResponse.json(property);
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: 'Failed to update property' }, { status: 500 });
+    console.error('[PUT /api/admin/properties/[id]]', err);
+    return NextResponse.json({ error: 'Failed to update property.' }, { status: 500 });
   }
 }
 
@@ -126,7 +138,7 @@ export async function DELETE(_req: NextRequest, { params }: Params) {
     await prisma.property.delete({ where: { id } });
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error(err);
-    return NextResponse.json({ error: 'Failed to delete' }, { status: 500 });
+    console.error('[DELETE /api/admin/properties/[id]]', err);
+    return NextResponse.json({ error: 'Failed to delete property.' }, { status: 500 });
   }
 }

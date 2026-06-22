@@ -2,7 +2,9 @@ import type { Metadata } from 'next';
 import HeroSlider from '@/components/home/HeroSlider';
 import PropertyGrid from '@/components/properties/PropertyGrid';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
-import { properties } from '@/data/properties';
+import { getAllProperties } from '@/lib/property-service';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Ku Náay Real Estate — Riviera Maya',
@@ -17,7 +19,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const properties = await getAllProperties();
+
   return (
     <>
       <HeroSlider />

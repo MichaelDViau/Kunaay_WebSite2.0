@@ -1,5 +1,5 @@
 export type PropertyType = 'rental' | 'sale';
-export type PropertyStatus = 'available' | 'sold' | 'rented';
+export type PropertyStatus = 'published' | 'draft';
 
 export interface HighlightItem {
   icon: string; // icon id e.g. 'bed', 'bath', 'waves', 'pool', 'kitchen', 'parking', 'home', 'coffee'
@@ -41,8 +41,7 @@ export interface Property {
   longDescriptions: string[];
   features: string[];
   gallery: GalleryImages;
-  bookedDays?: number[];
-  bookedDates?: string[]; // ISO "YYYY-MM-DD" strings (DB-backed)
+  bookedDates?: string[]; // ISO "YYYY-MM-DD" strings from the database
   relatedProperties: RelatedProperty[];
   whatsappUrl: string;
   seo: {
