@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Cal day states not in the original CSS */
+.cal-day.past { opacity: 0.35; }
+.cal-day.today { outline: 1px solid var(--gold); }
