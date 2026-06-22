@@ -4,12 +4,14 @@ import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Admin user
-  const password = await bcrypt.hash('kunaay2026', 10);
+  // Admin user — configurable via ADMIN_EMAIL / ADMIN_PASSWORD in .env
+  const adminEmail = (process.env.ADMIN_EMAIL ?? 'admin@kunaay.com').trim().toLowerCase();
+  const adminPassword = process.env.ADMIN_PASSWORD ?? 'kunaay2026';
+  const password = await bcrypt.hash(adminPassword, 10);
   await prisma.user.upsert({
-    where: { email: 'admin@kunaay.com' },
-    update: {},
-    create: { email: 'admin@kunaay.com', password, name: 'Admin', role: 'admin' },
+    where: { email: adminEmail },
+    update: { password, role: 'admin' },
+    create: { email: adminEmail, password, name: 'Admin', role: 'admin' },
   });
 
   // Default amenities
@@ -263,7 +265,7 @@ async function main() {
     console.log(`Created ${p.slug}`);
   }
 
-  console.log('Seed complete. Login: admin@kunaay.com / kunaay2026');
+  console.log(`Seed complete. Admin login: ${adminEmail} / ${adminPassword}`);
 }
 
 main()

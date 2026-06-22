@@ -101,19 +101,59 @@ touching the script.
 
 
 
-## Next.js app database setup
+## Next.js app — running the front end + back end locally (VS Code)
 
-The current Next.js application uses Prisma for the admin/backend data model. In
-development, the public website now falls back to the bundled property data if
-`DATABASE_URL` is missing or unavailable, so `npm run dev` can still load the
-front end while a database is being configured.
+The Next.js application powers both the public website and the admin back-office
+(CMS). It uses Prisma for the data model. In development the public website
+falls back to bundled property data if `DATABASE_URL` is missing, so the front
+end still renders while a database is being configured.
 
-1. Copy `.env.example` to `.env.local`.
-2. For local SQLite development, keep `DATABASE_URL="file:./dev.db"` and run
-   `npx prisma migrate dev`.
-3. For Supabase, paste the Supabase PostgreSQL connection string into
-   `DATABASE_URL`. The publishable/anon key is only for Supabase client APIs;
-   it is not a database connection string for Prisma.
-4. Restart `npm run dev` after changing environment variables.
+### Quick start
 
-For the AI assistant, add `OPENROUTER_API_KEY` in `.env.local`; the app is configured to use OpenRouter with `OPENROUTER_MODEL="google/gemma-4-26b-a4b-it:free"` and streams responses to the chat UI.
+```bash
+npm install                 # install dependencies
+cp .env.example .env        # create your local env file (gitignored)
+# edit .env: set NEXTAUTH_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD (see below)
+npx prisma migrate deploy   # create the SQLite database (dev.db)
+npx prisma db seed          # seed properties + the admin user
+npm run dev                 # start the app on http://localhost:3000
+```
+
+> Note: both Prisma and Next.js read **`.env`** (Prisma does *not* read
+> `.env.local`). Keep all variables in `.env`.
+
+### Addresses (URLs)
+
+| Area                     | URL                                      |
+| ------------------------ | ---------------------------------------- |
+| Public website           | `http://localhost:3000`                  |
+| Admin back end (login)   | `http://localhost:3000/admin/login`      |
+| Admin dashboard (CMS)    | `http://localhost:3000/admin`            |
+| AI assistant API         | `http://localhost:3000/api/ai/chat`      |
+
+Log in with the `ADMIN_EMAIL` / `ADMIN_PASSWORD` you set in `.env`.
+
+### Database options
+
+1. **Local SQLite (default):** keep `DATABASE_URL="file:./dev.db"`.
+2. **Supabase / PostgreSQL:** paste the Supabase **PostgreSQL connection
+   string** into `DATABASE_URL`, change `provider` to `"postgresql"` in
+   `prisma/schema.prisma`, then run `npx prisma migrate dev`. The
+   publishable/anon key is only for Supabase client APIs — it is *not* a
+   database connection string for Prisma.
+
+Restart the dev server after changing environment variables.
+
+### AI assistant
+
+The "Ku Náay AI Assistant" on the public pages streams answers from
+[OpenRouter](https://openrouter.ai). To enable real AI responses:
+
+1. Create a free key at <https://openrouter.ai/keys>.
+2. Put it in `.env` as `OPENROUTER_API_KEY="..."`.
+3. The default model is `OPENROUTER_MODEL="google/gemma-3-27b-it:free"`
+   (a valid free model — change it to any model id from
+   <https://openrouter.ai/models>).
+
+Without a key the assistant still works using built-in canned responses, so the
+UI never breaks; it simply isn't a live LLM until a key is added.
