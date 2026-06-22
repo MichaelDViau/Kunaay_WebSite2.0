@@ -111,9 +111,9 @@ export default async function PropertyDetailPage({ params }: Props) {
         </div>
       </div>
 
-      <AiAssistant />
-
       <RelatedProperties properties={property.relatedProperties} />
+
+      <AiAssistant />
     </>
   );
 }

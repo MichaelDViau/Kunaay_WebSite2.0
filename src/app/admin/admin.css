@@ -647,10 +647,10 @@ html, body { height: 100%; background: var(--a-bg); color: var(--a-text); }
   border-radius: 16px;
   padding: 40px;
 }
-.a-login-logo { text-align: center; margin-bottom: 28px; }
-.a-login-logo img { height: 40px; width: auto; }
+.a-login-logo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; text-align: center; margin-bottom: 28px; }
+.a-login-logo img { display: block; height: 42px; width: auto; margin: 0 auto; object-fit: contain; }
 .a-login-title { font-size: 1.25rem; font-weight: 600; text-align: center; margin-bottom: 6px; }
-.a-login-sub { font-size: 0.85rem; color: var(--a-text-2); text-align: center; margin-bottom: 28px; }
+.a-login-sub { display: block; width: 100%; font-size: 0.9rem; color: var(--a-text-2); text-align: center; margin: 0; }
 .a-login-error {
   background: var(--a-red-bg);
   border: 1px solid var(--a-red);
@@ -792,7 +792,7 @@ html, body { height: 100%; background: var(--a-bg); color: var(--a-text); }
   flex-direction: column;
   gap: 16px;
 }
-.a-login-logo { text-align: center; }
+.a-login-logo { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
 .a-login-sub { display: block; font-size: 0.82rem; color: var(--a-text-2); margin-top: 8px; letter-spacing: 0.06em; text-transform: uppercase; }
 
 /* ── Mobile responsiveness ── */

@@ -32,7 +32,7 @@ export default function LoginPage() {
     <div className="a-login-page">
       <form className="a-login-card" onSubmit={handleSubmit}>
         <div className="a-login-logo">
-          <Image src="/assets/img/logo.png" alt="Ku Náay" width={140} height={36} />
+          <Image src="/assets/img/logo.png" alt="Ku Náay" width={160} height={42} />
           <span className="a-login-sub">Admin Panel</span>
         </div>
 

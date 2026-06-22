@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { getAllProperties } from '@/lib/property-service';
+import type { Property } from '@/data/types';
 
 // In-memory rate limiting: 15 requests per 15 minutes per IP
 const rateMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 15;
 const RATE_WINDOW_MS = 15 * 60 * 1000;
+const DEFAULT_OPENROUTER_MODEL = 'google/gemma-4-26b-a4b-it:free';
 
 function getClientIp(req: NextRequest): string {
   return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
@@ -22,21 +24,22 @@ function checkRateLimit(ip: string): boolean {
   return true;
 }
 
+function isAllowedQuestion(question: string): boolean {
+  return /\b(hi|hello|hey|hola|kunaay|ku náay|property|properties|house|houses|villa|villas|rental|rentals|sale|booking|book|stay|bedroom|bathroom|pool|beach|restaurant|food|dining|activity|activities|tour|cenote|xcaret|airport|cancun|playa|tulum|riviera maya|playacar|cozumel|akumal|isla mujeres|transport|shuttle|taxi|snorkel|dive|ruins|chichen|cob[aá]|price|cost|rate|nightly|weekly)\b/i.test(question);
+}
+
+async function getPublishedProperties(): Promise<Property[]> {
+  return getAllProperties();
+}
+
 async function buildPropertyContext(): Promise<string> {
-  const properties = await prisma.property.findMany({
-    where: { status: 'published' },
-    include: {
-      descriptions: { orderBy: { sortOrder: 'asc' }, take: 1 },
-      features: { orderBy: { sortOrder: 'asc' } },
-    },
-    orderBy: { displayOrder: 'asc' },
-  });
+  const properties = await getPublishedProperties();
 
   if (properties.length === 0) return 'No properties currently listed.';
 
   return properties.map((p) => {
-    const desc = p.descriptions[0]?.text ?? '';
-    const feats = p.features.slice(0, 5).map((f) => f.text).join(', ');
+    const desc = p.longDescriptions[0] ?? p.shortDescription;
+    const feats = p.features.slice(0, 8).join(', ');
     const guestsStr = p.guests ? `, up to ${p.guests} guests` : '';
     const priceStr = p.price ? `, ${p.price}` : '';
     return `- ${p.name} [slug:${p.slug}] (${p.type}, ${p.location}${guestsStr}${priceStr}, ${p.bedrooms}bd/${p.bathrooms}ba): ${desc}${feats ? ` | Features: ${feats}` : ''}`;
@@ -47,15 +50,14 @@ const SYSTEM_PROMPT_BASE = `You are Ku Náay AI Assistant, a knowledgeable and f
 
 You ONLY answer questions about:
 - Properties listed by Ku Náay (vacation rentals and properties for sale)
-- Vacation rentals and travel in Riviera Maya, Playa del Carmen, Tulum, Playacar
-- Local beaches, restaurants, activities, and travel tips in the Riviera Maya
+- Information visible on the current Ku Náay website/listing pages
+- Restaurants, beaches, activities, tours, and travel tips around Riviera Maya, Cancun, Playa del Carmen, Playacar, and Tulum
+- Cancun airport, Tulum airport, transfers, and travel logistics for guests visiting the Riviera Maya
 - Booking inquiries and property details
 
-You politely decline to answer questions unrelated to travel or real estate in the Riviera Maya.
-You NEVER invent or fabricate property details — only recommend properties from the portfolio below.
-
+Politely decline unrelated questions. Do not answer unrelated coding, finance, politics, medical, or general trivia questions.
+NEVER invent or fabricate Ku Náay property details — only recommend properties from the portfolio below.
 When recommending a specific property, embed its slug in double brackets like [[property-slug]] so a property card is shown. You may recommend up to 3 properties per response.
-
 Keep responses friendly, concise (2–4 sentences), and professional. If listing properties, be brief.
 
 Ku Náay property portfolio:
@@ -66,9 +68,15 @@ type MockEntry = { text: string; slugs: string[] };
 function getMockResponse(question: string): MockEntry {
   const q = question.toLowerCase();
 
+  if (!isAllowedQuestion(question)) {
+    return {
+      text: "I can only help with Ku Náay properties, restaurants, beaches, airports, activities, and travel around the Riviera Maya, Cancun, Playa del Carmen, and Tulum. Please ask me about one of those topics.",
+      slugs: [],
+    };
+  }
   if (/^(hi|hello|hey|hola|bonjour|salut)\b/.test(q)) {
     return {
-      text: "Hello! I'm the Ku Náay AI Assistant. I can help you find luxury vacation rentals or investment properties in the Riviera Maya, and answer questions about local beaches, restaurants, and activities. What are you looking for?",
+      text: "Hello! I'm the Ku Náay AI Assistant. I can help you find luxury vacation rentals or investment properties in the Riviera Maya, plus restaurants, beaches, airports, and activities nearby. What are you looking for?",
       slugs: [],
     };
   }
@@ -92,31 +100,37 @@ function getMockResponse(question: string): MockEntry {
   }
   if (/\b(beach|ocean|sea|coast|sand|swim)\b/.test(q)) {
     return {
-      text: "The Riviera Maya is home to some of the world's most beautiful beaches — crystalline turquoise water and powdery white sand. Playacar Beach and Playa del Carmen's main beach are top favourites. Several of our properties are steps from the water!",
+      text: "The Riviera Maya is known for turquoise water and white-sand beaches. Playacar Beach and Playa del Carmen's main beach are favorites, and several Ku Náay properties are steps from the water.",
+      slugs: [],
+    };
+  }
+  if (/\b(airport|transfer|shuttle|taxi|cancun|tulum)\b/.test(q)) {
+    return {
+      text: "Cancun International Airport and Tulum International Airport both serve the Riviera Maya. Private transfers are usually the most comfortable option for villa guests, and our concierge team can help coordinate airport transportation.",
       slugs: [],
     };
   }
   if (/\b(restaurant|food|eat|dining|cuisine|menu|drink|bar)\b/.test(q)) {
     return {
-      text: "Playa del Carmen's 5th Avenue (Quinta Avenida) is lined with world-class restaurants — from fresh seafood and authentic Mexican cuisine to international fare. For the best local experience, try La Cueva del Chango or Babe's Noodles & Bar.",
+      text: "Playa del Carmen's Quinta Avenida has many restaurants, from seafood and authentic Mexican cuisine to international dining. For a local feel, ask our concierge for current recommendations near your villa and preferred style of food.",
       slugs: [],
     };
   }
-  if (/\b(activit|cenote|tour|ruin|tulum|xcaret|snorkel|dive|zip)\b/.test(q)) {
+  if (/\b(activit|cenote|tour|ruin|xcaret|snorkel|dive|zip)\b/.test(q)) {
     return {
-      text: "The Riviera Maya has incredible activities: swimming in sacred cenotes, exploring Mayan ruins at Tulum or Chichén Itzá, snorkelling the Mesoamerican Reef, and zip-lining at Xcaret. Our concierge team can arrange all tours for guests staying at our properties.",
+      text: "The Riviera Maya has excellent activities: cenotes, Tulum ruins, snorkeling, diving, beach clubs, and parks like Xcaret. Our concierge team can arrange guest experiences based on where you are staying.",
       slugs: [],
     };
   }
   if (/\b(price|cost|rate|how much|fee|nightly|weekly)\b/.test(q)) {
     return {
-      text: "Rental rates vary by property, season, and duration. For sale prices depend on the listing. For accurate, up-to-date pricing please click the WhatsApp button on any property page — our agents respond quickly!",
+      text: "Rental rates vary by property, season, and duration. For sale prices depend on the listing. For accurate, up-to-date pricing please use the WhatsApp button on any property page and our agents will help.",
       slugs: [],
     };
   }
 
   return {
-    text: "I specialise in Ku Náay's luxury properties and travel in the Riviera Maya. Ask me about vacation rentals, properties for sale, local beaches, restaurants, or activities in Playa del Carmen, Tulum, and Playacar — I'm happy to help!",
+    text: "I specialise in Ku Náay's luxury properties and travel in the Riviera Maya. Ask me about rentals, properties for sale, restaurants, airports, beaches, or activities in Playa del Carmen, Cancun, Tulum, and Playacar.",
     slugs: [],
   };
 }
@@ -130,19 +144,7 @@ function parseSlugMarkers(text: string): { cleanText: string; slugs: string[] } 
   return { cleanText, slugs };
 }
 
-type DbPropertyCard = {
-  slug: string;
-  name: string;
-  location: string;
-  type: string;
-  bedrooms: number;
-  bathrooms: number;
-  guests: number | null;
-  price: string;
-  images: { url: string }[];
-};
-
-function toCard(p: DbPropertyCard) {
+function toCard(p: Property) {
   return {
     slug: p.slug,
     name: p.name,
@@ -152,8 +154,42 @@ function toCard(p: DbPropertyCard) {
     bathrooms: p.bathrooms,
     guests: p.guests,
     price: p.price || null,
-    image: p.images[0]?.url ?? '',
+    image: p.gallery.cardThumbs[0] ?? p.gallery.heroImage ?? '',
   };
+}
+
+async function cardsForSlugs(slugs: string[]) {
+  if (slugs.length === 0) return [];
+  const properties = await getPublishedProperties();
+  const slugSet = new Set(slugs);
+  return properties.filter((p) => slugSet.has(p.slug)).slice(0, 3).map(toCard);
+}
+
+function streamEvent(controller: ReadableStreamDefaultController, payload: unknown) {
+  controller.enqueue(`data: ${JSON.stringify(payload)}\n\n`);
+}
+
+function streamJsonResponse(stream: ReadableStream) {
+  return new Response(stream, {
+    headers: {
+      'content-type': 'text/event-stream; charset=utf-8',
+      'cache-control': 'no-cache, no-transform',
+      connection: 'keep-alive',
+    },
+  });
+}
+
+function streamMockResponse(mock: MockEntry) {
+  const stream = new ReadableStream({
+    async start(controller) {
+      streamEvent(controller, { type: 'token', token: mock.text });
+      const properties = await cardsForSlugs(mock.slugs);
+      streamEvent(controller, { type: 'done', properties });
+      controller.close();
+    },
+  }).pipeThrough(new TextEncoderStream());
+
+  return streamJsonResponse(stream);
 }
 
 export async function POST(req: NextRequest) {
@@ -181,63 +217,96 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Question is too long (max 500 characters).' }, { status: 400 });
   }
 
-  const apiKey = process.env.AI_API_KEY;
+  if (!isAllowedQuestion(question)) {
+    return streamMockResponse(getMockResponse(question));
+  }
+
+  const apiKey = process.env.OPENROUTER_API_KEY ?? process.env.AI_API_KEY;
 
   // Mock mode — no API key configured
   if (!apiKey) {
-    const mock = getMockResponse(question);
-    const cards = mock.slugs.length > 0
-      ? await prisma.property.findMany({
-          where: { slug: { in: mock.slugs }, status: 'published' },
-          include: { images: { orderBy: { sortOrder: 'asc' }, take: 1 } },
-        })
-      : [];
-
-    return NextResponse.json({ answer: mock.text, properties: cards.map(toCard) });
+    return streamMockResponse(getMockResponse(question));
   }
 
-  // Live AI mode
-  const propertyContext = await buildPropertyContext();
-  const model = process.env.AI_MODEL ?? 'claude-haiku-4-5-20251001';
-
   try {
-    const aiRes = await fetch('https://api.anthropic.com/v1/messages', {
+    const propertyContext = await buildPropertyContext();
+    const model = process.env.OPENROUTER_MODEL ?? process.env.AI_MODEL ?? DEFAULT_OPENROUTER_MODEL;
+
+    const aiRes = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
+        authorization: `Bearer ${apiKey}`,
         'content-type': 'application/json',
+        'http-referer': process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.kunaay.com',
+        'x-title': 'Ku Náay Real Estate',
       },
       body: JSON.stringify({
         model,
+        stream: true,
+        messages: [
+          { role: 'system', content: SYSTEM_PROMPT_BASE + propertyContext },
+          { role: 'user', content: question },
+        ],
         max_tokens: 512,
-        system: SYSTEM_PROMPT_BASE + propertyContext,
-        messages: [{ role: 'user', content: question }],
+        temperature: 0.4,
       }),
     });
 
-    if (!aiRes.ok) {
-      const errBody = await aiRes.json().catch(() => ({})) as { error?: { message?: string } };
-      console.error('[AI chat] Anthropic error:', errBody);
+    if (!aiRes.ok || !aiRes.body) {
+      const errBody = await aiRes.text().catch(() => '');
+      console.error('[AI chat] OpenRouter error:', errBody);
       return NextResponse.json(
         { error: 'AI service temporarily unavailable. Please try again.' },
         { status: 503 }
       );
     }
 
-    const data = await aiRes.json() as { content: { type: string; text: string }[] };
-    const rawAnswer = data.content?.find((c) => c.type === 'text')?.text ?? '';
+    const stream = new ReadableStream({
+      async start(controller) {
+        const reader = aiRes.body!.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+        let rawAnswer = '';
 
-    const { cleanText, slugs } = parseSlugMarkers(rawAnswer);
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop() ?? '';
 
-    const cards = slugs.length > 0
-      ? await prisma.property.findMany({
-          where: { slug: { in: slugs }, status: 'published' },
-          include: { images: { orderBy: { sortOrder: 'asc' }, take: 1 } },
-        })
-      : [];
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (!trimmed.startsWith('data:')) continue;
+              const data = trimmed.slice(5).trim();
+              if (!data || data === '[DONE]') continue;
 
-    return NextResponse.json({ answer: cleanText, properties: cards.map(toCard) });
+              try {
+                const parsed = JSON.parse(data) as { choices?: { delta?: { content?: string } }[] };
+                const token = parsed.choices?.[0]?.delta?.content ?? '';
+                if (!token) continue;
+                rawAnswer += token;
+                streamEvent(controller, { type: 'token', token });
+              } catch {
+                // Ignore malformed provider stream chunks.
+              }
+            }
+          }
+
+          const { cleanText, slugs } = parseSlugMarkers(rawAnswer);
+          const properties = await cardsForSlugs(slugs);
+          streamEvent(controller, { type: 'done', answer: cleanText, properties });
+        } catch (error) {
+          console.error('[AI chat] Stream error:', error);
+          streamEvent(controller, { type: 'error', error: 'AI service unavailable. Please try again later.' });
+        } finally {
+          controller.close();
+        }
+      },
+    }).pipeThrough(new TextEncoderStream());
+
+    return streamJsonResponse(stream);
   } catch (err) {
     console.error('[AI chat] Error:', err);
     return NextResponse.json(

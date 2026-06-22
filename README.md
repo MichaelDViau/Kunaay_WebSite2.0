@@ -115,3 +115,5 @@ front end while a database is being configured.
    `DATABASE_URL`. The publishable/anon key is only for Supabase client APIs;
    it is not a database connection string for Prisma.
 4. Restart `npm run dev` after changing environment variables.
+
+For the AI assistant, add `OPENROUTER_API_KEY` in `.env.local`; the app is configured to use OpenRouter with `OPENROUTER_MODEL="google/gemma-4-26b-a4b-it:free"` and streams responses to the chat UI.

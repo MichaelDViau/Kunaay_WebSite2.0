@@ -58,12 +58,57 @@ export default function AiAssistant() {
         body: JSON.stringify({ question: q }),
       });
 
-      const data = await res.json() as ChatResponse & { error?: string };
-
       if (!res.ok) {
+        const data = await res.json().catch(() => ({})) as { error?: string };
         setError(data.error ?? 'Something went wrong. Please try again.');
-      } else {
+        return;
+      }
+
+      const contentType = res.headers.get('content-type') ?? '';
+      if (!contentType.includes('text/event-stream') || !res.body) {
+        const data = await res.json() as ChatResponse & { error?: string };
         setResponse(data);
+        return;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = '';
+      let answer = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const events = buffer.split('\n\n');
+        buffer = events.pop() ?? '';
+
+        for (const event of events) {
+          const dataLine = event.split('\n').find((line) => line.startsWith('data:'));
+          if (!dataLine) continue;
+
+          const payload = JSON.parse(dataLine.slice(5).trim()) as {
+            type?: string;
+            token?: string;
+            answer?: string;
+            error?: string;
+            properties?: PropertyCard[];
+          };
+
+          if (payload.type === 'token' && payload.token) {
+            answer += payload.token;
+            setResponse({ answer, properties: [] });
+          }
+          if (payload.type === 'done') {
+            setResponse({
+              answer: payload.answer || answer,
+              properties: payload.properties ?? [],
+            });
+          }
+          if (payload.type === 'error') {
+            setError(payload.error ?? 'AI service unavailable. Please try again later.');
+          }
+        }
       }
     } catch {
       setError('Network error. Please check your connection and try again.');
