@@ -100,3 +100,18 @@ touching the script.
   and are referenced with `<use href="#i-…">`.
 
 
+
+## Next.js app database setup
+
+The current Next.js application uses Prisma for the admin/backend data model. In
+development, the public website now falls back to the bundled property data if
+`DATABASE_URL` is missing or unavailable, so `npm run dev` can still load the
+front end while a database is being configured.
+
+1. Copy `.env.example` to `.env.local`.
+2. For local SQLite development, keep `DATABASE_URL="file:./dev.db"` and run
+   `npx prisma migrate dev`.
+3. For Supabase, paste the Supabase PostgreSQL connection string into
+   `DATABASE_URL`. The publishable/anon key is only for Supabase client APIs;
+   it is not a database connection string for Prisma.
+4. Restart `npm run dev` after changing environment variables.

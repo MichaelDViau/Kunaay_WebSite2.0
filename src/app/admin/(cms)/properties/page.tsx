@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { databaseSetupMessage, isDatabaseConfigurationError } from '@/lib/db-status';
 import Link from 'next/link';
 import DeletePropertyButton from './DeletePropertyButton';
 import DuplicatePropertyButton from './DuplicatePropertyButton';
@@ -7,10 +8,18 @@ export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Properties' };
 
 export default async function PropertiesPage() {
-  const properties = await prisma.property.findMany({
-    orderBy: { displayOrder: 'asc' },
-    include: { images: { where: { isHero: true }, take: 1 } },
-  });
+  let properties: Array<Awaited<ReturnType<typeof prisma.property.findMany>>[number] & { images: { url: string; thumbUrl: string }[] }> = [];
+  let databaseWarning = '';
+
+  try {
+    properties = await prisma.property.findMany({
+      orderBy: { displayOrder: 'asc' },
+      include: { images: { where: { isHero: true }, take: 1 } },
+    });
+  } catch (error) {
+    if (!isDatabaseConfigurationError(error)) throw error;
+    databaseWarning = databaseSetupMessage();
+  }
 
   return (
     <div className="a-page">
@@ -24,6 +33,8 @@ export default async function PropertiesPage() {
           New Property
         </Link>
       </div>
+
+      {databaseWarning ? <p className="a-alert">{databaseWarning}</p> : null}
 
       <table className="a-table">
         <thead>
