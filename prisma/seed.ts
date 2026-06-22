@@ -1,7 +1,30 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { existsSync } from 'fs';
+import { join } from 'path';
+import { properties as staticProperties } from '../src/data/properties';
 
 const prisma = new PrismaClient();
+
+// Build the ordered gallery image rows for a property from the curated image
+// set in src/data/properties.ts. Local files are kept only if they actually
+// exist on disk, so the seed never introduces broken image paths.
+function galleryImageData(slug: string, fallbackHero: string, name: string) {
+  const data = staticProperties.find((sp) => sp.slug === slug);
+  const candidates = data?.gallery.lightbox?.length ? data.gallery.lightbox : [fallbackHero];
+  const present = candidates.filter((url) =>
+    url.startsWith('/') ? existsSync(join(process.cwd(), url)) : true
+  );
+  const urls = present.length > 0 ? present : [fallbackHero];
+  return urls.map((url, i) => ({
+    url,
+    thumbUrl: url,
+    title: name,
+    isHero: i === 0,
+    isCover: i === 0,
+    sortOrder: i,
+  }));
+}
 
 async function main() {
   // Preflight: the seed needs a database connection string.
@@ -235,9 +258,25 @@ async function main() {
   ];
 
   for (const p of props) {
-    const existing = await prisma.property.findUnique({ where: { slug: p.slug } });
+    const images = galleryImageData(p.slug, p.heroImage, p.name);
+    const existing = await prisma.property.findUnique({
+      where: { slug: p.slug },
+      include: { images: true },
+    });
+
     if (existing) {
-      console.log(`Skipping ${p.slug} (already exists)`);
+      // Backfill the full gallery for properties that were seeded with only
+      // the single hero image. Properties that already have a managed gallery
+      // (2+ images, e.g. edited in the admin) are left untouched.
+      if (existing.images.length <= 1 && images.length > 1) {
+        await prisma.propertyImage.deleteMany({ where: { propertyId: existing.id } });
+        await prisma.propertyImage.createMany({
+          data: images.map((img) => ({ ...img, propertyId: existing.id })),
+        });
+        console.log(`Backfilled ${p.slug} with ${images.length} gallery images`);
+      } else {
+        console.log(`Skipping ${p.slug} (already has ${existing.images.length} image(s))`);
+      }
       continue;
     }
 
@@ -251,7 +290,7 @@ async function main() {
         seoDescription: p.seoDescription, seoOgImage: p.seoOgImage,
         seoCanonical: p.seoCanonical,
         images: {
-          create: [{ url: p.heroImage, thumbUrl: p.heroImage, title: p.name, isHero: true, sortOrder: 0 }],
+          create: images,
         },
         highlights: {
           create: p.highlights.map((h, i) => ({ icon: h.icon, label: h.label, sortOrder: i })),
@@ -267,7 +306,7 @@ async function main() {
         },
       },
     });
-    console.log(`Created ${p.slug}`);
+    console.log(`Created ${p.slug} with ${images.length} gallery images`);
   }
 
   console.log(`Seed complete. Admin login: ${adminEmail} / ${adminPassword}`);
