@@ -6,7 +6,7 @@ import type { Property } from '@/data/types';
 const rateMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 15;
 const RATE_WINDOW_MS = 15 * 60 * 1000;
-const DEFAULT_OPENROUTER_MODEL = 'google/gemma-4-26b-a4b-it:free';
+const DEFAULT_OPENROUTER_MODEL = 'google/gemma-3-27b-it:free';
 
 function getClientIp(req: NextRequest): string {
   return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
@@ -25,7 +25,7 @@ function checkRateLimit(ip: string): boolean {
 }
 
 function isAllowedQuestion(question: string): boolean {
-  return /\b(hi|hello|hey|hola|kunaay|ku náay|property|properties|house|houses|villa|villas|rental|rentals|sale|booking|book|stay|bedroom|bathroom|pool|beach|restaurant|food|dining|activity|activities|tour|cenote|xcaret|airport|cancun|playa|tulum|riviera maya|playacar|cozumel|akumal|isla mujeres|transport|shuttle|taxi|snorkel|dive|ruins|chichen|cob[aá]|price|cost|rate|nightly|weekly)\b/i.test(question);
+  return /\b(hi|hello|hey|hola|kunaay|ku náay|casa|property|properties|home|homes|house|houses|condo|apartment|villa|villas|rental|rentals|sale|buy|invest|booking|book|available|availability|recommend|suggest|stay|bedroom|bathroom|guest|guests|family|families|kid|kids|children|amenit|wifi|wi-fi|kitchen|pool|beach|beachfront|ocean|oceanfront|view|garden|terrace|concierge|chef|golf|restaurant|food|dining|activity|activities|tour|cenote|xcaret|aldea|zama|airport|cancun|playa|tulum|riviera maya|playacar|cozumel|akumal|isla mujeres|transport|shuttle|taxi|snorkel|dive|ruins|chichen|cob[aá]|price|cost|rate|nightly|weekly|monthly)\b/i.test(question);
 }
 
 async function getPublishedProperties(): Promise<Property[]> {

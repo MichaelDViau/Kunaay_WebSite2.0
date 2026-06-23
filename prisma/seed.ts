@@ -1,15 +1,54 @@
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { existsSync } from 'fs';
+import { join } from 'path';
+import { properties as staticProperties } from '../src/data/properties';
 
 const prisma = new PrismaClient();
 
+// Build the ordered gallery image rows for a property from the curated image
+// set in src/data/properties.ts. Local files are kept only if they actually
+// exist on disk, so the seed never introduces broken image paths.
+function galleryImageData(slug: string, fallbackHero: string, name: string) {
+  const data = staticProperties.find((sp) => sp.slug === slug);
+  const candidates = data?.gallery.lightbox?.length ? data.gallery.lightbox : [fallbackHero];
+  const present = candidates.filter((url) =>
+    url.startsWith('/') ? existsSync(join(process.cwd(), url)) : true
+  );
+  const urls = present.length > 0 ? present : [fallbackHero];
+  return urls.map((url, i) => ({
+    url,
+    thumbUrl: url,
+    title: name,
+    isHero: i === 0,
+    isCover: i === 0,
+    sortOrder: i,
+  }));
+}
+
+// Full premium descriptions come from src/data/properties.ts (the canonical
+// content, identical to the original static pages). Falls back to the inline
+// summary only if a property is missing from the canonical data.
+function descriptionData(slug: string, fallback: string[]) {
+  const data = staticProperties.find((sp) => sp.slug === slug);
+  const texts = data?.longDescriptions?.length ? data.longDescriptions : fallback;
+  return texts.map((text, i) => ({ text, sortOrder: i }));
+}
+
 async function main() {
-  // Admin user
-  const password = await bcrypt.hash('kunaay2026', 10);
+  // Preflight: the seed needs a database connection string.
+  if (!process.env.DATABASE_URL) {
+    throw new Error('Environment variable not found: DATABASE_URL');
+  }
+
+  // Admin user — configurable via ADMIN_EMAIL / ADMIN_PASSWORD in .env
+  const adminEmail = (process.env.ADMIN_EMAIL ?? 'admin@kunaay.com').trim().toLowerCase();
+  const adminPassword = process.env.ADMIN_PASSWORD ?? 'kunaay2026';
+  const password = await bcrypt.hash(adminPassword, 10);
   await prisma.user.upsert({
-    where: { email: 'admin@kunaay.com' },
-    update: {},
-    create: { email: 'admin@kunaay.com', password, name: 'Admin', role: 'admin' },
+    where: { email: adminEmail },
+    update: { password, role: 'admin' },
+    create: { email: adminEmail, password, name: 'Admin', role: 'admin' },
   });
 
   // Default amenities
@@ -228,9 +267,28 @@ async function main() {
   ];
 
   for (const p of props) {
-    const existing = await prisma.property.findUnique({ where: { slug: p.slug } });
+    const images = galleryImageData(p.slug, p.heroImage, p.name);
+    const descriptions = descriptionData(p.slug, p.descriptions);
+    const existing = await prisma.property.findUnique({
+      where: { slug: p.slug },
+      include: { images: true },
+    });
+
     if (existing) {
-      console.log(`Skipping ${p.slug} (already exists)`);
+      // Restore the canonical gallery and descriptions for the demo
+      // properties: this re-syncs the full image set (removing any stray or
+      // test images added through the admin) and replaces truncated
+      // descriptions with the complete originals. Properties you add yourself
+      // (other slugs) are never touched.
+      await prisma.propertyImage.deleteMany({ where: { propertyId: existing.id } });
+      await prisma.propertyImage.createMany({
+        data: images.map((img) => ({ ...img, propertyId: existing.id })),
+      });
+      await prisma.propertyDescription.deleteMany({ where: { propertyId: existing.id } });
+      await prisma.propertyDescription.createMany({
+        data: descriptions.map((d) => ({ ...d, propertyId: existing.id })),
+      });
+      console.log(`Restored ${p.slug}: ${images.length} images, ${descriptions.length} description paragraphs`);
       continue;
     }
 
@@ -244,13 +302,13 @@ async function main() {
         seoDescription: p.seoDescription, seoOgImage: p.seoOgImage,
         seoCanonical: p.seoCanonical,
         images: {
-          create: [{ url: p.heroImage, thumbUrl: p.heroImage, title: p.name, isHero: true, sortOrder: 0 }],
+          create: images,
         },
         highlights: {
           create: p.highlights.map((h, i) => ({ icon: h.icon, label: h.label, sortOrder: i })),
         },
         descriptions: {
-          create: p.descriptions.map((text, i) => ({ text, sortOrder: i })),
+          create: descriptions,
         },
         features: {
           create: p.features.map((text, i) => ({ text, sortOrder: i })),
@@ -260,12 +318,36 @@ async function main() {
         },
       },
     });
-    console.log(`Created ${p.slug}`);
+    console.log(`Created ${p.slug}: ${images.length} images, ${descriptions.length} description paragraphs`);
   }
 
-  console.log('Seed complete. Login: admin@kunaay.com / kunaay2026');
+  console.log(`Seed complete. Admin login: ${adminEmail} / ${adminPassword}`);
 }
 
 main()
-  .catch((e) => { console.error(e); process.exit(1); })
+  .catch((e: unknown) => {
+    const msg = e instanceof Error ? e.message : String(e);
+    const code = (e as { code?: string })?.code;
+    const line = '\n──────────────────────────────────────────────\n';
+
+    if (msg.includes('Environment variable not found: DATABASE_URL') || !process.env.DATABASE_URL) {
+      console.error(`${line}[seed] DATABASE_URL is not set.${line}` +
+        'Create your local env file, then re-run:\n\n' +
+        '  cp .env.example .env\n' +
+        '  npx prisma migrate deploy\n' +
+        '  npx prisma db seed\n\n' +
+        '(.env must contain DATABASE_URL, e.g. DATABASE_URL="file:./dev.db")\n');
+    } else if (code === 'P2021' || code === 'P1014' || /does not exist|no such table/i.test(msg)) {
+      console.error(`${line}[seed] The database tables do not exist yet.${line}` +
+        'Create them first, then re-run the seed:\n\n' +
+        '  npx prisma migrate deploy\n' +
+        '  npx prisma db seed\n');
+    } else if (code === 'P1001' || /can't reach database server/i.test(msg)) {
+      console.error(`${line}[seed] Cannot reach the database.${line}` +
+        'Check that DATABASE_URL in .env is correct and the database is running.\n');
+    } else {
+      console.error(e);
+    }
+    process.exit(1);
+  })
   .finally(() => prisma.$disconnect());

@@ -29,7 +29,7 @@ export default function Lightbox({ images, index, onClose, onNav }: LightboxProp
   }, [handleKey]);
 
   return (
-    <div className="lightbox" style={{ display: 'flex' }} onClick={onClose}>
+    <div className="lightbox open" style={{ display: 'flex' }} onClick={onClose}>
       <button
         className="lightbox-close"
         onClick={onClose}

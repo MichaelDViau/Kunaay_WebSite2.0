@@ -20,10 +20,12 @@ interface ChatResponse {
 }
 
 const EXAMPLES = [
-  'What rentals are available?',
-  'Best beaches near Playa del Carmen?',
-  'Properties with private pool?',
-  'Family activities nearby?',
+  'What rentals are available for Christmas?',
+  'How far is Casa Mayette from Cancun Airport?',
+  'What properties are for sale in Tulum?',
+  'Is Xcaret a good activity for kids?',
+  'Are taxis safe and available near the houses?',
+  'Is there a supermarket close to Casa Secreto Maya?',
 ];
 
 export default function AiAssistant() {
@@ -136,14 +138,6 @@ export default function AiAssistant() {
 
         {/* Header */}
         <div className="ai-header">
-          <div className="ai-badge-row">
-            <span className="ai-badge">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2zm0 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm0 14.5c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08a7.23 7.23 0 0 1-6 3.22z"/>
-              </svg>
-              AI
-            </span>
-          </div>
           <h2 className="ai-title">Ku Náay AI Assistant</h2>
           <p className="ai-subtitle">
             Ask about our properties, local beaches, restaurants, or activities in the Riviera Maya

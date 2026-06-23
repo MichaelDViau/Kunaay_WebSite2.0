@@ -1,0 +1,16 @@
+{
+  "// note": "Standalone TypeScript config used only to run prisma/seed.ts via ts-node. Kept separate from the root tsconfig because ts-node cannot use Next.js's module:esnext / moduleResolution:bundler settings. transpileOnly keeps the seed running even if unrelated type errors exist.",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "target": "ES2019",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "noEmit": false
+  },
+  "ts-node": {
+    "transpileOnly": true
+  },
+  "include": ["seed.ts"]
+}

@@ -2,6 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ──────────────────────────────────────────────────────────────────────
+   Tailwind Preflight forces `svg { display: block }`, which left-aligns
+   every inline icon the original design centered with `text-align`
+   (e.g. .highlight-item, card meta rows, buttons, footer). The original
+   static site used inline SVGs. Restore that so icons sit inline and
+   centered again. Icons inside flex rows are blockified by flex, so this
+   rule is a no-op there and does not affect the admin panel.
+   ────────────────────────────────────────────────────────────────────── */
+svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Form controls must keep inheriting the site font once Preflight's
+   reset is overridden (covers admin buttons that don't set it explicitly). */
+button,
+input,
+select,
+textarea,
+optgroup {
+  font: inherit;
+  letter-spacing: inherit;
+}
+
 /* Cal day states not in the original CSS */
 .cal-day.past { opacity: 0.35; }
 .cal-day.today { outline: 1px solid var(--gold); }

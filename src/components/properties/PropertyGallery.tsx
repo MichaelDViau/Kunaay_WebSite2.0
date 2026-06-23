@@ -18,7 +18,13 @@ export default function PropertyGallery({ heroImage, gridThumbs, lightbox, name 
   const nav = (dir: number) =>
     setLbIndex((prev) => prev === null ? 0 : ((prev + dir + lightbox.length) % lightbox.length));
 
+  // The right column is a 2×2 grid of four tiles (images 1–4) beside the hero,
+  // matching the original layout. The fourth tile becomes the "+N / View All"
+  // overlay. Fall back to gridThumbs if the lightbox set is unavailable.
+  const tileSource = lightbox.length > 1 ? lightbox : gridThumbs;
+  const tiles = tileSource.slice(1, 5);
   const extraCount = lightbox.length - 4;
+  const hasMore = extraCount > 0;
 
   return (
     <>
@@ -37,10 +43,11 @@ export default function PropertyGallery({ heroImage, gridThumbs, lightbox, name 
             />
           </div>
           <div className="detail-gallery-right">
-            {gridThumbs.slice(1, 4).map((src, i) => {
-              const isLast = i === 2 && extraCount > 0;
-              return isLast ? (
-                <div key={i} className="gallery-more" onClick={() => openAt(3)} style={{ cursor: 'pointer' }}>
+            {tiles.map((src, i) => {
+              const imageIndex = i + 1;
+              const isMore = hasMore && i === tiles.length - 1;
+              return isMore ? (
+                <div key={i} className="gallery-more" onClick={() => openAt(imageIndex)} style={{ cursor: 'pointer' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={src} alt={name} loading="lazy" />
                   <div className="gallery-more-overlay">
@@ -49,7 +56,7 @@ export default function PropertyGallery({ heroImage, gridThumbs, lightbox, name 
                   </div>
                 </div>
               ) : (
-                <div key={i} className="gallery-thumb" onClick={() => openAt(i + 1)} style={{ cursor: 'pointer' }}>
+                <div key={i} className="gallery-thumb" onClick={() => openAt(imageIndex)} style={{ cursor: 'pointer' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img className="lb-img" src={src} alt={name} decoding="async" />
                 </div>
