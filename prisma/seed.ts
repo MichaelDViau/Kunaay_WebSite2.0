@@ -41,9 +41,16 @@ async function main() {
     throw new Error('Environment variable not found: DATABASE_URL');
   }
 
-  // Admin user — configurable via ADMIN_EMAIL / ADMIN_PASSWORD in .env
+  // Admin user — configured via ADMIN_EMAIL / ADMIN_PASSWORD in .env.
+  // We deliberately require an explicit password rather than falling back to a
+  // hardcoded default, so a known credential is never seeded into a database.
   const adminEmail = (process.env.ADMIN_EMAIL ?? 'admin@kunaay.com').trim().toLowerCase();
-  const adminPassword = process.env.ADMIN_PASSWORD ?? 'kunaay2026';
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  if (!adminPassword) {
+    throw new Error(
+      'ADMIN_PASSWORD is not set. Add a strong ADMIN_PASSWORD (and ADMIN_EMAIL) to your .env before seeding the admin user.'
+    );
+  }
   const password = await bcrypt.hash(adminPassword, 10);
   await prisma.user.upsert({
     where: { email: adminEmail },

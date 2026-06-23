@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma';
+import { isDatabaseConfigurationError } from '@/lib/db-status';
 import { properties as staticProperties } from '@/data/properties';
 import type { Property, PropertyType, PropertyStatus } from '@/data/types';
 
@@ -67,14 +68,6 @@ function mapProperty(p: DbPropertyFull): Property {
   };
 }
 
-function isMissingDatabaseError(error: unknown): boolean {
-  return error instanceof Error && (
-    error.message.includes('Environment variable not found: DATABASE_URL') ||
-    error.message.includes("Can\'t reach database server") ||
-    error.message.includes('does not exist')
-  );
-}
-
 function publishedStaticProperties(): Property[] {
   return staticProperties.filter((p) => p.status === 'published');
 }
@@ -88,7 +81,7 @@ export async function getAllProperties(): Promise<Property[]> {
     });
     return (rows as DbPropertyFull[]).map(mapProperty);
   } catch (error) {
-    if (!isMissingDatabaseError(error)) throw error;
+    if (!isDatabaseConfigurationError(error)) throw error;
     console.warn('[property-service] DATABASE_URL is not configured or unavailable. Using bundled property data.');
     return publishedStaticProperties();
   }
@@ -103,7 +96,7 @@ export async function getRentalPropertiesDB(): Promise<Property[]> {
     });
     return (rows as DbPropertyFull[]).map(mapProperty);
   } catch (error) {
-    if (!isMissingDatabaseError(error)) throw error;
+    if (!isDatabaseConfigurationError(error)) throw error;
     console.warn('[property-service] DATABASE_URL is not configured or unavailable. Using bundled rental data.');
     return publishedStaticProperties().filter((p) => p.type === 'rental');
   }
@@ -118,7 +111,7 @@ export async function getSalePropertiesDB(): Promise<Property[]> {
     });
     return (rows as DbPropertyFull[]).map(mapProperty);
   } catch (error) {
-    if (!isMissingDatabaseError(error)) throw error;
+    if (!isDatabaseConfigurationError(error)) throw error;
     console.warn('[property-service] DATABASE_URL is not configured or unavailable. Using bundled sale data.');
     return publishedStaticProperties().filter((p) => p.type === 'sale');
   }
@@ -130,7 +123,7 @@ export async function getPropertyBySlugDB(slug: string): Promise<Property | null
     if (!p) return null;
     return mapProperty(p as DbPropertyFull);
   } catch (error) {
-    if (!isMissingDatabaseError(error)) throw error;
+    if (!isDatabaseConfigurationError(error)) throw error;
     console.warn(`[property-service] DATABASE_URL is not configured or unavailable. Using bundled data for ${slug}.`);
     return publishedStaticProperties().find((p) => p.slug === slug) ?? null;
   }

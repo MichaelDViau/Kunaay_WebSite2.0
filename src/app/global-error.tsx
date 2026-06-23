@@ -2,6 +2,9 @@
 
 import { useEffect } from 'react';
 
+// Global error boundary: it replaces the root layout when an unrecoverable
+// error is thrown, so it must render its own <html>/<body>. Styling is inlined
+// on purpose because the normal stylesheet/layout may be unavailable here.
 export default function GlobalError({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
   useEffect(() => {
     console.error('[Global Error]', error);
@@ -21,6 +24,8 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
             >
               Try Again
             </button>
+            {/* Hard navigation (not next/link) so a corrupted app state is fully reset. */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a href="/" style={{ display: 'inline-flex', alignItems: 'center', padding: '10px 24px', background: 'transparent', color: '#9A9589', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '6px', textDecoration: 'none', fontWeight: 600 }}>
               Go Home
             </a>

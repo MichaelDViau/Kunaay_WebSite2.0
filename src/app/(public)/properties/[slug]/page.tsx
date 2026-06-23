@@ -7,6 +7,8 @@ import BookingSidebar from '@/components/properties/BookingSidebar';
 import AvailabilityCalendar from '@/components/properties/AvailabilityCalendar';
 import RelatedProperties from '@/components/properties/RelatedProperties';
 import AiAssistant from '@/components/ai/AiAssistant';
+import JsonLd from '@/components/seo/JsonLd';
+import { propertyJsonLd, propertyBreadcrumbJsonLd } from '@/lib/structured-data';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,6 +57,9 @@ export default async function PropertyDetailPage({ params }: Props) {
 
   return (
     <>
+      {/* Property + breadcrumb structured data (invisible; improves search results) */}
+      <JsonLd data={[propertyJsonLd(property), propertyBreadcrumbJsonLd(property)]} />
+
       <PageHero
         label={property.heroLabel}
         title={property.name}

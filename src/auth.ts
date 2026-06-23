@@ -16,9 +16,8 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials?.password) return null;
         const email = credentials.email.trim().toLowerCase();
         const password = credentials.password;
-        const fallbackEmail = (process.env.ADMIN_EMAIL ?? 'admin@kunaay.com').trim().toLowerCase();
-        const fallbackPassword = process.env.ADMIN_PASSWORD ?? 'kunaay2026';
 
+        // Primary path: validate against the admin user stored in the database.
         try {
           const user = await prisma.user.findUnique({
             where: { email },
@@ -29,10 +28,24 @@ export const authOptions: NextAuthOptions = {
             return { id: user.id, email: user.email, name: user.name, role: user.role };
           }
         } catch (error) {
+          // Only swallow "database not configured/reachable" errors so login can
+          // fall back to env credentials during setup; rethrow anything else.
           if (!isDatabaseConfigurationError(error)) throw error;
         }
 
-        if (email === fallbackEmail && password === fallbackPassword) {
+        // Fallback path (setup / DB unavailable): accept the ADMIN_EMAIL /
+        // ADMIN_PASSWORD pair from the environment. This is intentionally
+        // disabled unless BOTH are explicitly configured — there is no
+        // hardcoded default credential, so an unconfigured deployment can
+        // never be logged into.
+        const fallbackEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+        const fallbackPassword = process.env.ADMIN_PASSWORD;
+        if (
+          fallbackEmail &&
+          fallbackPassword &&
+          email === fallbackEmail &&
+          password === fallbackPassword
+        ) {
           return { id: 'fallback-admin', email: fallbackEmail, name: 'Admin', role: 'admin' };
         }
 
