@@ -22,11 +22,22 @@ export default async function SalesPage() {
   return (
     <>
       <PageHero
-        label="Properties for Sale"
-        title="Invest in the Riviera Maya"
+        title="Sales"
         backgroundImage="/assets/img/photos/sales/casachukum/full/casackm3.webp"
       />
-      <PropertyGrid properties={sales} />
+      <section className="intro">
+        <h2 className="section-title">Curated Residences &amp; Estates for Sale</h2>
+        <p className="section-desc">
+          Explore an exclusive portfolio of distinguished residences and investment opportunities
+          across the Riviera Maya. Carefully selected for exceptional quality, prime locations, and
+          strong investment potential, our collection includes exclusive listings and finely crafted
+          homes built to the highest standards. From beachfront estates to architecturally significant
+          residences, each property reflects timeless design, superior craftsmanship, and lasting value
+          in the region&apos;s most coveted destinations.
+        </p>
+        <div className="intro-divider" />
+      </section>
+      <PropertyGrid properties={sales} showHeader={false} />
     </>
   );
 }

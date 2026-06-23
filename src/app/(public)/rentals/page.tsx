@@ -27,7 +27,17 @@ export default async function RentalsPage() {
         title="Exceptional Stays in the Riviera Maya"
         backgroundImage="/assets/img/photos/rentals/casasecretomaya/full/casasm6.webp"
       />
-      <PropertyGrid properties={rentals} />
+      <section className="intro">
+        <h2 className="section-title">The Riviera Maya&apos;s Most Exclusive Private Villas</h2>
+        <p className="section-desc">
+          Our portfolio of luxury vacation rentals features breathtaking Caribbean views, exceptional
+          craftsmanship, and privileged locations within the prestigious gated community of Playacar
+          Phase 1, delivering an unparalleled Riviera Maya retreat for those seeking exceptional
+          privacy, comfort, and elegance.
+        </p>
+        <div className="intro-divider" />
+      </section>
+      <PropertyGrid properties={rentals} showHeader={false} />
     </>
   );
 }
