@@ -1,5 +1,5 @@
 interface PageHeroProps {
-  label: string;
+  label?: string;
   title: string;
   backgroundImage: string;
   minHeight?: string;
@@ -18,7 +18,7 @@ export default function PageHero({
       <div className="page-hero-bg" style={{ backgroundImage: `url('${backgroundImage}')` }} />
       <div className="page-hero-overlay" />
       <div className="page-hero-content">
-        <span className="section-label">{label}</span>
+        {label ? <span className="section-label">{label}</span> : null}
         <h1>{title}</h1>
       </div>
     </div>
