@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
 import { prisma } from '@/lib/prisma';
+import { describeError } from '@/lib/api-errors';
 
 type Params = { params: Promise<{ id: string }> };
 
@@ -99,8 +100,10 @@ export async function PUT(req: NextRequest, { params }: Params) {
             })),
           },
           features: {
-            create: (features || []).map((f: string, i: number) => ({
-              text: f,
+            // The form sends features as { text, sortOrder } objects; the seed
+            // sends plain strings. Accept both so neither path breaks.
+            create: (features || []).map((f: string | { text: string }, i: number) => ({
+              text: typeof f === 'string' ? f : f.text,
               sortOrder: i,
             })),
           },
@@ -125,7 +128,11 @@ export async function PUT(req: NextRequest, { params }: Params) {
     return NextResponse.json(property);
   } catch (err) {
     console.error('[PUT /api/admin/properties/[id]]', err);
-    return NextResponse.json({ error: 'Failed to update property.' }, { status: 500 });
+    const { message, detail } = describeError(err);
+    return NextResponse.json(
+      { error: 'Failed to update property.', reason: message, detail },
+      { status: 500 }
+    );
   }
 }
 

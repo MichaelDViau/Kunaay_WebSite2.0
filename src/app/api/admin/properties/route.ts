@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/auth';
 import { prisma } from '@/lib/prisma';
+import { describeError } from '@/lib/api-errors';
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -77,8 +78,10 @@ export async function POST(req: NextRequest) {
           })),
         },
         features: {
-          create: (features || []).map((f: string, i: number) => ({
-            text: f,
+          // The form sends features as { text, sortOrder } objects; the seed
+          // sends plain strings. Accept both so neither path breaks.
+          create: (features || []).map((f: string | { text: string }, i: number) => ({
+            text: typeof f === 'string' ? f : f.text,
             sortOrder: i,
           })),
         },
@@ -102,6 +105,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(property, { status: 201 });
   } catch (err) {
     console.error('[POST /api/admin/properties]', err);
-    return NextResponse.json({ error: 'Failed to create property.' }, { status: 500 });
+    const { message, detail } = describeError(err);
+    return NextResponse.json(
+      { error: 'Failed to create property.', reason: message, detail },
+      { status: 500 }
+    );
   }
 }
