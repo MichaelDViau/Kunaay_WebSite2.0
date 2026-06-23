@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/auth';
+import { getAdminSession } from '@/lib/auth-guard';
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
-  const session = await getServerSession(authOptions);
+  const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const amenities = await prisma.amenity.findMany({ orderBy: { name: 'asc' } });
@@ -12,11 +11,17 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getServerSession(authOptions);
+  const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
-    const { name, icon } = await req.json() as { name?: string; icon?: string };
+    let parsed: { name?: string; icon?: string };
+    try {
+      parsed = await req.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
+    }
+    const { name, icon } = parsed;
 
     if (!name?.trim()) {
       return NextResponse.json({ error: 'Amenity name is required.' }, { status: 400 });
@@ -32,7 +37,7 @@ export async function POST(req: NextRequest) {
     if (existing) return NextResponse.json(existing); // return existing rather than erroring
 
     const amenity = await prisma.amenity.create({
-      data: { name: name.trim(), icon: icon?.trim() || 'home' },
+      data: { name: name.trim(), icon: (icon?.trim() || 'home').slice(0, 60) },
     });
     return NextResponse.json(amenity, { status: 201 });
   } catch (err) {

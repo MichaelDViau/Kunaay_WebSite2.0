@@ -157,3 +157,58 @@ The "Ku Náay AI Assistant" on the public pages streams answers from
 
 Without a key the assistant still works using built-in canned responses, so the
 UI never breaks; it simply isn't a live LLM until a key is added.
+
+## Security
+
+The app is hardened for production. Key controls:
+
+- **Authentication** — credentials are bcrypt-hashed; sign-in is rate-limited
+  (10 attempts / 15 min per account+IP) to resist brute force; the env-based
+  fallback credential is compared in constant time; admin JWT sessions expire
+  after 24h. There is **no** hardcoded default credential — the fallback login
+  is disabled unless both `ADMIN_EMAIL` and `ADMIN_PASSWORD` are set.
+- **Authorization** — `/admin/*` pages are gated by middleware, and every
+  `/api/admin/*` route independently verifies an authenticated admin session
+  (`getAdminSession()` in `src/lib/auth-guard.ts`) since middleware does not
+  cover API routes.
+- **Input validation** — all property create/update payloads go through
+  `src/lib/property-validation.ts`: enums are normalized, string/array sizes are
+  capped (DoS/bloat protection), and URL fields reject unsafe schemes
+  (`javascript:` etc.) to prevent stored XSS in links.
+- **File uploads** — admin-only; type + size limits, a per-request file cap, an
+  early Content-Length check, and authoritative image validation by decoding the
+  bytes with `sharp` (defeating spoofed MIME types). Filenames are sanitized and
+  timestamp-prefixed so user input can never traverse paths or overwrite files.
+- **Database** — Prisma parameterizes all queries (no raw SQL → no injection).
+  Credentials live only in `.env` (gitignored). DB errors are mapped to safe
+  user-facing messages (`src/lib/api-errors.ts`).
+- **Headers** — CSP, HSTS (prod), `X-Content-Type-Options`, `X-Frame-Options`,
+  `Referrer-Policy`, and `Permissions-Policy` are set in `next.config.ts` (and
+  mirrored for the static host in `_headers` / `.htaccess`). Admin pages and
+  admin APIs are sent `Cache-Control: no-store`.
+- **Output safety** — React escapes all dynamic content; the only raw HTML is
+  the JSON-LD `<script>`, which escapes `<` to prevent breakout.
+
+### Remaining risks / next steps before going to production
+
+1. **Rotate the admin password and `NEXTAUTH_SECRET`.** A development SQLite
+   database (`prisma/prisma/kunaay.db`) was committed early in the project's
+   git history. It is no longer tracked (and `*.db` is gitignored), but its
+   bcrypt admin hash remains in history. Rotate the credential, and consider
+   purging history with `git filter-repo`/BFG before publishing the repo.
+2. **Rate limiting is in-memory** (per instance). For multi-instance or
+   serverless hosting, move the login/AI limiters to a shared store (e.g.
+   Redis/Upstash). The AI limiter keys on `x-forwarded-for`, which is
+   client-spoofable — fine behind a trusted proxy that overwrites it.
+3. **Build-time dependency advisories.** `npm audit` reports Next's bundled
+   `postcss` (build-time only) and next-auth's transitive `uuid@8` (advisory
+   applies only when a `buf` arg is passed, which next-auth never does). Both
+   are non-exploitable at runtime; the only "fix" is a breaking next-auth v3
+   downgrade, so they are intentionally left until upstream patches land. Keep
+   `next` and `next-auth` updated within their major versions.
+4. **CSP uses `'unsafe-inline'`** for scripts/styles (required by Next's inline
+   bootstrap and the app's inline styles). For a stricter policy, adopt
+   nonce-based CSP via middleware.
+5. **Database least-privilege.** When using PostgreSQL/Supabase, connect with a
+   role limited to the app's schema (CRUD only, no DDL/superuser) for runtime.
+
