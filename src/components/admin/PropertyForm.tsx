@@ -41,6 +41,7 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
   const [tab, setTab] = useState(0);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
+  const [errorDetail, setErrorDetail] = useState('');
   const [success, setSuccess] = useState('');
 
   // Basic Info
@@ -126,8 +127,13 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
   });
 
   const handleSubmit = async () => {
-    if (!name.trim() || !slug.trim()) { setError('Name and slug are required.'); return; }
-    setError(''); setSaving(true);
+    if (!name.trim() || !slug.trim()) {
+      setError('Name and slug are required.');
+      setErrorDetail('');
+      setTab(0);
+      return;
+    }
+    setError(''); setErrorDetail(''); setSaving(true);
     try {
       const url = isEdit
         ? `/api/admin/properties/${propertyId}`
@@ -140,6 +146,9 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
         setError(body.error ?? 'Save failed.');
+        // Surface the specific reason/technical detail for debugging without
+        // cluttering the primary, user-facing message.
+        setErrorDetail([body.reason, body.detail].filter(Boolean).join(' — '));
       } else {
         const saved = await res.json();
         setSuccess(isEdit ? 'Changes saved successfully.' : 'Property created successfully.');
@@ -147,8 +156,9 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
         router.push(`/admin/properties/${saved.id}/edit`);
         router.refresh();
       }
-    } catch {
+    } catch (err) {
       setError('Network error.');
+      setErrorDetail(err instanceof Error ? err.message : '');
     } finally {
       setSaving(false);
     }
@@ -156,7 +166,14 @@ export default function PropertyForm({ propertyId, amenities, initialData }: Pro
 
   return (
     <div className="a-form">
-      {error && <div className="a-alert-error">{error}</div>}
+      {error && (
+        <div className="a-alert-error">
+          {error}
+          {errorDetail && (
+            <div style={{ marginTop: 4, fontSize: '0.8rem', opacity: 0.85 }}>{errorDetail}</div>
+          )}
+        </div>
+      )}
       {success && <div className="a-alert-success">{success}</div>}
 
       <div className="a-tabs">
