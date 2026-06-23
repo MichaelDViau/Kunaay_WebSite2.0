@@ -26,6 +26,15 @@ function galleryImageData(slug: string, fallbackHero: string, name: string) {
   }));
 }
 
+// Full premium descriptions come from src/data/properties.ts (the canonical
+// content, identical to the original static pages). Falls back to the inline
+// summary only if a property is missing from the canonical data.
+function descriptionData(slug: string, fallback: string[]) {
+  const data = staticProperties.find((sp) => sp.slug === slug);
+  const texts = data?.longDescriptions?.length ? data.longDescriptions : fallback;
+  return texts.map((text, i) => ({ text, sortOrder: i }));
+}
+
 async function main() {
   // Preflight: the seed needs a database connection string.
   if (!process.env.DATABASE_URL) {
@@ -259,24 +268,27 @@ async function main() {
 
   for (const p of props) {
     const images = galleryImageData(p.slug, p.heroImage, p.name);
+    const descriptions = descriptionData(p.slug, p.descriptions);
     const existing = await prisma.property.findUnique({
       where: { slug: p.slug },
       include: { images: true },
     });
 
     if (existing) {
-      // Backfill the full gallery for properties that were seeded with only
-      // the single hero image. Properties that already have a managed gallery
-      // (2+ images, e.g. edited in the admin) are left untouched.
-      if (existing.images.length <= 1 && images.length > 1) {
-        await prisma.propertyImage.deleteMany({ where: { propertyId: existing.id } });
-        await prisma.propertyImage.createMany({
-          data: images.map((img) => ({ ...img, propertyId: existing.id })),
-        });
-        console.log(`Backfilled ${p.slug} with ${images.length} gallery images`);
-      } else {
-        console.log(`Skipping ${p.slug} (already has ${existing.images.length} image(s))`);
-      }
+      // Restore the canonical gallery and descriptions for the demo
+      // properties: this re-syncs the full image set (removing any stray or
+      // test images added through the admin) and replaces truncated
+      // descriptions with the complete originals. Properties you add yourself
+      // (other slugs) are never touched.
+      await prisma.propertyImage.deleteMany({ where: { propertyId: existing.id } });
+      await prisma.propertyImage.createMany({
+        data: images.map((img) => ({ ...img, propertyId: existing.id })),
+      });
+      await prisma.propertyDescription.deleteMany({ where: { propertyId: existing.id } });
+      await prisma.propertyDescription.createMany({
+        data: descriptions.map((d) => ({ ...d, propertyId: existing.id })),
+      });
+      console.log(`Restored ${p.slug}: ${images.length} images, ${descriptions.length} description paragraphs`);
       continue;
     }
 
@@ -296,7 +308,7 @@ async function main() {
           create: p.highlights.map((h, i) => ({ icon: h.icon, label: h.label, sortOrder: i })),
         },
         descriptions: {
-          create: p.descriptions.map((text, i) => ({ text, sortOrder: i })),
+          create: descriptions,
         },
         features: {
           create: p.features.map((text, i) => ({ text, sortOrder: i })),
@@ -306,7 +318,7 @@ async function main() {
         },
       },
     });
-    console.log(`Created ${p.slug} with ${images.length} gallery images`);
+    console.log(`Created ${p.slug}: ${images.length} images, ${descriptions.length} description paragraphs`);
   }
 
   console.log(`Seed complete. Admin login: ${adminEmail} / ${adminPassword}`);
