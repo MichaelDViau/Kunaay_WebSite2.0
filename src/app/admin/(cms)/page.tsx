@@ -1,23 +1,41 @@
 import { prisma } from '@/lib/prisma';
+import { databaseSetupMessage, isDatabaseConfigurationError } from '@/lib/db-status';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 export const metadata = { title: 'Dashboard' };
 
-export default async function AdminDashboard() {
-  const [total, rentals, sales, published, draft] = await Promise.all([
-    prisma.property.count(),
-    prisma.property.count({ where: { type: 'rental' } }),
-    prisma.property.count({ where: { type: 'sale' } }),
-    prisma.property.count({ where: { status: 'published' } }),
-    prisma.property.count({ where: { status: 'draft' } }),
-  ]);
+type RecentProperty = Awaited<ReturnType<typeof prisma.property.findMany>>[number] & {
+  images: { url: string; thumbUrl: string }[];
+};
 
-  const recentProperties = await prisma.property.findMany({
-    take: 5,
-    orderBy: { updatedAt: 'desc' },
-    include: { images: { where: { isHero: true }, take: 1 } },
-  });
+export default async function AdminDashboard() {
+  let total = 0;
+  let rentals = 0;
+  let sales = 0;
+  let published = 0;
+  let draft = 0;
+  let recentProperties: RecentProperty[] = [];
+  let databaseWarning = '';
+
+  try {
+    [total, rentals, sales, published, draft] = await Promise.all([
+      prisma.property.count(),
+      prisma.property.count({ where: { type: 'rental' } }),
+      prisma.property.count({ where: { type: 'sale' } }),
+      prisma.property.count({ where: { status: 'published' } }),
+      prisma.property.count({ where: { status: 'draft' } }),
+    ]);
+
+    recentProperties = await prisma.property.findMany({
+      take: 5,
+      orderBy: { updatedAt: 'desc' },
+      include: { images: { where: { isHero: true }, take: 1 } },
+    });
+  } catch (error) {
+    if (!isDatabaseConfigurationError(error)) throw error;
+    databaseWarning = databaseSetupMessage();
+  }
 
   const stats = [
     { label: 'Total Properties', value: total, color: 'var(--a-gold)' },
@@ -39,6 +57,8 @@ export default async function AdminDashboard() {
           New Property
         </Link>
       </div>
+
+      {databaseWarning ? <p className="a-alert">{databaseWarning}</p> : null}
 
       <div className="a-stats-grid">
         {stats.map((s) => (

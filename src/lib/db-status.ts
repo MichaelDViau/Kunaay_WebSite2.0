@@ -7,5 +7,5 @@ export function isDatabaseConfigurationError(error: unknown): boolean {
 }
 
 export function databaseSetupMessage(): string {
-  return 'Database is not configured. Add DATABASE_URL (Supabase pooled or direct PostgreSQL URL, or a local SQLite URL) and rerun Prisma migrations.';
+  return 'The database is not set up yet. Make sure DATABASE_URL is set in .env, then run "npx prisma migrate deploy" followed by "npx prisma db seed" to create the tables and seed the admin user and properties.';
 }
