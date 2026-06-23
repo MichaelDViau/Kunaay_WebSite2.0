@@ -24,7 +24,7 @@ export default async function RentalsPage() {
     <>
       <PageHero
         label="Vacation Rentals"
-        title="Exceptional Stays in the Riviera Maya"
+        title="Rentals"
         backgroundImage="/assets/img/photos/rentals/casasecretomaya/full/casasm6.webp"
       />
       <section className="intro">

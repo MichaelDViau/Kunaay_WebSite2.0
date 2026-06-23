@@ -3,6 +3,8 @@ import HeroSlider from '@/components/home/HeroSlider';
 import PropertyGrid from '@/components/properties/PropertyGrid';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import AiAssistant from '@/components/ai/AiAssistant';
+import JsonLd from '@/components/seo/JsonLd';
+import { organizationJsonLd, websiteJsonLd } from '@/lib/structured-data';
 import { getAllProperties } from '@/lib/property-service';
 
 export const dynamic = 'force-dynamic';
@@ -25,6 +27,9 @@ export default async function HomePage() {
 
   return (
     <>
+      {/* Brand + site structured data (invisible; improves search results) */}
+      <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
+
       <HeroSlider />
 
       <AiAssistant />
