@@ -1,0 +1,417 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ──────────────────────────────────────────────────────────────────────
+   Tailwind Preflight forces `svg { display: block }`, which left-aligns
+   every inline icon the original design centered with `text-align`
+   (e.g. .highlight-item, card meta rows, buttons, footer). The original
+   static site used inline SVGs. Restore that so icons sit inline and
+   centered again. Icons inside flex rows are blockified by flex, so this
+   rule is a no-op there and does not affect the admin panel.
+   ────────────────────────────────────────────────────────────────────── */
+svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Form controls must keep inheriting the site font once Preflight's
+   reset is overridden (covers admin buttons that don't set it explicitly). */
+button,
+input,
+select,
+textarea,
+optgroup {
+  font: inherit;
+  letter-spacing: inherit;
+}
+
+/* Cal day states not in the original CSS */
+.cal-day.past { opacity: 0.35; }
+.cal-day.today { outline: 1px solid var(--gold); }
+
+/* ── Ku Náay AI Assistant ─────────────────────────────────────────────── */
+
+.ai-section {
+  padding: 56px 0 64px;
+  background: var(--bg-card);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.12);
+}
+
+.ai-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+}
+
+/* Header */
+.ai-badge-row { display: flex; justify-content: center; }
+
+.ai-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  background: rgba(201, 168, 76, 0.1);
+  border: 1px solid rgba(201, 168, 76, 0.35);
+  border-radius: 100px;
+  color: var(--gold);
+  font-family: var(--sans);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.ai-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.ai-title {
+  font-family: var(--serif);
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 400;
+  color: var(--text);
+  letter-spacing: 0.01em;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.ai-subtitle {
+  font-family: var(--sans);
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin: 0;
+  max-width: 480px;
+  line-height: 1.5;
+}
+
+/* Form */
+.ai-form { width: 100%; }
+
+.ai-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  border-radius: var(--radius-lg, 20px);
+  padding: 10px 14px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ai-bar:focus-within,
+.ai-bar--open {
+  border-color: rgba(201, 168, 76, 0.5);
+  box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.08);
+}
+
+.ai-bar-icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.ai-bar-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  color: var(--text);
+  caret-color: var(--gold);
+}
+
+.ai-bar-input::placeholder { color: var(--text-muted); }
+
+.ai-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  transition: color 0.15s, background 0.15s;
+}
+.ai-clear:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+
+.ai-send {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background: var(--gold);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #0C0C0C;
+  transition: background 0.18s, transform 0.15s;
+}
+.ai-send:hover:not(:disabled) { background: var(--gold-light, #E0C97F); transform: scale(1.05); }
+.ai-send:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+/* Loading dots */
+.ai-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.ai-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: ai-bounce 1.2s ease-in-out infinite;
+}
+.ai-dots span:nth-child(2) { animation-delay: 0.2s; }
+.ai-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes ai-bounce {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+/* Example chips */
+.ai-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.ai-chip {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  padding: 6px 14px;
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.ai-chip:hover {
+  border-color: rgba(201, 168, 76, 0.35);
+  color: var(--gold);
+  background: rgba(201, 168, 76, 0.06);
+}
+
+/* Response area */
+.ai-response {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: ai-fade-in 0.3s ease;
+}
+
+@keyframes ai-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ai-thinking {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-muted);
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  padding: 16px 0;
+}
+
+.ai-error-msg {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.25);
+  border-radius: var(--radius);
+  color: #fca5a5;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+}
+
+.ai-answer {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 18px 20px;
+  background: var(--bg-card);
+  border: 1px solid rgba(201, 168, 76, 0.12);
+  border-radius: var(--radius);
+}
+
+.ai-answer-avatar {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(201, 168, 76, 0.15);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  margin-top: 1px;
+}
+
+.ai-answer-text {
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Property cards */
+.ai-cards { width: 100%; }
+
+.ai-cards-label {
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0 0 14px;
+}
+
+.ai-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.ai-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+.ai-card:hover {
+  border-color: rgba(201, 168, 76, 0.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+
+.ai-card-img {
+  position: relative;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  background: #1a1a1a;
+}
+.ai-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s;
+}
+.ai-card:hover .ai-card-img img { transform: scale(1.04); }
+
+.ai-card-tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(12,12,12,0.75);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  color: var(--gold);
+  font-family: var(--sans);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+}
+
+.ai-card-body {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.ai-card-name {
+  font-family: var(--serif);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.ai-card-loc {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.ai-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.ai-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.ai-card-price {
+  font-family: var(--sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin: 4px 0 0;
+}
+
+.ai-card-link {
+  font-family: var(--sans);
+  font-size: 0.75rem;
+  color: var(--gold);
+  margin-top: auto;
+  padding-top: 8px;
+  opacity: 0.75;
+  transition: opacity 0.15s;
+}
+.ai-card:hover .ai-card-link { opacity: 1; }
+
+/* Property page inline variant — narrower context */
+.ai-section--inline .ai-inner { max-width: 100%; padding: 0; }
+.ai-section--inline { padding: 40px 0 48px; }
+
+@media (max-width: 600px) {
+  .ai-inner { gap: 20px; }
+  .ai-chips { gap: 6px; }
+  .ai-chip { font-size: 0.74rem; padding: 5px 11px; }
+  .ai-cards-grid { grid-template-columns: 1fr; }
+  .ai-section { padding: 40px 0 48px; }
+}

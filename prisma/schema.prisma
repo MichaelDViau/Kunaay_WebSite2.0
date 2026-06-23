@@ -1,0 +1,131 @@
+// To switch to PostgreSQL: change provider to "postgresql" and update DATABASE_URL
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String   @default("Admin")
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
+
+model Property {
+  id               String                @id @default(cuid())
+  slug             String                @unique
+  name             String
+  type             String                // "rental" | "sale"
+  status           String                @default("published") // "published" | "draft"
+  badge            String                @default("Rental")
+  location         String
+  subtitle         String                @default("")
+  heroLabel        String                @default("")
+  bedrooms         Int                   @default(0)
+  bathrooms        Int                   @default(0)
+  guests           Int?
+  squareFeet       Int?
+  price            String                @default("")
+  shortDescription String
+  whatsappUrl      String                @default("")
+  seoTitle         String                @default("")
+  seoDescription   String                @default("")
+  seoOgImage       String                @default("")
+  seoCanonical     String                @default("")
+  displayOrder     Int                   @default(0)
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+
+  descriptions     PropertyDescription[]
+  images           PropertyImage[]
+  highlights       PropertyHighlight[]
+  features         PropertyFeature[]
+  amenities        PropertyAmenity[]
+  bookedDates      BookedDate[]
+  relatedTo        RelatedProperty[]
+}
+
+model PropertyDescription {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  text       String
+  sortOrder  Int      @default(0)
+}
+
+model PropertyImage {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url        String
+  thumbUrl   String   @default("")
+  title      String   @default("")
+  isCover    Boolean  @default(false)
+  isHero     Boolean  @default(false)
+  sortOrder  Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+model PropertyHighlight {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  icon       String
+  label      String
+  sortOrder  Int      @default(0)
+}
+
+model PropertyFeature {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  text       String
+  sortOrder  Int      @default(0)
+}
+
+model Amenity {
+  id         String            @id @default(cuid())
+  name       String            @unique
+  icon       String            @default("home")
+  createdAt  DateTime          @default(now())
+  properties PropertyAmenity[]
+}
+
+model PropertyAmenity {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  amenityId  String
+  amenity    Amenity  @relation(fields: [amenityId], references: [id])
+
+  @@unique([propertyId, amenityId])
+}
+
+model BookedDate {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  date       String   // ISO date string "YYYY-MM-DD"
+  note       String   @default("")
+  dateType   String   @default("blocked") // "blocked" | "reserved"
+  createdAt  DateTime @default(now())
+
+  @@unique([propertyId, date])
+}
+
+model RelatedProperty {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  slug       String
+  name       String
+  location   String
+  image      String
+  sortOrder  Int      @default(0)
+}
