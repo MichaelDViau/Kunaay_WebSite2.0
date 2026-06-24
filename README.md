@@ -1,114 +1,67 @@
 # Ku Náay Real Estate — Website
 
-Static marketing site for [kunaay.com](https://www.kunaay.com): luxury vacation
-rentals and property sales in the Riviera Maya. Plain HTML/CSS/JS — no
-framework, no runtime dependencies — deployable on any static host
-(Cloudflare Pages / Netlify via `_headers`, Apache via `.htaccess`).
+The website for [kunaay.com](https://www.kunaay.com): luxury vacation rentals and
+property sales in the Riviera Maya. A single **Next.js (App Router)** application
+that serves the public marketing site **and** the admin back-office (CMS), backed
+by Prisma + NextAuth.
+
+> **Migration note.** This project began as a static HTML site. It has been fully
+> migrated into the Next.js app in `src/`. The public pages reuse the original
+> design assets unchanged — `assets/css/main.min.css`, the self-hosted fonts, the
+> photos in `assets/img/`, and the SVG icon sprite — so the look, layout, and
+> behaviour are identical, while the code is componentized and server-rendered.
+> The old `*.html` URLs **301-redirect** to their clean equivalents (see
+> [Routing](#routing--legacy-redirects)).
+
+## Tech stack
+
+- **Next.js 15** (App Router, React 19, TypeScript) — public site + admin + API
+- **Prisma 5** ORM — SQLite by default, PostgreSQL/Supabase ready
+- **NextAuth** — credentials auth for the admin CMS (bcrypt, rate-limited)
+- **sharp** — server-side image validation for uploads
+- **Tailwind CSS** (admin UI) + the original hand-written `assets/css/main.css`
+  (public site)
 
 ## Project structure
 
 ```
-├── index.html                  Home (hero slider, featured properties, reviews)
-├── rentals.html / sales.html   Listing pages
-├── casa*.html                  Property detail pages (gallery, calendar, booking)
-├── about.html / contact.html   Company pages
+├── src/
+│   ├── app/
+│   │   ├── (public)/            Public site: home, rentals, sales, about,
+│   │   │                        contact, properties/[slug]  (server components)
+│   │   ├── admin/               Admin CMS (login + dashboard + property editor)
+│   │   ├── api/                 Route handlers (admin CRUD, image upload,
+│   │   │                        calendar, NextAuth, AI assistant)
+│   │   ├── layout.tsx           Root layout (metadata, icon sprite)
+│   │   ├── sitemap.ts           Generated /sitemap.xml (clean URLs)
+│   │   └── robots.ts            Generated /robots.txt
+│   ├── components/              Header/Footer, PropertyCard/Gallery, HeroSlider,
+│   │                            ContactForm, admin editor, calendar, lightbox…
+│   ├── data/                    Bundled fallback property data + translations
+│   ├── lib/                     Prisma client, property service, auth guard,
+│   │                            validation, rate-limit, structured data
+│   ├── context/                 Language (EN/ES) provider
+│   └── middleware.ts            Protects /admin/* routes
 │
-├── assets/
-│   ├── css/
-│   │   ├── main.css            ← edit this (single source of truth, documented)
-│   │   └── main.min.css        ← generated; what pages actually load
-│   ├── js/
-│   │   ├── main.js             ← site behaviour (navbar, sliders, lightbox,
-│   │   │                          calendar, contact form) — edit this
-│   │   ├── language-toggle.js  ← EN ⇄ ES switcher (lazy-loads translations)
-│   │   ├── translations-data.js← English → Spanish lookup table
-│   │   └── *.min.js            ← generated builds loaded by the pages
-│   ├── fonts/                  Self-hosted woff2 (Cormorant Garamond, Manrope)
-│   └── img/
-│       ├── favicon.svg, logo.png
-│       └── photos/<rentals|sales>/<casa>/
-│           ├── full/   1920px WebP — lightbox images & hero backgrounds
-│           └── thumb/  900px WebP — card sliders, gallery grids, tiles
-│
+├── prisma/                      schema.prisma, migrations, seed
+├── assets/                      Original design assets reused by the public site
+│   ├── css/main.css             ← edit this; run `npm run build:legacy-css`
+│   │   └── main.min.css         ← generated; what the public layout loads
+│   ├── fonts/                   Self-hosted woff2 (Cormorant Garamond, Manrope)
+│   └── img/                     favicon, logo, and photos/<rentals|sales>/<casa>/
+│                                  ├── full/  1920px WebP (lightbox + hero)
+│                                  └── thumb/ 900px WebP (cards + grids)
+├── public/assets               → symlink to ../assets (served at /assets/*)
 ├── tools/optimize-images.py    Photo pipeline (JPG → full/ + thumb/ WebP)
-├── package.json                `npm run build` → regenerates *.min.* files
-├── _headers / .htaccess        Caching, compression & security headers
-└── robots.txt / sitemap.xml    SEO
+└── next.config.ts              Headers (CSP/HSTS/caching) + legacy redirects
 ```
 
-HTML pages stay at the repository root on purpose: the live URLs
-(`kunaay.com/rentals.html`, …) must not change. Shared "components"
-(navbar, footer, lightbox, icon sprite) are repeated per page — there is no
-build-time templating by design — and are marked with `═══` banner comments
-so they are easy to find and keep in sync.
+The public layout (`src/app/(public)/layout.tsx`) loads
+`/assets/css/main.min.css` and preloads the fonts, so styling is governed by the
+same single stylesheet as before. Only edit `assets/css/main.css`, then
+regenerate the minified build with `npm run build:legacy-css`.
 
-## Editing workflow
-
-1. **Styles** — edit `assets/css/main.css`, then run `npm run build`.
-2. **Behaviour** — edit `assets/js/main.js` (or `language-toggle.js`), then
-   `npm run build`. Never edit `.min.` files by hand.
-3. **Page content** — edit the HTML directly. Every major section carries a
-   banner comment (`<!-- ═══ … ═══ -->`).
-4. **Translations** — the language toggle matches *exact* English text.
-   If you change any visible English string, update the matching key in
-   `assets/js/translations-data.js`, then `npm run build`.
-
-First-time setup: `npm install` (only dev dependency is esbuild).
-
-## Adding photos
-
-1. Drop original JPGs into `assets/img/photos/<rentals|sales>/<casa>/`.
-2. Run `python3 tools/optimize-images.py` (needs `pip install pillow`).
-   It writes lowercase `full/…webp` (1920px) and `thumb/…webp` (900px) and
-   is safe to re-run. Originals can be deleted after conversion.
-3. Reference `thumb/` for grid/card images and `full/` for
-   `KUNAAY_PAGE.lightbox` arrays and `page-hero-bg` backgrounds.
-
-## How a page wires up its data
-
-Each page passes its data to the shared script via one inline object,
-just before the deferred bundles:
-
-```html
-<script>
-window.KUNAAY_PAGE = {
-  galleries:  { g0: ["…thumb/a.webp", "…"] },  // property-card sliders
-  lightbox:   ["…full/a.webp", "…"],           // detail-page gallery, in order
-  bookedDays: [3, 4, 5]                        // availability calendar
-};
-</script>
-<script src="assets/js/main.min.js" defer></script>
-<script src="assets/js/language-toggle.min.js" defer></script>
-```
-
-`main.js` feature-detects markup (`#heroSlider`, `#calDays`, `#contactForm`,
-`#lightbox`…) so any feature can be added or removed per page without
-touching the script.
-
-## Performance notes (please keep these intact)
-
-- Pages load **thumb** images for layout and fetch **full** images only when
-  the lightbox opens — don't point grid `<img>` tags at `full/`.
-- Each page **preloads its hero image** (`<link rel="preload" as="image">`)
-  — update that link when changing a hero.
-- Fonts are **self-hosted** with `font-display: swap`; no Google Fonts
-  requests remain.
-- The **Spanish translation table is lazy-loaded** (on first toggle, or at
-  start-up for returning Spanish-preference visitors). Don't add it back as
-  a regular `<script>` on pages.
-- Repeated SVG icons live in one **per-page sprite** right after `<body>`
-  and are referenced with `<use href="#i-…">`.
-
-
-
-## Next.js app — running the front end + back end locally (VS Code)
-
-The Next.js application powers both the public website and the admin back-office
-(CMS). It uses Prisma for the data model. In development the public website
-falls back to bundled property data if `DATABASE_URL` is missing, so the front
-end still renders while a database is being configured.
-
-### Quick start
+## Quick start
 
 ```bash
 npm install                 # install dependencies
@@ -122,7 +75,21 @@ npm run dev                 # start the app on http://localhost:3000
 > Note: both Prisma and Next.js read **`.env`** (Prisma does *not* read
 > `.env.local`). Keep all variables in `.env`.
 
-### Addresses (URLs)
+In development the public site falls back to bundled property data
+(`src/data/properties.ts`) if `DATABASE_URL` is missing or the DB is empty, so
+the front end still renders while a database is being configured.
+
+## Scripts
+
+| Script | What it does |
+| ------ | ------------ |
+| `npm run dev` | Start the dev server (http://localhost:3000) |
+| `npm run build` | Production build |
+| `npm run start` | Serve the production build |
+| `npm run lint` | ESLint (next/core-web-vitals) |
+| `npm run build:legacy-css` | Re-minify `assets/css/main.css` → `main.min.css` |
+
+## Addresses (URLs)
 
 | Area                     | URL                                      |
 | ------------------------ | ---------------------------------------- |
@@ -133,7 +100,39 @@ npm run dev                 # start the app on http://localhost:3000
 
 Log in with the `ADMIN_EMAIL` / `ADMIN_PASSWORD` you set in `.env`.
 
-### Database options
+## Routing & legacy redirects
+
+The public site uses clean URLs: `/`, `/rentals`, `/sales`, `/about`,
+`/contact`, and `/properties/<slug>`. The original static-site URLs are
+permanently redirected in `next.config.ts` so existing bookmarks and search
+rankings keep working:
+
+| Old URL | Redirects to |
+| ------- | ------------ |
+| `/index.html` | `/` |
+| `/rentals.html` · `/sales.html` | `/rentals` · `/sales` |
+| `/about.html` · `/contact.html` | `/about` · `/contact` |
+| `/casa<name>.html` | `/properties/casa<name>` |
+
+`/sitemap.xml` and `/robots.txt` are generated by `src/app/sitemap.ts` and
+`src/app/robots.ts` (the sitemap lists clean URLs and includes every published
+property).
+
+## Adding photos
+
+1. Drop original JPGs into `assets/img/photos/<rentals|sales>/<casa>/`.
+2. Run `python3 tools/optimize-images.py` (needs `pip install pillow`).
+   It writes lowercase `full/…webp` (1920px) and `thumb/…webp` (900px) and
+   is safe to re-run. Originals can be deleted after conversion.
+3. Reference the images from the admin CMS, or — for the bundled fallback data —
+   in `src/data/properties.ts`: use `thumb/` for card/grid images and `full/`
+   for the hero and `lightbox` arrays.
+
+**Performance:** card/grid `<img>` tags should point at **thumb** images; the
+full-resolution photos load only when the lightbox opens. Heroes are set as
+backgrounds via the shared `PageHero` component.
+
+## Database options
 
 1. **Local SQLite (default):** keep `DATABASE_URL="file:./dev.db"`.
 2. **Supabase / PostgreSQL:** paste the Supabase **PostgreSQL connection
@@ -144,7 +143,7 @@ Log in with the `ADMIN_EMAIL` / `ADMIN_PASSWORD` you set in `.env`.
 
 Restart the dev server after changing environment variables.
 
-### AI assistant
+## AI assistant
 
 The "Ku Náay AI Assistant" on the public pages streams answers from
 [OpenRouter](https://openrouter.ai). To enable real AI responses:
@@ -183,9 +182,9 @@ The app is hardened for production. Key controls:
   Credentials live only in `.env` (gitignored). DB errors are mapped to safe
   user-facing messages (`src/lib/api-errors.ts`).
 - **Headers** — CSP, HSTS (prod), `X-Content-Type-Options`, `X-Frame-Options`,
-  `Referrer-Policy`, and `Permissions-Policy` are set in `next.config.ts` (and
-  mirrored for the static host in `_headers` / `.htaccess`). Admin pages and
-  admin APIs are sent `Cache-Control: no-store`.
+  `Referrer-Policy`, and `Permissions-Policy` are set in `next.config.ts`. Admin
+  pages and admin APIs are sent `Cache-Control: no-store`; fingerprint-free media
+  and fonts under `/assets` are cached immutably for a year.
 - **Output safety** — React escapes all dynamic content; the only raw HTML is
   the JSON-LD `<script>`, which escapes `<` to prevent breakout.
 
@@ -211,4 +210,3 @@ The app is hardened for production. Key controls:
    nonce-based CSP via middleware.
 5. **Database least-privilege.** When using PostgreSQL/Supabase, connect with a
    role limited to the app's schema (CRUD only, no DDL/superuser) for runtime.
-
