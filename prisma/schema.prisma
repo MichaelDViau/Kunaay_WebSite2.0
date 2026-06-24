@@ -1,11 +1,15 @@
 // To switch to PostgreSQL: change provider to "postgresql" and update DATABASE_URL
+// (the runtime driver adapter is selected automatically from DATABASE_URL — see
+// src/lib/db-adapter.ts).
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  // In Prisma 7 the connection URL lives in prisma.config.ts (for Migrate) and
+  // is supplied to the runtime client via a driver adapter (src/lib/db-adapter.ts).
 }
 
 model User {

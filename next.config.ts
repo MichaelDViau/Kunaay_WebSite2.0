@@ -6,6 +6,16 @@ const nextConfig: NextConfig = {
       bodySizeLimit: '10mb',
     },
   },
+  // Prisma 7's driver adapters pull in the native `better-sqlite3` binding and
+  // the `pg` driver. Keep them (and the adapters) external so Next/webpack does
+  // not try to bundle the native `.node` file — they are loaded from
+  // node_modules at runtime instead.
+  serverExternalPackages: [
+    'better-sqlite3',
+    'pg',
+    '@prisma/adapter-better-sqlite3',
+    '@prisma/adapter-pg',
+  ],
   images: {
     remotePatterns: [
       {

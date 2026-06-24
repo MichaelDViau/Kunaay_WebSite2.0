@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/generated/prisma/client';
 
 /**
  * Turns a thrown error into a clean, user-facing message plus a concise

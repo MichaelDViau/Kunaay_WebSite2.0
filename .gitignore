@@ -7,6 +7,8 @@ out/
 *.db-wal
 *.db-shm
 tsconfig.tsbuildinfo
+# Prisma 7 generated client (run `prisma generate` / `npm install` to create it)
+/src/generated/
 .env
 .env.local
 .env*.local
