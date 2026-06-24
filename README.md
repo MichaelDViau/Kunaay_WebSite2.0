@@ -16,7 +16,7 @@ by Prisma + NextAuth.
 ## Tech stack
 
 - **Next.js 15** (App Router, React 19, TypeScript) — public site + admin + API
-- **Prisma 5** ORM — SQLite by default, PostgreSQL/Supabase ready
+- **Prisma 7** ORM (driver adapters) — SQLite by default, PostgreSQL/Supabase ready
 - **NextAuth** — credentials auth for the admin CMS (bcrypt, rate-limited)
 - **sharp** — server-side image validation for uploads
 - **Tailwind CSS** (admin UI) + the original hand-written `assets/css/main.css`
@@ -72,12 +72,25 @@ npx prisma db seed          # seed properties + the admin user
 npm run dev                 # start the app on http://localhost:3000
 ```
 
-> Note: both Prisma and Next.js read **`.env`** (Prisma does *not* read
-> `.env.local`). Keep all variables in `.env`.
+> Note: env vars live in **`.env`**. Prisma 7 no longer auto-loads it, so
+> `prisma.config.ts` loads it for CLI commands (`generate`, `migrate`, `db seed`);
+> Next.js loads it for the app. Keep all variables in `.env` (not `.env.local`).
 
 In development the public site falls back to bundled property data
 (`src/data/properties.ts`) if `DATABASE_URL` is missing or the DB is empty, so
 the front end still renders while a database is being configured.
+
+### Prisma 7 notes
+
+- **Generated client.** `npm install` (postinstall) and `npm run build` run
+  `prisma generate`, which writes the client to `src/generated/prisma`
+  (gitignored). If imports of `@/generated/prisma/client` fail, run
+  `npx prisma generate`.
+- **Driver adapters.** Prisma 7 connects through a driver adapter chosen at
+  runtime from `DATABASE_URL` (`src/lib/db-adapter.ts`): `better-sqlite3` for
+  `file:…`, `pg` for `postgres(ql)://…`. No code change is needed to switch.
+- **Seed runner.** `npx prisma db seed` runs `prisma/seed.ts` via `tsx`
+  (configured in `prisma.config.ts`).
 
 ## Scripts
 
@@ -137,7 +150,8 @@ backgrounds via the shared `PageHero` component.
 1. **Local SQLite (default):** keep `DATABASE_URL="file:./dev.db"`.
 2. **Supabase / PostgreSQL:** paste the Supabase **PostgreSQL connection
    string** into `DATABASE_URL`, change `provider` to `"postgresql"` in
-   `prisma/schema.prisma`, then run `npx prisma migrate dev`. The
+   `prisma/schema.prisma`, then run `npx prisma migrate dev`. The driver
+   adapter switches to `pg` automatically (no code change). The
    publishable/anon key is only for Supabase client APIs — it is *not* a
    database connection string for Prisma.
 

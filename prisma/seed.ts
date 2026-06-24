@@ -1,10 +1,11 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../src/generated/prisma/client';
+import { createDatabaseAdapter } from '../src/lib/db-adapter';
 import bcrypt from 'bcryptjs';
 import { existsSync } from 'fs';
 import { join } from 'path';
 import { properties as staticProperties } from '../src/data/properties';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({ adapter: createDatabaseAdapter() });
 
 // Build the ordered gallery image rows for a property from the curated image
 // set in src/data/properties.ts. Local files are kept only if they actually
