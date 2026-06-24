@@ -27,6 +27,35 @@ const nextConfig: NextConfig = {
     '/*': ['./assets/**/*'],
   },
 
+  // Permanent redirects from the original static-site URLs (*.html) to the
+  // Next.js clean URLs. These preserve bookmarks, inbound links, and search
+  // rankings now that the static HTML pages have been migrated into the app.
+  // Property slugs match the old filenames (see src/data/properties.ts), so the
+  // mapping is exact.
+  async redirects() {
+    const propertySlugs = [
+      'casasecretomaya',
+      'casavioleta',
+      'casamayette',
+      'casaricardo',
+      'casafotoplus',
+      'casachukum',
+    ];
+
+    return [
+      { source: '/index.html', destination: '/', permanent: true },
+      { source: '/rentals.html', destination: '/rentals', permanent: true },
+      { source: '/sales.html', destination: '/sales', permanent: true },
+      { source: '/about.html', destination: '/about', permanent: true },
+      { source: '/contact.html', destination: '/contact', permanent: true },
+      ...propertySlugs.map((slug) => ({
+        source: `/${slug}.html`,
+        destination: `/properties/${slug}`,
+        permanent: true,
+      })),
+    ];
+  },
+
   // Security & caching headers for the Next.js app. These mirror the policy the
   // static host applies via _headers/.htaccess, so the same protections hold no
   // matter how the app is deployed.

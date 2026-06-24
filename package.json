@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build:legacy-css": "esbuild assets/css/main.css --minify --outfile=assets/css/main.min.css",
-    "build:legacy-js": "esbuild assets/js/main.js assets/js/language-toggle.js assets/js/translations-data.js --minify --outdir=assets/js --out-extension:.js=.min.js"
+    "build:legacy-css": "esbuild assets/css/main.css --minify --outfile=assets/css/main.min.css"
   },
   "prisma": {
     "seed": "ts-node --project prisma/tsconfig.seed.json prisma/seed.ts"
