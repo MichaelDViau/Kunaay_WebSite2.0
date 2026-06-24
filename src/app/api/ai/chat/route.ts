@@ -1,27 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAllProperties } from '@/lib/property-service';
+import { rateLimit } from '@/lib/rate-limit';
 import type { Property } from '@/data/types';
 
 // In-memory rate limiting: 15 requests per 15 minutes per IP
-const rateMap = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 15;
 const RATE_WINDOW_MS = 15 * 60 * 1000;
 const DEFAULT_OPENROUTER_MODEL = 'google/gemma-3-27b-it:free';
 
 function getClientIp(req: NextRequest): string {
-  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+  return (
+    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+    req.headers.get('x-real-ip')?.trim() ||
+    'unknown'
+  );
 }
 
 function checkRateLimit(ip: string): boolean {
-  const now = Date.now();
-  const entry = rateMap.get(ip);
-  if (!entry || now > entry.resetAt) {
-    rateMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
-    return true;
-  }
-  if (entry.count >= RATE_LIMIT) return false;
-  entry.count++;
-  return true;
+  return rateLimit('ai-chat', ip, RATE_LIMIT, RATE_WINDOW_MS).allowed;
 }
 
 function isAllowedQuestion(question: string): boolean {

@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/auth';
+import { getAdminSession } from '@/lib/auth-guard';
 import { prisma } from '@/lib/prisma';
 
 type Params = { params: Promise<{ id: string }> };
 
 export async function POST(_req: NextRequest, { params }: Params) {
-  const session = await getServerSession(authOptions);
+  const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { id } = await params;
+  try {
   const src = await prisma.property.findUnique({
     where: { id },
     include: {
@@ -82,4 +82,8 @@ export async function POST(_req: NextRequest, { params }: Params) {
   });
 
   return NextResponse.json(copy, { status: 201 });
+  } catch (err) {
+    console.error('[POST /api/admin/properties/[id]/duplicate]', err);
+    return NextResponse.json({ error: 'Failed to duplicate property.' }, { status: 500 });
+  }
 }

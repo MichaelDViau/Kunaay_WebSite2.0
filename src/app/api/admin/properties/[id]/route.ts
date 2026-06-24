@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/auth';
+import { getAdminSession } from '@/lib/auth-guard';
 import { prisma } from '@/lib/prisma';
 import { describeError } from '@/lib/api-errors';
+import { validateAndNormalizeProperty } from '@/lib/property-validation';
 
 type Params = { params: Promise<{ id: string }> };
 
 export async function GET(_req: NextRequest, { params }: Params) {
-  const session = await getServerSession(authOptions);
+  const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { id } = await params;
@@ -29,27 +29,27 @@ export async function GET(_req: NextRequest, { params }: Params) {
 }
 
 export async function PUT(req: NextRequest, { params }: Params) {
-  const session = await getServerSession(authOptions);
+  const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { id } = await params;
   try {
-    const body = await req.json();
-    const {
-      slug, name, type, status, badge, location, subtitle, heroLabel,
-      bedrooms, bathrooms, guests, squareFeet, price, shortDescription,
-      whatsappUrl, seoTitle, seoDescription, seoOgImage, seoCanonical,
-      displayOrder, descriptions, highlights, features, amenityIds,
-      relatedProperties,
-    } = body;
-
-    if (!slug?.trim() || !name?.trim()) {
-      return NextResponse.json({ error: 'Name and slug are required.' }, { status: 400 });
+    let body: unknown;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 });
     }
+
+    const result = validateAndNormalizeProperty(body);
+    if (!result.ok) {
+      return NextResponse.json({ error: result.error }, { status: 400 });
+    }
+    const d = result.data;
 
     // Check slug uniqueness (excluding this property)
     const slugConflict = await prisma.property.findFirst({
-      where: { slug: slug.trim(), NOT: { id } },
+      where: { slug: d.slug, NOT: { id } },
     });
     if (slugConflict) {
       return NextResponse.json({ error: 'A property with this slug already exists.' }, { status: 409 });
@@ -66,61 +66,31 @@ export async function PUT(req: NextRequest, { params }: Params) {
       return tx.property.update({
         where: { id },
         data: {
-          slug: slug.trim(),
-          name: name.trim(),
-          type,
-          status,
-          badge: badge || (type === 'rental' ? 'Rental' : 'For Sale'),
-          location: location || '',
-          subtitle: subtitle || '',
-          heroLabel: heroLabel || '',
-          bedrooms: Number(bedrooms) || 0,
-          bathrooms: Number(bathrooms) || 0,
-          guests: guests ? Number(guests) : null,
-          squareFeet: squareFeet ? Number(squareFeet) : null,
-          price: price || '',
-          shortDescription: shortDescription || '',
-          whatsappUrl: whatsappUrl || '',
-          seoTitle: seoTitle || name.trim(),
-          seoDescription: seoDescription || shortDescription || '',
-          seoOgImage: seoOgImage || '',
-          seoCanonical: seoCanonical || `https://www.kunaay.com/properties/${slug.trim()}`,
-          displayOrder: Number(displayOrder) || 0,
-          descriptions: {
-            create: (descriptions || []).map((d: { text: string }, i: number) => ({
-              text: d.text,
-              sortOrder: i,
-            })),
-          },
-          highlights: {
-            create: (highlights || []).map((h: { icon: string; label: string }, i: number) => ({
-              icon: h.icon,
-              label: h.label,
-              sortOrder: i,
-            })),
-          },
-          features: {
-            // The form sends features as { text, sortOrder } objects; the seed
-            // sends plain strings. Accept both so neither path breaks.
-            create: (features || []).map((f: string | { text: string }, i: number) => ({
-              text: typeof f === 'string' ? f : f.text,
-              sortOrder: i,
-            })),
-          },
-          amenities: {
-            create: (amenityIds || []).map((amenityId: string) => ({ amenityId })),
-          },
-          relatedTo: {
-            create: (relatedProperties || []).map(
-              (r: { slug: string; name: string; location: string; image: string }, i: number) => ({
-                slug: r.slug,
-                name: r.name,
-                location: r.location,
-                image: r.image,
-                sortOrder: i,
-              })
-            ),
-          },
+          slug: d.slug,
+          name: d.name,
+          type: d.type,
+          status: d.status,
+          badge: d.badge,
+          location: d.location,
+          subtitle: d.subtitle,
+          heroLabel: d.heroLabel,
+          bedrooms: d.bedrooms,
+          bathrooms: d.bathrooms,
+          guests: d.guests,
+          squareFeet: d.squareFeet,
+          price: d.price,
+          shortDescription: d.shortDescription,
+          whatsappUrl: d.whatsappUrl,
+          seoTitle: d.seoTitle,
+          seoDescription: d.seoDescription,
+          seoOgImage: d.seoOgImage,
+          seoCanonical: d.seoCanonical,
+          displayOrder: d.displayOrder,
+          descriptions: { create: d.descriptions },
+          highlights: { create: d.highlights },
+          features: { create: d.features },
+          amenities: { create: d.amenityIds.map((amenityId) => ({ amenityId })) },
+          relatedTo: { create: d.relatedProperties },
         },
       });
     });
@@ -137,7 +107,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
 }
 
 export async function DELETE(_req: NextRequest, { params }: Params) {
-  const session = await getServerSession(authOptions);
+  const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { id } = await params;

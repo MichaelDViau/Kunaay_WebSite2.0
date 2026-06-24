@@ -37,9 +37,22 @@
   Header set Referrer-Policy "strict-origin-when-cross-origin"
   Header set X-Frame-Options "SAMEORIGIN"
   Header set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+  # Enforce HTTPS once the site has been visited (only sent over HTTPS responses).
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" "expr=%{HTTPS} == 'on'"
   <FilesMatch "\.(jpg|jpeg|png|webp|avif|svg|ico|woff2)$">
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
+</IfModule>
+
+# ─── Block access to secrets & source files ────────────────────
+#  Defense-in-depth: should the project root ever be served directly, never
+#  hand out env files, databases, or source/config. (Apache already hides
+#  .htaccess and other .ht* files by default.)
+<FilesMatch "(?i)(^\.env|\.(env|db|sqlite|sqlite3|db-journal|toml|prisma|ts|tsx|map|lock)$)">
+  Require all denied
+</FilesMatch>
+<IfModule mod_alias.c>
+  RedirectMatch 404 (?i)/\.(git|env)(/|$)
 </IfModule>
 
 # ─── MIME types (older Apache configs may lack these) ──────────

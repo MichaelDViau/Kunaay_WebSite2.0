@@ -1,8 +1,32 @@
 import type { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
+import { timingSafeEqual } from 'crypto';
 import { prisma } from '@/lib/prisma';
 import { isDatabaseConfigurationError } from '@/lib/db-status';
+import { rateLimit, rateLimitReset } from '@/lib/rate-limit';
+
+// Brute-force protection: at most 10 sign-in attempts per (account + IP) every
+// 15 minutes. A successful login clears the counter so a legitimate admin is
+// never penalised for occasional typos.
+const LOGIN_MAX_ATTEMPTS = 10;
+const LOGIN_WINDOW_MS = 15 * 60 * 1000;
+
+function getRequestIp(req: unknown): string {
+  const headers = (req as { headers?: Record<string, string | string[] | undefined> } | undefined)?.headers;
+  const xff = headers?.['x-forwarded-for'] ?? headers?.['x-real-ip'];
+  const value = Array.isArray(xff) ? xff[0] : xff;
+  return value?.split(',')[0]?.trim() || 'unknown';
+}
+
+// Constant-time string comparison so the env-credential fallback does not leak
+// information about the password through response timing.
+function timingSafeStringEqual(a: string, b: string): boolean {
+  const ab = Buffer.from(a, 'utf8');
+  const bb = Buffer.from(b, 'utf8');
+  if (ab.length !== bb.length) return false;
+  return timingSafeEqual(ab, bb);
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -12,10 +36,18 @@ export const authOptions: NextAuthOptions = {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials?.email || !credentials?.password) return null;
         const email = credentials.email.trim().toLowerCase();
         const password = credentials.password;
+
+        // Throttle repeated attempts against the same account from the same IP.
+        // When the limit is hit we return null (the same as a wrong password) so
+        // the lockout itself cannot be used to enumerate valid accounts.
+        const rateKey = `${email}|${getRequestIp(req)}`;
+        if (!rateLimit('login', rateKey, LOGIN_MAX_ATTEMPTS, LOGIN_WINDOW_MS).allowed) {
+          return null;
+        }
 
         // Primary path: validate against the admin user stored in the database.
         try {
@@ -25,6 +57,7 @@ export const authOptions: NextAuthOptions = {
           if (user) {
             const valid = await bcrypt.compare(password, user.password);
             if (!valid) return null;
+            rateLimitReset('login', rateKey);
             return { id: user.id, email: user.email, name: user.name, role: user.role };
           }
         } catch (error) {
@@ -43,9 +76,10 @@ export const authOptions: NextAuthOptions = {
         if (
           fallbackEmail &&
           fallbackPassword &&
-          email === fallbackEmail &&
-          password === fallbackPassword
+          timingSafeStringEqual(email, fallbackEmail) &&
+          timingSafeStringEqual(password, fallbackPassword)
         ) {
+          rateLimitReset('login', rateKey);
           return { id: 'fallback-admin', email: fallbackEmail, name: 'Admin', role: 'admin' };
         }
 
@@ -53,7 +87,8 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
-  session: { strategy: 'jwt' },
+  // Short-lived admin sessions reduce the window in which a stolen JWT is useful.
+  session: { strategy: 'jwt', maxAge: 60 * 60 * 24 },
   pages: { signIn: '/admin/login' },
   callbacks: {
     jwt({ token, user }) {

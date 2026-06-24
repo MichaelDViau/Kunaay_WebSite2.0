@@ -7,6 +7,13 @@ export async function processAndSave(
   propertyId: string,
   originalName: string
 ): Promise<{ url: string; thumbUrl: string }> {
+  // Defense-in-depth: the route already checks the property exists, but never
+  // build a filesystem path from an id that isn't a plain identifier, so a
+  // crafted value can never escape the uploads directory (path traversal).
+  if (!/^[a-zA-Z0-9_-]+$/.test(propertyId)) {
+    throw new Error('Invalid property id for upload.');
+  }
+
   const dir = path.join(process.cwd(), 'public', 'uploads', propertyId);
   await fs.mkdir(dir, { recursive: true });
 
